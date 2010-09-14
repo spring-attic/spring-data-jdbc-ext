@@ -1,0 +1,203 @@
+<xsd:schema xmlns="http://www.springframework.org/schema/data-orcl"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:tool="http://www.springframework.org/schema/tool"
+    targetNamespace="http://www.springframework.org/schema/data-orcl"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+    <xsd:import namespace="http://www.springframework.org/schema/tool"/>
+
+    <xsd:element name="pooling-datasource">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:sequence>
+                        <xsd:element name="connection-properties" minOccurs="0" maxOccurs="1">
+                            <xsd:annotation>
+                                <xsd:documentation><![CDATA[
+        The newline-separated, key-value pairs for the connection properties
+        (in standard Properties format, namely 'key=value' pairs)
+                             ]]></xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:string"/>
+                            </xsd:simpleType>
+                        </xsd:element>
+                        <xsd:element name="connection-cache-properties" minOccurs="0" maxOccurs="1">
+                            <xsd:annotation>
+                                <xsd:documentation><![CDATA[
+        The newline-separated, key-value pairs for the connection-cache-properties
+        (in standard Properties format, namely 'key=value' pairs)
+                             ]]></xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:simpleType>
+                                <xsd:restriction base="xsd:string"/>
+                            </xsd:simpleType>
+                        </xsd:element>
+                        <xsd:element name="username-connection-proxy" minOccurs="0" maxOccurs="1">
+                            <xsd:annotation>
+                                <xsd:documentation><![CDATA[
+        The connection can be configured to use a proxy connection by providing a ConnectionContextProvider
+        implementation that provies the username to be used for each proxy connection
+                             ]]></xsd:documentation>
+                            </xsd:annotation>
+                            <xsd:complexType>
+                                <xsd:complexContent>
+                                    <xsd:extension base="beans:identifiedType">
+                                        <xsd:attribute name="connection-context-provider" type="xsd:string">
+                                            <xsd:annotation>
+                                                <xsd:documentation source="java:org.springframework.datastore.sql.jdbc.support.ConnectionContextProvider"><![CDATA[
+                                The bean name of the ConnectionContextProvider that is to be used
+                                to configure the proxy connections.
+                                                ]]></xsd:documentation>
+                                                <xsd:appinfo>
+                                                    <tool:annotation kind="ref">
+                                                        <tool:expected-type type="org.springframework.datastore.sql.jdbc.support.ConnectionContextProvider"/>
+                                                    </tool:annotation>
+                                                </xsd:appinfo>
+                                            </xsd:annotation>
+                                        </xsd:attribute>
+                                    </xsd:extension>
+                                </xsd:complexContent>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                    <xsd:attribute name="username" type="xsd:string"/>
+                    <xsd:attribute name="password" type="xsd:string"/>
+                    <xsd:attribute name="properties-location" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+	The location of a properties file containing key-value pairs for the connection and
+	connection cache environment using a specific prefix to separate connection cache properties from
+	connection properties (in standard Properties format, namely 'key=value' pairs)
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="connection-properties-prefix" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+	Any prefix used for all of the connection properties in the properties file
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="connection-cache-properties-prefix" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+	Any prefix used for all of the connection cache properties in the properties file
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="url" type="xsd:string"/>
+                    <xsd:attribute name="ONS-configuration" type="xsd:string"/>
+                    <xsd:attribute name="fast-connection-failover-enabled" type="xsd:boolean"/>
+                    <xsd:attribute name="connection-caching-enabled" type="xsd:boolean"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="rac-failover-interceptor">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+     Activates a RetryOperationsInterceptor with a custom RacFailoverRetryPolicy to handle any
+     failovers encountered.  This interceptor allows for transaparent retry of the failed
+     transaction.  This interceptor must be ordered to be applied before the corresponding
+     transaction interceptor.
+     Note: This tag will work together with Spring's @Transactional annotation.
+     Consider the use of the <tx:annotation-driven> tag for that purpose.
+            ]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attribute name="recoverable-error-codes" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+         A comma separated list of integer error codes.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="max-number-of-retries" type="xsd:int">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+         The maximum number of times the retry will be performed.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="back-off-policy" type="backOffPolicyType">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+         A specific back off policy to be used.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="aq-jms-connection-factory">
+         <xsd:annotation>
+               <xsd:documentation><![CDATA[
+    Configures an AQjmsFactory to provide a ConnectionFactory to be used with Spring's JMS support.
+               ]]></xsd:documentation>
+         </xsd:annotation>
+         <xsd:complexType>
+             <xsd:complexContent>
+                 <xsd:extension base="beans:identifiedType">
+                     <xsd:attribute name="data-source" type="xsd:string" default="dataSource">
+                         <xsd:annotation>
+                             <xsd:documentation source="java:javax.sql.DataSource"><![CDATA[
+             The bean name of the DataSource that is to be used for the connections.
+
+             This attribute is not required, and only needs to be specified
+             explicitly if the bean name of the desired DataSource
+             is not 'dataSource'.
+                             ]]></xsd:documentation>
+                             <xsd:appinfo>
+                                 <tool:annotation kind="ref">
+                                     <tool:expected-type type="javax.sql.DataSource"/>
+                                 </tool:annotation>
+                             </xsd:appinfo>
+                         </xsd:annotation>
+                     </xsd:attribute>
+                     <xsd:attribute name="use-local-data-source-transaction" default="false" type="xsd:string">
+                         <xsd:annotation>
+                             <xsd:documentation><![CDATA[
+              Indicates that the transactions should be coordinated with the local DataSourceTransactionManager -
+              set this to 'true' when sharing a DataSourceTransactionManager between JMS and JDBC or ORM work.
+              Valid values are 'true' and 'false'.
+                             ]]></xsd:documentation>
+                         </xsd:annotation>
+                     </xsd:attribute>
+                     <xsd:attribute name="native-jdbc-extractor" type="xsd:string">
+                         <xsd:annotation>
+                             <xsd:documentation source="java:org.springframework.jdbc.support.nativejdbc.NativeJdbcExtractor"><![CDATA[
+             The bean name of the NativeJdbcExtractor that is to be used for unwrapping the connections.
+                             ]]></xsd:documentation>
+                             <xsd:appinfo>
+                                 <tool:annotation kind="ref">
+                                     <tool:expected-type type="org.springframework.jdbc.support.nativejdbc.NativeJdbcExtractor"/>
+                                 </tool:annotation>
+                             </xsd:appinfo>
+                         </xsd:annotation>
+                     </xsd:attribute>
+                 </xsd:extension>
+             </xsd:complexContent>
+         </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="backOffPolicyType">
+         <xsd:annotation>
+               <xsd:appinfo>
+                    <tool:annotation kind="ref">
+                         <tool:expected-type type="org.springframework.commons.retry.backoff.BackOffPolicy"/>
+                    </tool:annotation>
+               </xsd:appinfo>
+         </xsd:annotation>
+         <xsd:union memberTypes="xsd:string"/>
+    </xsd:simpleType>
+
+</xsd:schema>
