@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.datastore.sql.jdbc.jms.support.converter.oracle;
+package org.springframework.datastore.sql.jms.support.converter.oracle;
 
 import oracle.jms.AQjmsAdtMessage;
 import oracle.jms.AQjmsSession;
@@ -23,7 +23,7 @@ import oracle.sql.Datum;
 import oracle.sql.ORAData;
 import oracle.sql.STRUCT;
 
-import org.springframework.datastore.sql.jdbc.jms.support.oracle.DatumMapper;
+import org.springframework.datastore.sql.jms.support.oracle.DatumMapper;
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.MessageConverter;
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.datastore.sql.jdbc.jms.support.converter.oracle;
+package org.springframework.datastore.sql.jms.support.converter.oracle;
 
 import org.springframework.jms.support.converter.MessageConversionException;
 import org.springframework.jms.support.converter.MessageConverter;

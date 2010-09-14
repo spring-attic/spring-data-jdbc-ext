@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.springframework.datastore.sql.jdbc.jms.listener.oracle;
+package org.springframework.datastore.sql.jms.listener.oracle;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 
-import org.springframework.datastore.sql.jdbc.jms.support.oracle.OraDataFactory;
+import org.springframework.datastore.sql.jms.support.oracle.OraDataFactory;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
 import oracle.jms.AQjmsSession;

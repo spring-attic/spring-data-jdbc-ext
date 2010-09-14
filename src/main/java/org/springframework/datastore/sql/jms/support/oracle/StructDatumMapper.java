@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.datastore.sql.jdbc.jms.support.oracle;
+package org.springframework.datastore.sql.jms.support.oracle;
 
 import oracle.sql.Datum;
 import oracle.sql.STRUCT;

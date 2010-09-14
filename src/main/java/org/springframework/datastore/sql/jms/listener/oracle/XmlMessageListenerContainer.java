@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.datastore.sql.jdbc.jms.listener.oracle;
+package org.springframework.datastore.sql.jms.listener.oracle;
 
 import oracle.jms.AQjmsSession;
 import oracle.xdb.XMLType;
