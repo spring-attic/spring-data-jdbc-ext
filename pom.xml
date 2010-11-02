@@ -3,14 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.data</groupId>
-	<artifactId>spring-datastore-sql-dist</artifactId>
-	<name>Spring Datastore SQL Distribution</name>
+	<artifactId>spring-data-sql-dist</artifactId>
+	<name>Spring Data SQL Distribution</name>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>spring-datastore-sql-parent</module>
-		<module>spring-datastore-sql-core</module>
-		<module>spring-datastore-oracle</module>
+		<module>spring-data-sql-parent</module>
+		<module>spring-data-sql-core</module>
+		<module>spring-data-oracle</module>
 	</modules>
 
 	<developers>
@@ -54,8 +54,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- dist.* properties are used by the antrun tasks below -->
-		<dist.id>spring-datastore-sql</dist.id>
-		<dist.name>Spring Datastore SQL</dist.name>
+		<dist.id>spring-data-sql</dist.id>
+		<dist.name>Spring Data SQL</dist.name>
 		<dist.key>DATASQL</dist.key>
 		<dist.version>${project.version}</dist.version>
 		<dist.releaseType>snapshot</dist.releaseType>
@@ -74,15 +74,15 @@
 			<distributionManagement>
 				<site>
 					<id>spring-site-staging</id>
-					<url>file:///${java.io.tmpdir}/spring-data/datastore-sql/docs/${project.version}</url>
+					<url>file:///${java.io.tmpdir}/spring-data/data-sql/docs/${project.version}</url>
 				</site>
 				<repository>
 					<id>spring-milestone-staging</id>
-					<url>file:///${java.io.tmpdir}/spring-data/datastore-sql/milestone</url>
+					<url>file:///${java.io.tmpdir}/spring-data/data-sql/milestone</url>
 				</repository>
 				<snapshotRepository>
 					<id>spring-snapshot-staging</id>
-					<url>file:///${java.io.tmpdir}/spring-data/datastore-sql/snapshot</url>
+					<url>file:///${java.io.tmpdir}/spring-data/data-sql/snapshot</url>
 				</snapshotRepository>
 			</distributionManagement>
 		</profile>
@@ -92,7 +92,7 @@
 		<downloadUrl>http://www.springsource.com/download/community</downloadUrl>
 		<site>
 			<id>spring-site</id>
-			<url>scp://static.springframework.org/var/www/domains/springframework.org/static/htdocs/spring-data/datastore-sql/docs/${project.version}</url>
+			<url>scp://static.springframework.org/var/www/domains/springframework.org/static/htdocs/spring-data/data-sql/docs/${project.version}</url>
 		</site>
 		<repository>
 			<id>spring-milestone</id>
@@ -171,7 +171,7 @@
 							</fileset>
 						</copy>
 						<move file="${project.basedir}/target/site/reference/pdf/index.pdf"
-							tofile="${project.basedir}/target/site/reference/pdf/spring-datastore-sql-reference.pdf"
+							tofile="${project.basedir}/target/site/reference/pdf/spring-data-sql-reference.pdf"
 							failonerror="false" />
 					</postProcess>
 				</configuration>
@@ -189,7 +189,7 @@
 						<configuration>
 							<javadoc:aggregate>true</javadoc:aggregate>
 							<breakiterator>true</breakiterator>
-							<header>Spring Datastore SQL</header>
+							<header>Spring Data SQL</header>
 							<source>1.5</source>
 							<quiet>true</quiet>
 							<javadocDirectory>${project.basedir}/src/main/javadoc</javadocDirectory>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="xmltypes">
+  <title>XML Types</title>
+
+  <para>Oracle has some advanced XML Type support built into the database. XML
+  data stored in the database is accessible wia JDBC using some Oracle
+  specific classes.</para>
+
+  <para>The JDBC framework provided with the Spring Framework supports most of
+  this already via SqlTypeValue and SqlReturnType. There is however a need for
+  documentation and examples which are specifically targeted for an Oracle
+  environment so teams can take advantage of this support and have a reference
+  for best practices for the use of these features in an Oracle/Spring
+  environment.</para>
+
+  <section id="xmltypes.1">
+    <title>Dependencies</title>
+
+    <para>To use the Oracle XML support you need to use a couple of jar files
+    available in the <citetitle>Oracle XML Developers Kit</citetitle> download
+    available from Oracle. You need <filename>xdb.jar</filename> and also the
+    <filename>xmlparserv2.jar</filename> since the XMLType depends on this
+    parser library.</para>
+
+    <para>There is optional support for Spring's Object/XML Mapping support.
+    If you use this support then you would also need the Spring Web Services
+    project, version 1.0 or 1.5. The jar files needed from this project are
+    <filename>spring-xml.jar</filename>, <filename>spring-oxm.jar</filename>
+    and <filename>spring-oxm-tiger.jar</filename>.</para>
+
+    <para>All samples in this chapter access a table named "xml_table". Here
+    is the DDL to create this table:</para>
+
+    <programlisting><![CDATA[CREATE TABLE xml_table (
+    id NUMBER(10),
+    xml_text XMLTYPE,
+    PRIMARY KEY (id));
+]]></programlisting>
+  </section>
+
+  <section id="xmltypes.2">
+    <title>Writing XML to an XMLTYPE column</title>
+
+    <para>To write XML data to a table you need to pass in the XML using a
+    custom <classname>SqlTypeValue</classname>. In this implementation you
+    would be responsible for setting the parameter value for the XML column in
+    accordance with the API provided by the database driver.</para>
+
+    <para>For Oracle we provide a database specific implementation of an
+    <classname>SqlXmlValue</classname>, which is an extension of the
+    <classname>SqlTypeValue</classname>, that is easier to use. It works
+    together with an <classname>SqlXmlHandler</classname> and adds an
+    abstraction layer on top of the database specific APIs provided by the
+    database vendors. There is a new <classname>SQLXML</classname> datatype in
+    JDBC 4.0 that provides an abstraction, but so far it is not widely
+    implemented.</para>
+
+    <para>In this example we have an XML value that we pass in as the second
+    parameter. This XML value can be in the form of a
+    <classname>String</classname> or an
+    <classname>org.w3c.dom.Document</classname>. We use an
+    <classname>SqlXmlHandler</classname> instance to gain access to a new
+    instance of the <classname>SqlXmlValue</classname>. For the Oracle support
+    the implementation classes are <classname>OracleXmlHandler</classname> and
+    <classname>OracleXmlTypeValue</classname> respectively.</para>
+
+    <programlistingco>
+      <areaspec>
+        <area coords="4" id="xmltypes.sqlxml.in.1" />
+      </areaspec>
+
+      <programlisting><![CDATA[    simpleJdbcTemplate.update(
+            "INSERT INTO xml_table (id, xml_text) VALUES (?, ?)",
+            id,
+            sqlXmlHandler.newSqlXmlValue(xml));
+]]></programlisting>
+
+      <calloutlist>
+        <callout arearefs="xmltypes.sqlxml.in.1">
+          <para>We instantiate a new <classname>SqlXmlValue</classname> that
+          will handle setting the parameter value for the XML.</para>
+        </callout>
+      </calloutlist>
+    </programlistingco>
+
+    <para>The implementation of the SqlXmlHandler is chosen in the data access
+    configuration file and should be injected into the DAO or Repository
+    class.</para>
+
+    <programlisting><![CDATA[<bean id="sqlXmlHandler" 
+    class="org.springframework.data.sql.jdbc.support.oracle.OracleXmlHandler"/>
+]]></programlisting>
+
+    <para>Oracle's <classname>XMLType</classname> supports passing in an
+    <classname>java.io.InputStream</classname> but since this is not supported
+    by the JDBC 4.0 <classname>SQLXML</classname> datatype you will have to
+    use the Oracle specific <classname>OracleXmlTypeValue</classname>
+    directly.</para>
+
+    <programlisting><![CDATA[    simpleJdbcTemplate.update(
+            "INSERT INTO xml_table (id, xml_text) VALUES (?, ?)",
+            id,
+            new OracleXmlTypeValue(is));
+]]></programlisting>
+  </section>
+
+  <section id="xmltypes.3">
+    <title>Reading XML from an XMLTYPE column</title>
+
+    <para>Running a query against a table with an XMLTYPE column requires a
+    RowMapper that can handle retrieval of the XMLType and the corrsponding
+    XML data. The <classname>OracleXmlHandler</classname> provides several
+    methods that supports easy access to the XML data. It is typically used in
+    a RowMapper.</para>
+
+    <programlistingco>
+      <areaspec>
+        <area coords="5" id="xmltypes.sqlxml.out.1" />
+      </areaspec>
+
+      <programlisting><![CDATA[    String s = simpleJdbcTemplate.queryForObject(
+            "SELECT xml_text FROM xml_table WHERE id = ?",
+            new ParameterizedRowMapper<String>() {
+                public String mapRow(ResultSet rs, int i) throws SQLException {
+                    String s = sqlXmlHandler.getXmlAsString(rs, 1);
+                    return s;
+                }
+            },
+            id);
+]]></programlisting>
+
+      <calloutlist>
+        <callout arearefs="xmltypes.sqlxml.out.1">
+          <para>We use the <classname>OracleXmlHandler</classname> to retreive
+          the XML value as a String.</para>
+        </callout>
+      </calloutlist>
+    </programlistingco>
+
+    <para>The XML data can be retreived as a String, a java.io.InputStream, a
+    java.io.Reader or a javax.xml.transform.Source.</para>
+
+    <note>
+      <para>Only the getXmlAsString method is implemented for the M2
+      release.</para>
+    </note>
+  </section>
+
+  <section id="xmltypes.4">
+    <title>Marshalling an object to an XMLTYPE column</title>
+
+    <para>To map an object to XML and write this XML to a table you first need
+    to use marshalling support available from the Spring Web Services project.
+    Once the object data is marshalled to XML we can write the XML to a column
+    in a database table. The latter part is very similar to the the XML
+    support discussed above. We need to pass in the XML using a custom
+    <classname>SqlTypeValue</classname>. In the object mapping implementation
+    you would be responsible for marshalling the object to XML before setting
+    the parameter value.</para>
+
+    <para>In this example we have an object that needs to be marshalled to
+    XML. We are using a <classname>Marshaller</classname> provided by the
+    Spring Web Services project. The marshaller is typically configured and
+    then injected into the DAO or Repository. Here is an example configuration
+    using the JAXB 2.0 support. In addition to JAXB 2.0, there is also support
+    for JAXB 1.0, Casto, XML Beans, JiBX and XStream.</para>
+
+    <para><programlisting><![CDATA[    <bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound">
+            <list>
+                <value>org.springframework.data.sql.samples.Item</value>
+            </list>
+        </property>
+    </bean>
+]]></programlisting>The JAXB 2.0 class that we are marshalling is a typical
+    javaBean and it uses annotations for the meta data so there is no
+    additional configuration needed.</para>
+
+    <programlisting><![CDATA[package org.springframework.data.sql.samples;
+
+import javax.xml.bind.annotation.*;
+import java.math.BigDecimal;
+
+@XmlRootElement(name = "item")
+@XmlType(propOrder = {"name", "price"})
+public class Item{
+    private Long id = 0L;
+    private String name;
+    private BigDecimal price;
+
+    @XmlAttribute(name="id")
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @XmlElement(name = "item-name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @XmlElement(name = "price")
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+
+    public String toString() {
+        return "[" + id + "] " + name + " " + price;
+    }
+}
+]]></programlisting>
+
+    <para>For Oracle we provide a database specific implementation of an
+    <classname>SqlXmlMarshallingValue</classname>, which is an extension of
+    the <classname>SqlXmlValue</classname>, that is easier to use. It works
+    together with an <classname>SqlXmlObjectMappingHandler</classname> similar
+    to the <classname>SqlXmlHandler</classname> that we used in the previous
+    example. The object to be marshalled is passed in when the new instance of
+    the <classname>SqlXmlValue</classname> is created.</para>
+
+    <para>For our dabase insert we pass in the marshalled value as the second
+    parameter. The first parameter is the id of the object, and this will be
+    use as the primary key for the row. We use an
+    <classname>SqlXmlHandler</classname> instance to gain access to a new
+    instance of the <classname>SqlXmlMappingValue</classname>. For the Oracle
+    support the implementation classes are
+    <classname>OracleXmlObjectMappingHandler</classname> and
+    <classname>OracleXmlMarshallingValue</classname> respectively.</para>
+
+    <programlistingco>
+      <areaspec>
+        <area coords="5" id="xmltypes.mapping.in.1" />
+      </areaspec>
+
+      <programlisting><![CDATA[    simpleJdbcTemplate.update(
+            "INSERT INTO xml_table (id, xml_text) VALUES (?, ?)",
+            item.getId(),
+            sqlXmlObjectMappingHandler
+                    .newMarshallingSqlXmlValue(item));
+]]></programlisting>
+
+      <calloutlist>
+        <callout arearefs="xmltypes.mapping.in.1">
+          <para>We instantiate a new marshalling
+          <classname>SqlXmlValue</classname> that will handle mapping the
+          parameter object to XML using a marshaller.</para>
+        </callout>
+      </calloutlist>
+    </programlistingco>
+
+    <para>The implementation of the SqlXmlObjectMappingHandler is chosen in
+    the data access configuration file and should be injected into the DAO or
+    Repository class.</para>
+
+    <programlisting><![CDATA[<bean id="sqlXmlHandler" 
+    class="org.springframework.data.sql.jdbc.support.oracle.OracleXmlObjectMappingHandler">
+    <property name="marshaller" ref="marshaller"/>
+</bean>
+]]></programlisting>
+  </section>
+
+  <section id="xmltypes.5">
+    <title>Unmarshalling an object from an XMLTYPE column</title>
+
+    <para>Last piece we need is reading the XML from the database and have it
+    unmarshalled to an Item object. We will perform this work in a
+    <classname>RowMapper</classname> together with the
+    <classname>SqlXmlObjectMappingHandler</classname>.</para>
+
+    <programlistingco>
+      <areaspec>
+        <area coords="6" id="xmltypes.mapping.out.1" />
+      </areaspec>
+
+      <programlisting><![CDATA[    Item i = simpleJdbcTemplate.queryForObject(
+            "SELECT xml_text FROM xml_table WHERE id = ?",
+            new ParameterizedRowMapper<Item>() {
+                public Item mapRow(ResultSet rs, int i) throws SQLException {
+                    return (Item) sqlXmlObjectMappingHandler
+                            .getXmlAsObject(rs, 1);
+                }
+            },
+            id);
+]]></programlisting>
+
+      <calloutlist>
+        <callout arearefs="xmltypes.mapping.out.1">
+          <para>We use the <classname>SqlXmlObjectMappingHandler</classname>
+          to retreive the XML value and have it unmarshalled to an Item
+          instance.</para>
+        </callout>
+      </calloutlist>
+    </programlistingco>
+
+    <para>The XML data is unsmarshalled using an
+    <classname>Unmarshaller</classname> which in the JAXB 2.0 case is also
+    implemented by the <classname>Jaxb2Marshaller</classname> class. It must
+    be injected into the <classname>unmarshaller</classname> property of the
+    SqlXmlObjectMappingHandler. Since marshalling and unmarshalling is
+    performed by the same object we pass in the bean named
+    <classname>marshaller</classname> for the
+    <classname>unmarshaller</classname> property. </para>
+
+    <programlisting><![CDATA[<bean id="sqlXmlHandler" 
+    class="org.springframework.data.sql.jdbc.support.oracle.OracleXmlObjectMappingHandler">
+    <property name="unmarshaller" ref="marshaller"/>
+</bean>
+]]></programlisting>
+  </section>
+</chapter>

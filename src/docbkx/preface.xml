@@ -4,6 +4,7 @@
 <preface id="preface">
   <title>Preface</title>
     
-  <para>The Spring Datastore SQL project applies core Spring concepts to the development of solutions using a SQL style data store. 
+  <para>The Spring Data SQL project provides advanced JDBC support for the Oracle database. This support builds upon the support provided by the "spring-jdbc" module in 
+	the Spring Framework project.  
   </para>
 </preface>

@@ -3,7 +3,7 @@
 <book xmlns:xi="http://www.w3.org/2001/XInclude">
 
     <bookinfo>
-        <title>Spring Datastore SQL - Reference Documentation</title>
+        <title>Spring Data SQL - Reference Documentation</title>
         <releaseinfo>&version;</releaseinfo>
 
         <authorgroup>
@@ -28,12 +28,18 @@
     <xi:include href="preface.xml"/>
 
     <part>
-        <title>Reference</title>
+        <title>Advanced Oracle Support Reference</title>
         <partintro>
             <para>
-                This part of the reference documentation details the ...
+                This part of the reference documentation details the extended support provided for the Oracle database.
             </para>
         </partintro>
-        <!-- <xi:include href="oracle.xml"/> -->
+        <xi:include href="oracle-overview.xml"/>
+        <xi:include href="oracle-datasource.xml"/>
+        <xi:include href="oracle-failover.xml"/>
+        <xi:include href="oracle-streamsaq.xml"/>
+        <xi:include href="oracle-xmltypes.xml"/>
+        <xi:include href="oracle-datatypes.xml"/>
+        <xi:include href="oracle-connection.xml"/>
     </part>
 </book>
