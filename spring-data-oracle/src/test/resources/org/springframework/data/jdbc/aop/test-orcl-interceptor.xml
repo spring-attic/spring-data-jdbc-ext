@@ -1,0 +1,28 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:data-sql="http://www.springframnework.org/schema/data-sql"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/aop
+          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	      http://www.springframework.org/schema/context
+	      http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	      http://www.springframework/schema/data-sql
+	      http://www.springframewok/schema/data-sql/spring-data-sql-1.0.xsd">
+
+    <bean id="simpleDataSource" class="org.springframework.data.jdbc.test.OracleDataSourceFactoryBean"/>
+
+    <aop:config>
+        <aop:advisor pointcut="execution(java.sql.Connection javax.sql.DataSource.getConnection(..))" advice-ref="testInterceptor"/>
+    </aop:config>
+
+    <bean id="testInterceptor" class="org.springframework.data.jdbc.aop.ConnectionInterceptor">
+        <property name="connectionPreparer" ref="countingConnectionPreparer"/>
+    </bean>
+
+    <bean id="countingConnectionPreparer" class="org.springframework.data.jdbc.aop.CountingConnectionPreparer"/>
+
+</beans>

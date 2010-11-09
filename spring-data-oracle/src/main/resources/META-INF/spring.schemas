@@ -1,1 +1,1 @@
-http\://www.springframework.org/schema/data-orcl/spring-data-orcl-1.0.xsd=org/springframework/data/sql/config/oracle/spring-data-orcl-1.0.xsd
+http\://www.springframework.org/schema/data-orcl/spring-data-orcl-1.0.xsd=org/springframework/data/jdbc/config/oracle/spring-data-orcl-1.0.xsd

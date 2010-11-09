@@ -1,5 +1,5 @@
-Bundle-SymbolicName: org.springframework.data.sql
-Bundle-Name: Spring Data SQL Commons
+Bundle-SymbolicName: org.springframework.data.jdbc
+Bundle-Name: Spring Data JDBC Extensions Support
 Bundle-Vendor: SpringSource
 Bundle-ManifestVersion: 2
 Import-Package: 
