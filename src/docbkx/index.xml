@@ -3,7 +3,7 @@
 <book xmlns:xi="http://www.w3.org/2001/XInclude">
 
     <bookinfo>
-        <title>Spring Data SQL - Reference Documentation</title>
+        <title>Spring Data JDBC Extensions Support - Reference Documentation</title>
         <releaseinfo>&version;</releaseinfo>
 
         <authorgroup>

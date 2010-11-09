@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.data</groupId>
-	<artifactId>spring-data-sql-parent</artifactId>
-	<name>Spring Data SQL Parent</name>
-	<url>http://www.springsource.org/spring-data/data-sql</url>
+	<artifactId>spring-data-jdbc-parent</artifactId>
+	<name>Spring Data JDBC Extensions Support Parent</name>
+	<url>http://www.springsource.org/spring-data</url>
 	<version>1.0.0.BUILD-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
@@ -37,15 +37,15 @@
 			<distributionManagement>
 				<site>
 					<id>spring-site-staging</id>
-					<url>file:///${java.io.tmpdir}/spring-data/data-sql/docs</url>
+					<url>file:///${java.io.tmpdir}/spring-data/data-jdbc/docs</url>
 				</site>
 				<repository>
 					<id>spring-milestone-staging</id>
-					<url>file:///${java.io.tmpdir}/spring-data/data-sql/milestone</url>
+					<url>file:///${java.io.tmpdir}/spring-data/data-jdbc/milestone</url>
 				</repository>
 				<snapshotRepository>
 					<id>spring-snapshot-staging</id>
-					<url>file:///${java.io.tmpdir}/spring-data/data-sql/snapshot</url>
+					<url>file:///${java.io.tmpdir}/spring-data/data-jdbc/snapshot</url>
 				</snapshotRepository>
 			</distributionManagement>
 		</profile>
@@ -60,7 +60,7 @@
 		</downloadUrl>
 		<site>
 			<id>spring-docs</id>
-			<url>scp://static.springframework.org/var/www/domains/springframework.org/static/htdocs/spring-data/data-sql/docs/${project.version}
+			<url>scp://static.springframework.org/var/www/domains/springframework.org/static/htdocs/spring-data/data-jdbc/docs/${project.version}
 			</url>
 		</site>
 		<repository>
@@ -147,7 +147,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-sql-core</artifactId>
+				<artifactId>spring-data-jdbc-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

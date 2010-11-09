@@ -1,7 +1,7 @@
-SPRING DATA SQL 1.0.0 M1 (? ? 2010)
--------------------------------------------------
+SPRING DATA JDBC EXTENSIONS SUPPORT 1.0.0 M1 (? ? 2010)
+--------------------------------------------------------
 
-Spring Data SQL is released under the terms of the Apache Software License Version 2.0 (see license.txt).
+Spring Data JDBC Extensions Support is released under the terms of the Apache Software License Version 2.0 (see license.txt).
 
 
 DISTRIBUTION CONTENTS:

@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.data</groupId>
-		<artifactId>spring-data-sql-parent</artifactId>
+		<artifactId>spring-data-jdbc-parent</artifactId>
 		<version>1.0.0.BUILD-SNAPSHOT</version>
-		<relativePath>../spring-data-sql-parent/pom.xml</relativePath>
+		<relativePath>../spring-data-jdbc-parent/pom.xml</relativePath>
 	</parent>
-	<artifactId>spring-data-sql-core</artifactId>
+	<artifactId>spring-data-jdbc-core</artifactId>
 	<packaging>jar</packaging>
-	<name>Spring Data SQL Data Support</name>
+	<name>Spring Data JDBC Extensions Support</name>
 	<dependencies>
 
 		<!--  Spring -->

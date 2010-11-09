@@ -1,5 +1,5 @@
-Spring Data SQL 1.0.0 Milestone 1 (?, 2010)
-=============================================
+Spring Data JDBC Extensions Support 1.0.0 Milestone 1 (?, 2010)
+===============================================================
 
 New Features
    * Lot's of good stuff

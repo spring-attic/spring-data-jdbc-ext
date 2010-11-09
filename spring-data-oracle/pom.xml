@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.data</groupId>
-		<artifactId>spring-data-sql-parent</artifactId>
+		<artifactId>spring-data-jdbc-parent</artifactId>
 		<version>1.0.0.BUILD-SNAPSHOT</version>
-		<relativePath>../spring-data-sql-parent/pom.xml</relativePath>
+		<relativePath>../spring-data-jdbc-parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>spring-data-oracle</artifactId>
 	<packaging>jar</packaging>
-	<name>Spring Data Support for Oracle Database</name>
+	<name>Spring Data JDBC Extensions Support for Oracle Database</name>
 	<properties>
 		<aspectj.version>1.6.10.BUILD-SNAPSHOT</aspectj.version>
 	</properties>
@@ -44,7 +44,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-sql-core</artifactId>
+			<artifactId>spring-data-jdbc-core</artifactId>
 		</dependency>
 
 		<!-- Logging -->
