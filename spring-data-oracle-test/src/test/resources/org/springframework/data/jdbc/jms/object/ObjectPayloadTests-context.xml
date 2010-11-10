@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data-orcl"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	      http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+          http://www.springframework.org/schema/tx
+          http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	      http://www.springframework.org/schema/context
+	      http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	      http://www.springframework.org/schema/data-orcl
+	      http://www.springframework.org/schema/data-orcl/spring-data-orcl-1.0.xsd
+          http://www.springframework.org/schema/jms
+          http://www.springframework.org/schema/jms/spring-jms-2.5.xsd">
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory"/>
+	</bean>
+
+	<bean id="messageDelegate" class="org.springframework.data.jdbc.jms.object.MessageDelegate" />
+
+	<jms:listener-container connection-factory="connectionFactory"
+		transaction-manager="transactionManager">
+		<jms:listener destination="jmsadmin.jms_object_queue" ref="messageDelegate"
+			method="handleMessage" />
+	</jms:listener-container>
+
+	<orcl:aq-jms-connection-factory id="connectionFactory"
+		data-source="dataSource" />
+
+	<orcl:pooling-datasource id="dataSource"/>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
+
+    <tx:annotation-driven/>
+
+    <context:annotation-config/>
+
+</beans>

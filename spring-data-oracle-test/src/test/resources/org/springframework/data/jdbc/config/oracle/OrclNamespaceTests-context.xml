@@ -1,0 +1,60 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data-orcl"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	      http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	      http://www.springframework.org/schema/context
+	      http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	      http://www.springframework.org/schema/data-orcl
+	      http://www.springframework.org/schema/data-orcl/spring-data-orcl-1.0.xsd">
+
+    <orcl:pooling-datasource id="simpleDataSource"/>
+    
+    <orcl:pooling-datasource id="propertyFileDataSource"
+        properties-location="classpath:org/springframework/data/jdbc/config/oracle/test-orcl.properties">
+    </orcl:pooling-datasource>
+
+    <orcl:pooling-datasource id="connectionPropertiesDataSource">
+        <orcl:connection-properties>
+            processEscapes=false
+        </orcl:connection-properties>
+    </orcl:pooling-datasource>
+
+    <orcl:pooling-datasource id="cachePropertiesDataSource"
+        connection-caching-enabled="true">
+        <orcl:connection-cache-properties>
+            InitialLimit=7
+        </orcl:connection-cache-properties>
+    </orcl:pooling-datasource>
+
+    <orcl:pooling-datasource id="nonCachingDataSource"
+        connection-caching-enabled="false"/>
+
+    <orcl:pooling-datasource id="nonCachingDataSourceUsingProperties"
+        properties-location="classpath:org/springframework/data/jdbc/config/oracle/test-nocache-orcl.properties">
+    </orcl:pooling-datasource>
+
+    <orcl:pooling-datasource id="proxyDataSource"
+        username="proxyuser" password="proxypassword">
+        <orcl:username-connection-proxy connection-context-provider="usernameProvider"/>
+    </orcl:pooling-datasource>
+
+    <bean id="usernameProvider" 
+    		class="org.springframework.data.jdbc.support.CurrentUsernameProvider">
+    	<property name="userName" value="SCOTT"/>
+	</bean>
+
+    <orcl:pooling-datasource id="proxyDataSource2"
+        username="proxyuser2" password="proxypassword2">
+        <orcl:username-connection-proxy connection-context-provider="usernamePasswordProvider"/>
+    </orcl:pooling-datasource>
+
+    <bean id="usernamePasswordProvider" 
+    		class="org.springframework.data.jdbc.support.CurrentUsernamePasswordProvider">
+    	<property name="userName" value="SCOTT2"/>
+    	<property name="password" value="TIGER2"/>
+    </bean>
+
+</beans>

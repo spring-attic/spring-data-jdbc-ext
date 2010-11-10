@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data-orcl"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	      http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+          http://www.springframework.org/schema/tx
+          http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	      http://www.springframework.org/schema/context
+	      http://www.springframework.org/schema/context/spring-context-2.5.xsd
+	      http://www.springframework.org/schema/data-orcl
+	      http://www.springframework.org/schema/data-orcl/spring-data-orcl-1.0.xsd
+          http://www.springframework.org/schema/jms
+          http://www.springframework.org/schema/jms/spring-jms-2.5.xsd">
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory"/>
+		<property name="messageConverter">
+			<bean class="org.springframework.data.jdbc.jms.support.converter.oracle.XmlMessageConverter">
+				<constructor-arg>
+					<bean class="org.springframework.data.jdbc.support.oracle.StringXmlTypeHandler"/>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="messageDelegate" class="org.springframework.data.jdbc.jms.xml.MessageDelegate" />
+
+	<bean class="org.springframework.data.jdbc.jms.listener.oracle.XmlMessageListenerContainer">
+		<property name="connectionFactory" ref="connectionFactory"/>
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="destinationName" value="jmsadmin.jms_xml_queue"/>
+		<property name="messageListener">
+			<bean id="messageListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+				<property name="delegate" ref="messageDelegate"/>
+				<property name="defaultListenerMethod" value="handleMessage"/>				
+				<property name="messageConverter">
+					<bean class="org.springframework.data.jdbc.jms.support.converter.oracle.XmlMessageConverter">
+						<constructor-arg>
+							<bean class="org.springframework.data.jdbc.support.oracle.DocumentXmlTypeHandler"/>
+						</constructor-arg>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<orcl:aq-jms-connection-factory id="connectionFactory"
+		data-source="dataSource" />
+
+	<orcl:pooling-datasource id="dataSource"/>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
+
+    <tx:annotation-driven/>
+
+    <context:annotation-config/>
+
+</beans>

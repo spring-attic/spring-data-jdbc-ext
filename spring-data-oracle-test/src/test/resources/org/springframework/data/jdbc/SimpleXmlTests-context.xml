@@ -1,0 +1,41 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:orcl="http://www.springframework.org/schema/data-orcl"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	      http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	      http://www.springframework.org/schema/context
+	      http://www.springframework.org/schema/context/spring-context-2.5.xsd
+          http://www.springframework.org/schema/tx
+          http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	      http://www.springframework.org/schema/data-orcl
+	      http://www.springframework.org/schema/data-orcl/spring-data-orcl-1.0.xsd">
+
+    <orcl:pooling-datasource id="dataSource"/>
+    
+    <bean id="sqlXmlObjectMappingHandler" class="org.springframework.data.jdbc.support.oracle.OracleXmlObjectMappingHandler">
+    	<property name="marshaller" ref="jaxb2Marshaller"/>
+    	<property name="unmarshaller" ref="jaxb2Marshaller"/>
+    </bean>
+
+    <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+        <property name="classesToBeBound">
+            <list>
+                <value>org.springframework.data.jdbc.test.xml.Item</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          p:dataSource-ref="dataSource"/>
+
+    <tx:annotation-driven/>
+
+    <context:annotation-config/>
+
+    <context:component-scan base-package="org.springframework.data.jdbc.test.xml"/>
+
+</beans>
