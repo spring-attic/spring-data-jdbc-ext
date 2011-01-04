@@ -43,7 +43,7 @@ public class RacFailoverInterceptorBeanDefinitionParser extends AbstractSingleBe
             "org.springframework.data.jdbc.retry.oracle.RacRetryOperationsInterceptor";
 
     private static final String RETRY_TEMPLATE_CLASS =
-            "org.springframework.commons.retry.support.RetryTemplate";
+            "org.springframework.retry.support.RetryTemplate";
 
     private static final String RAC_FAILOVER_RETRY_POLICY_CLASS =
             "org.springframework.data.jdbc.retry.oracle.RacFailoverRetryPolicy";

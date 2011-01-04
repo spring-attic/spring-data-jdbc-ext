@@ -6,7 +6,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.commons.retry.ExhaustedRetryException;
+import org.springframework.retry.ExhaustedRetryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.annotation.ExpectedException;

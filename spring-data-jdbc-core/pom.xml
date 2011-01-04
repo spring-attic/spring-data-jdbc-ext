@@ -26,10 +26,10 @@
 			<artifactId>spring-tx</artifactId>
 		</dependency>
 
-		<!--  Spring Commons -->
+		<!--  Spring Retry -->
 		<dependency>
-			<groupId>org.springframework.commons</groupId>
-			<artifactId>spring-commons-retry</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-retry</artifactId>
 			<version>1.0.0.BUILD-SNAPSHOT</version>
 		</dependency>
 

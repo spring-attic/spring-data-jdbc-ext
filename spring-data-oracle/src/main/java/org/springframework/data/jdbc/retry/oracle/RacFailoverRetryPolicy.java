@@ -16,7 +16,7 @@
 
 package org.springframework.data.jdbc.retry.oracle;
 
-import org.springframework.commons.retry.RetryContext;
+import org.springframework.retry.RetryContext;
 import org.springframework.data.jdbc.retry.JdbcRetryPolicy;
 
 /**

@@ -74,7 +74,7 @@
             max-number-of-retries="22"
             back-off-policy="backOffPolicy"/>
 
-    <bean id="backOffPolicy" class="org.springframework.commons.retry.backoff.NoBackOffPolicy"/>
+    <bean id="backOffPolicy" class="org.springframework.retry.backoff.NoBackOffPolicy"/>
 
     <orcl:aq-jms-connection-factory id="aqConnectionFactory"
         use-local-data-source-transaction="true"

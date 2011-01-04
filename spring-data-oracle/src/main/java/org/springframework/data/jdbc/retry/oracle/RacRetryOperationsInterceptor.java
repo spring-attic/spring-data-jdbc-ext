@@ -18,7 +18,7 @@ package org.springframework.data.jdbc.retry.oracle;
 
 import org.aopalliance.intercept.MethodInvocation;
 
-import org.springframework.commons.retry.interceptor.RetryOperationsInterceptor;
+import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 import org.springframework.data.jdbc.retry.JdbcRetryException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 

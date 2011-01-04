@@ -16,8 +16,8 @@
 
 package org.springframework.data.jdbc.retry;
 
-import org.springframework.commons.retry.policy.ExceptionClassifierRetryPolicy;
-import org.springframework.commons.retry.RetryContext;
+import org.springframework.retry.policy.ExceptionClassifierRetryPolicy;
+import org.springframework.retry.RetryContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionSystemException;

@@ -193,7 +193,7 @@
          <xsd:annotation>
                <xsd:appinfo>
                     <tool:annotation kind="ref">
-                         <tool:expected-type type="org.springframework.commons.retry.backoff.BackOffPolicy"/>
+                         <tool:expected-type type="org.springframework.retry.backoff.BackOffPolicy"/>
                     </tool:annotation>
                </xsd:appinfo>
          </xsd:annotation>
