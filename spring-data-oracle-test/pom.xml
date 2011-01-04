@@ -106,42 +106,43 @@
 		<!-- External libraries -->
 		<dependency>
 			<groupId>javax.jms</groupId>
-			<artifactId>com.springsource.javax.jms</artifactId>
-			<version>1.1.0</version>
+			<artifactId>jms-api</artifactId>
+			<version>1.1-rev-1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.jdbc</groupId>
-			<artifactId>com.springsource.oracle.jdbc</artifactId>
+			<artifactId>oracle.jdbc</artifactId>
 			<version>10.2.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.aq</groupId>
-			<artifactId>com.springsource.oracle.aq</artifactId>
+			<artifactId>oracle.aq</artifactId>
 			<version>10.1.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle.xdb</groupId>
-			<artifactId>com.springsource.oracle.xdb</artifactId>
+			<artifactId>oracle.xdb</artifactId>
 			<version>10.2.0.2</version>
 		</dependency>
 		<dependency>
-			<groupId>net.sourceforge.cglib</groupId>
-			<artifactId>com.springsource.net.sf.cglib</artifactId>
-			<version>2.2.0</version>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.transaction</groupId>
-			<artifactId>com.springsource.javax.transaction</artifactId>
-			<version>1.1.0</version>
+			<artifactId>transaction-api</artifactId>
+			<version>1.1-rev-1</version>
 		</dependency>
 
 	</dependencies>
 
 	<repositories>
 		<repository>
-			<id>com.springsource.repository.bundles.external</id>
-			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
-			<url>http://repository.springsource.com/maven/bundles/external</url>
+			<id>java.net-glassfish</id>
+			<name>Java.net Repository for Glassfish</name>
+			<url>http://download.java.net/maven/glassfish/</url>
+			<layout>default</layout>
 		</repository>
  	</repositories>
 
