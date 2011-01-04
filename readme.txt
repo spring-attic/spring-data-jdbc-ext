@@ -26,7 +26,7 @@ Download from Oracle Technology Network (registration is required) and then inst
 
 3) Oracle XML Developers Kit version 10.2.0.2 -- com.oracle.xdb:oracle.xdb:jar:10.2.0.2 and com.oracle.xml:oracle.xml:jar:10.2.0.2
 
-  Download from: http://www.oracle.com/technetwork/database/features/xmldb/java-utilsoft-087831.html
+  Download from: http://download.oracle.com/otn/utilities_drivers/xml/java/xdk_java_10.2.0.2.0_LINUX.tar.gz
 
   Extract the archive - we need:
     lib/xdb.jar
