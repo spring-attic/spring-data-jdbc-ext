@@ -62,20 +62,20 @@
       <programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:orcl="http://www.springsource.com/schema/orcl"
+       xmlns:orcl="http://www.springsource.com/schema/data/orcl"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.0.xsd
-       http://www.springsource.com/schema/orcl
-       http://www.springsource.com/schema/orcl/spring-data-orcl-1.0.xsd"&gt;
+       http://www.springsource.com/schema/data/orcl
+       http://www.springsource.com/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;
 
     <emphasis role="bold">&lt;orcl:pooling-datasource id="dataSource" 
         properties-location="classpath:orcl.properties"&gt;
         &lt;orcl:username-connection-proxy connection-context-provider="usernameProvider"/&gt;
     &lt;/orcl:pooling-datasource&gt;
 
-    &lt;bean id="usernameProvider" class="org.springframework.data.sql.test.CurrentUsernameProvider"/&gt;</emphasis>
+    &lt;bean id="usernameProvider" class="org.springframework.data.jdbc.test.CurrentUsernameProvider"/&gt;</emphasis>
 
 &lt;/beans&gt;</programlisting>
 
@@ -135,9 +135,9 @@ password=proxypasswd</programlisting></para>
         <area coords="14" id="conn.prep.call" />
       </areaspec>
 
-      <programlisting>package org.springframework.data.sql.samples;
+      <programlisting>package org.springframework.data.jdbc.samples;
 
-import org.springframework.data.sql.support.ConnectionPreparer;
+import org.springframework.data.jdbc.support.ConnectionPreparer;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -200,12 +200,12 @@ public class ClientIdentifierConnectionPreparer implements ConnectionPreparer {
     &lt;/aop:config&gt;
 
     &lt;bean id="testInterceptor" 
-          class="org.springframework.data.sql.aop.oracle.ConnectionInterceptor"&gt;
+          class="org.springframework.data.jdbc.aop.ConnectionInterceptor"&gt;
         &lt;property name="connectionPreparer" ref="connectionPreparer"/&gt;
     &lt;/bean&gt;
 
     &lt;bean id="connectionPreparer" 
-        class="org.springframework.data.sql.samples.ClientIdentifierConnectionPreparer"/&gt;
+        class="org.springframework.data.jdbc.samples.ClientIdentifierConnectionPreparer"/&gt;
 </programlisting>
 
       <calloutlist>

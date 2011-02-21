@@ -88,7 +88,7 @@
     class.</para>
 
     <programlisting><![CDATA[<bean id="sqlXmlHandler" 
-    class="org.springframework.data.sql.jdbc.support.oracle.OracleXmlHandler"/>
+    class="org.springframework.data.jdbc.support.oracle.OracleXmlHandler"/>
 ]]></programlisting>
 
     <para>Oracle's <classname>XMLType</classname> supports passing in an
@@ -168,7 +168,7 @@
     <para><programlisting><![CDATA[    <bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="classesToBeBound">
             <list>
-                <value>org.springframework.data.sql.samples.Item</value>
+                <value>org.springframework.data.jdbc.samples.Item</value>
             </list>
         </property>
     </bean>
@@ -176,7 +176,7 @@
     javaBean and it uses annotations for the meta data so there is no
     additional configuration needed.</para>
 
-    <programlisting><![CDATA[package org.springframework.data.sql.samples;
+    <programlisting><![CDATA[package org.springframework.data.jdbc.samples;
 
 import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
@@ -265,7 +265,7 @@ public class Item{
     Repository class.</para>
 
     <programlisting><![CDATA[<bean id="sqlXmlHandler" 
-    class="org.springframework.data.sql.jdbc.support.oracle.OracleXmlObjectMappingHandler">
+    class="org.springframework.data.jdbc.support.oracle.OracleXmlObjectMappingHandler">
     <property name="marshaller" ref="marshaller"/>
 </bean>
 ]]></programlisting>
@@ -314,7 +314,7 @@ public class Item{
     <classname>unmarshaller</classname> property. </para>
 
     <programlisting><![CDATA[<bean id="sqlXmlHandler" 
-    class="org.springframework.data.sql.jdbc.support.oracle.OracleXmlObjectMappingHandler">
+    class="org.springframework.data.jdbc.support.oracle.OracleXmlObjectMappingHandler">
     <property name="unmarshaller" ref="marshaller"/>
 </bean>
 ]]></programlisting>

@@ -97,7 +97,7 @@ END;</programlisting>
     variables we defined for the type in the database. We also have setters
     and getters for all fields.</para>
 
-    <programlisting>package org.springframework.data.sql.samples;
+    <programlisting>package org.springframework.data.jdbc.samples;
 
 import java.sql.SQLData;
 import java.sql.SQLException;
@@ -162,7 +162,7 @@ public class Actor {
           <area coords="20" id="datatypes.sqldata.writesql" />
         </areaspec>
 
-        <programlisting>package org.springframework.data.sql.samples;
+        <programlisting>package org.springframework.data.jdbc.samples;
 
 import java.sql.SQLData;
 import java.sql.SQLException;

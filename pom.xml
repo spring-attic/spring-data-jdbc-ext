@@ -33,7 +33,7 @@
 			<name>Apache License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 			<comments>
-			Copyright 2010 the original author or authors.
+			Copyright 2010-2011 the original author or authors.
 			 
 			Licensed under the Apache License, Version 2.0 (the "License");
 			you may not use this file except in compliance with the License.
@@ -125,7 +125,7 @@
 							<goal>generate-html</goal>
 							<goal>generate-pdf</goal>
 						</goals>
-						<phase>package</phase>
+						<phase>pre-site</phase>
 					</execution>
 				</executions>
 				<dependencies>
@@ -179,31 +179,22 @@
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.5</version>
-				<executions>
-					<execution>
-						<id>aggregate</id>
-						<goals>
-							<goal>aggregate</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<javadoc:aggregate>true</javadoc:aggregate>
-							<breakiterator>true</breakiterator>
-							<header>Spring Data JDBC Extensions Support</header>
-							<source>1.5</source>
-							<quiet>true</quiet>
-							<javadocDirectory>${project.basedir}/src/main/javadoc</javadocDirectory>
-							<overview>${project.basedir}/src/main/javadoc/overview.html</overview>
-							<stylesheetfile>${project.basedir}/src/main/javadoc/spring-javadoc.css</stylesheetfile>
-							<!-- copies doc-files subdirectory which contains image resources -->
-							<docfilessubdirs>true</docfilessubdirs>
-							<links>
-								<link>http://static.springframework.org/spring/docs/3.0.x/javadoc-api</link>
-								<link>http://java.sun.com/javase/6/docs/api</link>
-							</links>
-						</configuration>
-					</execution>
-				</executions>
+				<configuration>
+					<javadoc:aggregate>true</javadoc:aggregate>
+					<breakiterator>true</breakiterator>
+					<header>Spring Data JDBC Extensions Support</header>
+					<source>1.5</source>
+					<quiet>true</quiet>
+					<javadocDirectory>${project.basedir}/src/main/javadoc</javadocDirectory>
+					<overview>${project.basedir}/src/main/javadoc/overview.html</overview>
+					<stylesheetfile>${project.basedir}/src/main/javadoc/spring-javadoc.css</stylesheetfile>
+					<!-- copies doc-files subdirectory which contains image resources -->
+					<docfilessubdirs>true</docfilessubdirs>
+					<links>
+						<link>http://static.springframework.org/spring/docs/3.0.x/javadoc-api</link>
+						<link>http://java.sun.com/javase/6/docs/api</link>
+					</links>
+				</configuration>
 			</plugin>
 			<plugin><!--
 				run `mvn package assembly:assembly` to trigger assembly creation.

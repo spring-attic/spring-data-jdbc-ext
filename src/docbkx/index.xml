@@ -3,7 +3,7 @@
 <book xmlns:xi="http://www.w3.org/2001/XInclude">
 
     <bookinfo>
-        <title>Spring Data JDBC Extensions Support - Reference Documentation</title>
+        <title>Spring Data JDBC Extensions - Reference Documentation</title>
         <releaseinfo>&version;</releaseinfo>
 
         <authorgroup>
@@ -28,10 +28,10 @@
     <xi:include href="preface.xml"/>
 
     <part>
-        <title>Advanced Oracle Support Reference</title>
+        <title>JDBC Extensions for the Oracle Database Reference</title>
         <partintro>
             <para>
-                This part of the reference documentation details the extended support provided for the Oracle database.
+                This part of the reference documentation details the extended JDBC support provided for the Oracle database.
             </para>
         </partintro>
         <xi:include href="oracle-overview.xml"/>

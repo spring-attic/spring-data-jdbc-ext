@@ -1,1 +1,1 @@
-http\://www.springframework.org/schema/data-orcl=org.springframework.data.jdbc.config.oracle.DataOrclNamespaceHandler
+http\://www.springframework.org/schema/data/orcl=org.springframework.data.jdbc.config.oracle.DataOrclNamespaceHandler
