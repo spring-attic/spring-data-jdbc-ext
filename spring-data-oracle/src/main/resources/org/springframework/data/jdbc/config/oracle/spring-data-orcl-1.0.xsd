@@ -184,6 +184,23 @@
                              </xsd:appinfo>
                          </xsd:annotation>
                      </xsd:attribute>
+                     <xsd:attribute name="connection-factory-type" default="CONNECTION">
+                         <xsd:annotation>
+                             <xsd:documentation><![CDATA[
+              Specifies the type of connection factory that should be created. Valid types are:
+               1. Connection (this is the DEFAULT)
+               2. QueueConnection
+               3. TopicConnection
+                             ]]></xsd:documentation>
+                         </xsd:annotation>
+                         <xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="CONNECTION"/>
+								<xsd:enumeration value="QUEUE_CONNECTION"/>
+								<xsd:enumeration value="TOPIC_CONNECTION"/>
+							</xsd:restriction>
+						</xsd:simpleType>
+                     </xsd:attribute>
                  </xsd:extension>
              </xsd:complexContent>
          </xsd:complexType>

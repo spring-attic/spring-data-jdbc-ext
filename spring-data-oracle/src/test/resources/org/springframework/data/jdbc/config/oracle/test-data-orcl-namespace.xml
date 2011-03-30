@@ -81,6 +81,16 @@
         native-jdbc-extractor="nativeJdbcExtractor"
         data-source="simpleDataSource" />
 
+    <orcl:aq-jms-connection-factory id="aqQueueConnectionFactory"
+        use-local-data-source-transaction="true"
+        connection-factory-type="QUEUE_CONNECTION"
+        data-source="simpleDataSource" />
+
+    <orcl:aq-jms-connection-factory id="aqTopicConnectionFactory"
+        use-local-data-source-transaction="true"
+        connection-factory-type="TOPIC_CONNECTION"
+        data-source="simpleDataSource" />
+
     <bean id="nativeJdbcExtractor"
           class="org.springframework.jdbc.support.nativejdbc.Jdbc4NativeJdbcExtractor"/>
 

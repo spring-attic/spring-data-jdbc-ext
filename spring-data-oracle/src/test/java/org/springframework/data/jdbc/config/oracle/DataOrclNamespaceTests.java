@@ -98,4 +98,18 @@ public class DataOrclNamespaceTests extends TestCase {
                 "oracle.jms.AQjmsConnectionFactory",
                 bean.getClass().getName());
     }
+
+    public void testAqConnectionFactoryDefinitionWithQueueType() throws Exception {
+        Object bean = this.beanFactory.getBean("aqQueueConnectionFactory");
+        assertEquals("not the correct class",
+                "oracle.jms.AQjmsQueueConnectionFactory",
+                bean.getClass().getName());
+    }
+
+    public void testAqConnectionFactoryDefinitionWithTopicType() throws Exception {
+        Object bean = this.beanFactory.getBean("aqTopicConnectionFactory");
+        assertEquals("not the correct class",
+                "oracle.jms.AQjmsTopicConnectionFactory",
+                bean.getClass().getName());
+    }
 }

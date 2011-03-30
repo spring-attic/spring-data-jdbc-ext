@@ -353,6 +353,40 @@
         </callout>
       </calloutlist>
     </programlistingco>
+
+    <para>For some use cases the default plain ConnectionFactory does not work and
+	you need to explicitly use a QueueConnectionFactory or a TopicConnectionFactory.
+	To support this requirement it is possible to specify this using the
+	<classname>connection-factory-type</classname> attribute. The default is 
+	<classname>CONNECTION</classname> but you can specify <classname>QUEUE_CONNECTION</classname>
+	or <classname>TOPIC_CONNECTION</classname> instead. Here is an example for specifying the 
+	connection factory type.</para>
+
+    <programlistingco>
+      <areaspec>
+        <area coords="3" id="streamsaq.config.factoryType" />
+      </areaspec>
+
+      <programlisting><![CDATA[    <orcl:aq-jms-connection-factory id="connectionFactory"
+        use-local-data-source-transaction="true"
+        connection-factory-type="QUEUE_CONNECTION"
+        data-source="dataSource" />
+
+    <bean id="dbcpDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+]]></programlisting>
+
+      <calloutlist>
+        <callout arearefs="streamsaq.config.factoryType">
+          <para>Here we specify the type of connection factory to be
+	      used.</para>
+        </callout>
+      </calloutlist>
+    </programlistingco>
   </section>
 
   <section id="streamsaq.xmltype_config">

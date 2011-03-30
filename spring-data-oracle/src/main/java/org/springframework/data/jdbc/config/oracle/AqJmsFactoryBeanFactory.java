@@ -47,20 +47,32 @@ import java.lang.reflect.InvocationTargetException;
 public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
 
     protected static final Log logger = LogFactory.getLog(AqJmsFactoryBeanFactory.class);
+    
+    public enum ConnectionFactoryType {
+    	CONNECTION,
+    	QUEUE_CONNECTION,
+    	TOPIC_CONNECTION,
+    }
 
     private ConnectionFactory aqConnectionFactory;
 
     private boolean coordinateWithDataSourceTransactions = false;
 
     private DataSource dataSource;
+    
+    private ConnectionFactoryType connectionFactoryType = ConnectionFactoryType.CONNECTION;
 
     private NativeJdbcExtractor nativeJdbcExtractor = new SimpleNativeJdbcExtractor();
     
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+    
+	public void setConnectionFactoryType(ConnectionFactoryType connectionFactoryType) {
+		this.connectionFactoryType = connectionFactoryType;
+	}
 
-    public void setCoordinateWithDataSourceTransactions(boolean coordinateWithDataSourceTransactions) {
+	public void setCoordinateWithDataSourceTransactions(boolean coordinateWithDataSourceTransactions) {
         this.coordinateWithDataSourceTransactions = coordinateWithDataSourceTransactions;
     }
 
@@ -80,7 +92,18 @@ public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
             dataSourceToUse = dataSource;
         }
         if (aqConnectionFactory == null) {
-            aqConnectionFactory = AQjmsFactory.getConnectionFactory(dataSourceToUse);
+        	if (this.connectionFactoryType == ConnectionFactoryType.CONNECTION) {
+                logger.debug("Using a 'ConnectionFactory' as the AQ Connection Factory");
+                aqConnectionFactory = AQjmsFactory.getConnectionFactory(dataSourceToUse);
+        	}
+        	if (this.connectionFactoryType == ConnectionFactoryType.QUEUE_CONNECTION) {
+                logger.debug("Using a 'QueueConnectionFactory' as the AQ Connection Factory");
+                aqConnectionFactory = AQjmsFactory.getQueueConnectionFactory(dataSourceToUse);
+        	}
+        	if (this.connectionFactoryType == ConnectionFactoryType.TOPIC_CONNECTION) {
+                logger.debug("Using a 'TopicConnectionFactory' as the AQ Connection Factory");
+                aqConnectionFactory = AQjmsFactory.getTopicConnectionFactory(dataSourceToUse);
+        	}
         }
         return aqConnectionFactory;
     }

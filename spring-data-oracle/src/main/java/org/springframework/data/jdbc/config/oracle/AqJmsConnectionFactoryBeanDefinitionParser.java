@@ -44,6 +44,8 @@ public class AqJmsConnectionFactoryBeanDefinitionParser extends AbstractSingleBe
 
     private static final String USE_LOCAL_DATA_SOURCE_TX_ATTRIBUTE = "use-local-data-source-transaction";
 
+    private static final String CONNECTION_FACTORY_TYPE_ATTRIBUTE = "connection-factory-type";
+
     private static final String NATIVE_JDBC_EXTRACTOR_ATTRIBUTE = "native-jdbc-extractor";
 
     protected final Log logger = LogFactory.getLog(getClass());
@@ -69,6 +71,8 @@ public class AqJmsConnectionFactoryBeanDefinitionParser extends AbstractSingleBe
 
         String useLocalDataSourceTx = element.getAttribute(USE_LOCAL_DATA_SOURCE_TX_ATTRIBUTE);
 
+        String connectionFactoryTypeRef = element.getAttribute(CONNECTION_FACTORY_TYPE_ATTRIBUTE);
+
         String nativeJdbcExtractorRef = element.getAttribute(NATIVE_JDBC_EXTRACTOR_ATTRIBUTE);
 
         builder.getRawBeanDefinition().setBeanClassName(FACTORY_BEAN_CLASS);
@@ -85,6 +89,10 @@ public class AqJmsConnectionFactoryBeanDefinitionParser extends AbstractSingleBe
                         "The 'use-local-data-source-transaction' attribute should be \"true\" or \"false\"; \"" +
                                 useLocalDataSourceTx + "\" is an invalid value", element);
             }
+        }
+
+        if (StringUtils.hasText(connectionFactoryTypeRef)) {
+            builder.addPropertyValue("connectionFactoryType", connectionFactoryTypeRef);
         }
 
         if (StringUtils.hasText(nativeJdbcExtractorRef)) {
