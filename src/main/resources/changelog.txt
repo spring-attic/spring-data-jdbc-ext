@@ -1,5 +1,28 @@
-Spring Data JDBC Extensions Support 1.0.0 Milestone 1 (?, 2010)
-===============================================================
+Spring Data JDBC Extensions Support Changelog
+=============================================
 
-New Features
-   * Lot's of good stuff
+Changes in version 1.0.0.M1 (April 1, 2011)
+-------------------------------------------
+
+General
+* Ported all current features from SpringSource Advance Pack for Oracle Database v 1.1.0
+  - RAC "Fast Connection Failover"
+    The RAC "Fast Connection Failover" provides the ability to have a Spring application 
+    transparently failover when a database node fails.
+  - Streams AQ (Advanced Queueing)
+    The AQ support provides the option of using a single local transaction manager for both 
+    database and message access without resorting to expensive distributed 2-phase commit 
+    transaction management.
+  - XML Types
+    Custom classes, examples and documentation on how to use Oracle JDBC extensions for 
+    their native XML Type.
+  - Advanced Data Types
+    Custom classes, examples and documentation on how to use Oracle JDBC extensions for their 
+    advanced data types like STRUCT and ARRAY.
+  - Custom DataSource Connection Preparer
+    This feature provides an API for customizing the connection environment with Oracle specific 
+    session settings etc.
+
+Streams AQ
+* DATAJDBC-4 added an attribute to specify 'connection-factory-type' for <aq-jms-connection-factory> entries
+  

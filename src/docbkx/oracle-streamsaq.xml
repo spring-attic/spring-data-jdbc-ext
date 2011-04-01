@@ -118,13 +118,13 @@
       <programlisting>&lt;beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       <emphasis role="bold">xmlns:orcl="http://www.springsource.com/schema/data/orcl"</emphasis>
+       <emphasis role="bold">xmlns:orcl="http://www.springframework.org/schema/data/orcl"</emphasis>
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.0.xsd
-       <emphasis role="bold">http://www.springsource.com/schema/data/orcl
-       http://www.springsource.com/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;</emphasis>
+       <emphasis role="bold">http://www.springframework.org/schema/data/orcl
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;</emphasis>
 
  
     <emphasis role="bold">&lt;orcl:aq-jms-connection-factory id="connectionFactory" 
@@ -185,7 +185,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
-       <emphasis role="bold">xmlns:orcl="http://www.springsource.com/schema/data/orcl"
+       <emphasis role="bold">xmlns:orcl="http://www.springframework.org/schema/data/orcl"
        xmlns:jms="http://www.springframework.org/schema/jms"</emphasis>
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -193,8 +193,8 @@
        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.0.xsd
-       <emphasis role="bold">http://www.springsource.com/schema/data/orcl
-       http://www.springsource.com/schema/data/orcl/spring-data-orcl-1.0.xsd
+       <emphasis role="bold">http://www.springframework.org/schema/data/orcl
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd
        http://www.springframework.org/schema/jms
        http://www.springframework.org/schema/jms/spring-jms-3.0.xsd</emphasis>"&gt;
 

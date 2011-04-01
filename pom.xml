@@ -5,7 +5,7 @@
 	<groupId>org.springframework.data</groupId>
 	<artifactId>spring-data-jdbc-dist</artifactId>
 	<name>Spring Data JDBC Extensions Support Distribution</name>
-	<version>1.0.0.BUILD-SNAPSHOT</version>
+	<version>1.0.0.M1</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>spring-data-jdbc-parent</module>
@@ -55,8 +55,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- dist.* properties are used by the antrun tasks below -->
 		<dist.id>spring-data-jdbc</dist.id>
-		<dist.name>Spring Data JDBC Extensions Support</dist.name>
-		<dist.key>DATASQL</dist.key>
+		<dist.name>Spring Data</dist.name>
+		<dist.key>DATAJDBC</dist.key>
 		<dist.version>${project.version}</dist.version>
 		<dist.releaseType>snapshot</dist.releaseType>
 		<dist.finalName>${dist.id}-${dist.version}</dist.finalName>
@@ -111,7 +111,7 @@
 				<!-- available only in the springframework maven repository. see <repositories> section below -->
 				<groupId>org.springframework.build.aws</groupId>
 				<artifactId>org.springframework.build.aws.maven</artifactId>
-				<version>2.0.0.RELEASE</version>
+				<version>3.1.0.RELEASE</version>
 			</extension>
 		</extensions>
 		<plugins>

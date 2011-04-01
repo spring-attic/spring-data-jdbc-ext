@@ -4,14 +4,14 @@
 	<parent>
 		<groupId>org.springframework.data</groupId>
 		<artifactId>spring-data-jdbc-parent</artifactId>
-		<version>1.0.0.BUILD-SNAPSHOT</version>
+		<version>1.0.0.M1</version>
 		<relativePath>../spring-data-jdbc-parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>spring-data-oracle-test</artifactId>
 	<packaging>jar</packaging>
 	<name>Spring Data Support for Oracle Database Integration Tests</name>
 	<properties>
-		<aspectj.version>1.6.10.BUILD-SNAPSHOT</aspectj.version>
+		<aspectj.version>1.6.11.RELEASE</aspectj.version>
 	</properties>
 	<dependencies>
 
