@@ -1,6 +1,7 @@
 package org.springframework.data.jdbc.query;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
+import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.jdbc.support.MetaDataAccessException;
 
 import com.mysema.query.sql.DerbyTemplates;
@@ -104,7 +106,10 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 				SQLQuery liveQuery = sqlQuery.clone(con);
 				RowMapperResultSetExtractor<T> extractor = 
 					new RowMapperResultSetExtractor<T>(rowMapper);
-				return extractor.extractData(liveQuery.getResults(projection));
+				ResultSet resultSet = liveQuery.getResults(projection);
+				List<T> list = extractor.extractData(resultSet);
+				JdbcUtils.closeResultSet(resultSet);
+				return list;
 			}});
 		return results;
 	}
