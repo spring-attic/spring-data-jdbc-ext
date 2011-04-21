@@ -137,32 +137,32 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 	}
 	
 	public long insert(final RelationalPath<?> entity, final SqlInsertCallback callBack) {
-		Long rowsAffected = jdbcTemplate.execute(new ConnectionCallback<Long>() {
+		long rowsAffected = jdbcTemplate.execute(new ConnectionCallback<Long>() {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLInsertClause sqlClause = new SQLInsertClause(con, dialect, entity);
-				return Long.valueOf(callBack.doInSqlInsertClause(sqlClause));
+				return callBack.doInSqlInsertClause(sqlClause);
 			}});
-		return rowsAffected.longValue();
+		return rowsAffected;
 	}
 
 	public long update(final RelationalPath<?> entity, final SqlUpdateCallback callBack) {
-		Long rowsAffected = jdbcTemplate.execute(new ConnectionCallback<Long>() {
+		long rowsAffected = jdbcTemplate.execute(new ConnectionCallback<Long>() {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLUpdateClause sqlClause = new SQLUpdateClause(con, dialect, entity);
-				return Long.valueOf(callBack.doInSqlUpdateClause(sqlClause));
+				return callBack.doInSqlUpdateClause(sqlClause);
 			}});
-		return rowsAffected.longValue();
+		return rowsAffected;
 	}
 
 	public long delete(final RelationalPath<?> entity, final SqlDeleteCallback callBack) {
-		Long rowsAffected = jdbcTemplate.execute(new ConnectionCallback<Long>() {
+		long rowsAffected = jdbcTemplate.execute(new ConnectionCallback<Long>() {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLDeleteClause sqlClause = new SQLDeleteClause(con, dialect, entity);
-				return Long.valueOf(callBack.doInSqlDeleteClause(sqlClause));
+				return callBack.doInSqlDeleteClause(sqlClause);
 			}});
-		return rowsAffected.longValue();
+		return rowsAffected;
 	}
 }
