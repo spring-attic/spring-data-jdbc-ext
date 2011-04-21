@@ -88,8 +88,8 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		return new SQLQueryImpl(this.dialect);
 	}
 	
-	public <T> T queryForObject(final SQLQuery sqlQuery, final RowMapper<T> rowMapper, final Expression<?>... cols) {
-		List<T> results = query(sqlQuery, rowMapper, cols);
+	public <T> T queryForObject(final SQLQuery sqlQuery, final RowMapper<T> rowMapper, final Expression<?>... projection) {
+		List<T> results = query(sqlQuery, rowMapper, projection);
 		if (results.size() == 0) {
 			return null;
 		}
