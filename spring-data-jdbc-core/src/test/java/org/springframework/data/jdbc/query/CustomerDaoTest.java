@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.query.domain.Customer;
-import org.springframework.data.jdbc.query.domain.CustomerQ;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,7 @@ public class CustomerDaoTest {
 	
 	@Test
 	public void testFindAllWithQBean() {
-		List<CustomerQ> customers = customerDao.findAllQ();
+		List<Customer> customers = customerDao.findAll();
 		Assert.assertEquals(2, customers.size());
 	}
 	
@@ -41,8 +40,8 @@ public class CustomerDaoTest {
 
 	@Test
 	public void testFindOneWithQBean() {
-		CustomerQ c = customerDao.findByIdQ(1L);
-		Assert.assertEquals("Mark", c.getFirst_name());
+		Customer c = customerDao.findById(1L);
+		Assert.assertEquals("Mark", c.getFirstName());
 	}
 
 	@Transactional
