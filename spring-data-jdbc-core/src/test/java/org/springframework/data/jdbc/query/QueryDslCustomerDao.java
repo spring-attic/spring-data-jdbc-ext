@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.query.domain.Customer;
 import org.springframework.data.jdbc.query.generated.QCustomer;
+import org.springframework.data.jdbc.query.generated.QCustomerNames;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,9 +90,10 @@ public class QueryDslCustomerDao implements CustomerDao {
 
 	@Override
 	public long countDistinctForLastName(String name) {
+		QCustomerNames qCustomerNames = QCustomerNames.customerNames;
 		SQLQuery sqlQuery = template.newSqlQuery()
-		.from(qCustomer)
-		.where(qCustomer.lastName.eq(name));
+		.from(qCustomerNames)
+		.where(qCustomerNames.name.like(name + "%"));
 		return template.countDistinct(sqlQuery);
 	}
 

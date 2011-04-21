@@ -91,7 +91,10 @@ public class CustomerDaoTest {
 		c.setFirstName("Mark2");
 		c.setLastName("Pollack");
 		customerDao.add(c);
-		long count = customerDao.countDistinctForLastName(c.getLastName());
+		c.setFirstName("Jack");
+		c.setLastName("Pollok");
+		customerDao.add(c);
+		long count = customerDao.countDistinctForLastName("Poll");
 		Assert.assertEquals(2, count);
 	}
 
