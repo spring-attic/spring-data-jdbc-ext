@@ -75,4 +75,36 @@ public class CustomerDaoTest {
 		Assert.assertEquals(1, customers.size());
 	}
 	
+	@Test
+	public void testCountCustomer() {
+		Customer c = new Customer();
+		c.setFirstName("Oliver");
+		c.setLastName("Gierke");
+		customerDao.add(c);
+		long count = customerDao.countCustomers();
+		Assert.assertEquals(3, count);
+	}
+
+	@Test
+	public void testCountDistinctCustomer() {
+		Customer c = new Customer();
+		c.setFirstName("Mark2");
+		c.setLastName("Pollack");
+		customerDao.add(c);
+		long count = customerDao.countDistinctForLastName(c.getLastName());
+		Assert.assertEquals(2, count);
+	}
+
+	@Test
+	public void testCustomerExists() {
+		Customer c = customerDao.findById(1L);
+		boolean exists = customerDao.customerExists(c);
+		Assert.assertTrue(exists);
+	}
+
+	@Test
+	public void testCustomerNotExists() {
+		boolean exists = customerDao.customerExists(99L);
+		Assert.assertFalse(exists);
+	}
 }

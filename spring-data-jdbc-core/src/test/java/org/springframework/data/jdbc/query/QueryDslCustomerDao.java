@@ -80,5 +80,36 @@ public class QueryDslCustomerDao implements CustomerDao {
 		});
 	}
 
+	@Override
+	public long countCustomers() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+		.from(qCustomer);
+		return template.count(sqlQuery);
+	}
+
+	@Override
+	public long countDistinctForLastName(String name) {
+		SQLQuery sqlQuery = template.newSqlQuery()
+		.from(qCustomer)
+		.where(qCustomer.lastName.eq(name));
+		return template.countDistinct(sqlQuery);
+	}
+
+	@Override
+	public boolean customerExists(Long id) {
+		SQLQuery sqlQuery = template.newSqlQuery()
+		.from(qCustomer)
+		.where(qCustomer.id.eq(id));
+		return !template.notExists(sqlQuery);
+	}
+
+	@Override
+	public boolean customerExists(Customer c) {
+		SQLQuery sqlQuery = template.newSqlQuery()
+		.from(qCustomer)
+		.where(qCustomer.id.eq(c.getId()));
+		return template.exists(sqlQuery);
+	}
+
 	
 }

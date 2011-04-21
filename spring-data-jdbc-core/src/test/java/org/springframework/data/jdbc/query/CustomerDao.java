@@ -15,5 +15,13 @@ public interface CustomerDao {
 	Customer findById(Long id);
 	
 	List<Customer> findAll();
+	
+	long countCustomers();
+	
+	long countDistinctForLastName(String name);
+	
+	boolean customerExists(Long id);
+	
+	boolean customerExists(Customer c);
 
 }

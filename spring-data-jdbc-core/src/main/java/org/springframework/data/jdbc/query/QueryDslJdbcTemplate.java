@@ -89,6 +89,46 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		return new SQLQueryImpl(this.dialect);
 	}
 	
+	public long count(final SQLQuery sqlQuery) {
+		long count = jdbcTemplate.execute(new ConnectionCallback<Long>() {
+			public Long doInConnection(Connection con) throws SQLException,
+					DataAccessException {
+				SQLQuery liveQuery = sqlQuery.clone(con);
+				return liveQuery.count();
+			}});
+		return count;
+	}
+
+	public long countDistinct(final SQLQuery sqlQuery) {
+		long count = jdbcTemplate.execute(new ConnectionCallback<Long>() {
+			public Long doInConnection(Connection con) throws SQLException,
+					DataAccessException {
+				SQLQuery liveQuery = sqlQuery.clone(con);
+				return liveQuery.countDistinct();
+			}});
+		return count;
+	}
+
+	public boolean exists(final SQLQuery sqlQuery) {
+		boolean exists = jdbcTemplate.execute(new ConnectionCallback<Boolean>() {
+			public Boolean doInConnection(Connection con) throws SQLException,
+					DataAccessException {
+				SQLQuery liveQuery = sqlQuery.clone(con);
+				return liveQuery.exists();
+			}});
+		return exists;
+	}
+
+	public boolean notExists(final SQLQuery sqlQuery) {
+		boolean notExists = jdbcTemplate.execute(new ConnectionCallback<Boolean>() {
+			public Boolean doInConnection(Connection con) throws SQLException,
+					DataAccessException {
+				SQLQuery liveQuery = sqlQuery.clone(con);
+				return liveQuery.notExists();
+			}});
+		return notExists;
+	}
+
 	public <T> T queryForObject(final SQLQuery sqlQuery, final RowMapper<T> rowMapper, final Expression<?>... projection) {
 		List<T> results = query(sqlQuery, rowMapper, projection);
 		if (results.size() == 0) {

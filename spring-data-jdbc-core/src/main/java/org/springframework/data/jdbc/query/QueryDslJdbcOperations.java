@@ -19,6 +19,14 @@ public interface QueryDslJdbcOperations {
 	JdbcOperations getJdbcOperations();
 
 	SQLQuery newSqlQuery();
+	
+	long count(final SQLQuery sqlQuery);
+
+	long countDistinct(final SQLQuery sqlQuery);
+
+	boolean exists(final SQLQuery sqlQuery);
+
+	boolean notExists(final SQLQuery sqlQuery);
 
 	<T> T queryForObject(final SQLQuery sqlQuery, final RowMapper<T> rowMapper,
 			final Expression<?>... cols);
