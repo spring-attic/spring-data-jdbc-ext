@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionBase;
 
 public interface QueryDslJdbcOperations {
 
@@ -22,8 +23,12 @@ public interface QueryDslJdbcOperations {
 	<T> T queryForObject(final SQLQuery sqlQuery, final RowMapper<T> rowMapper,
 			final Expression<?>... cols);
 
+	<T> T queryForObject(final SQLQuery sqlQuery, final ExpressionBase<T> expression);
+
 	<T> List<T> query(final SQLQuery sqlQuery, final RowMapper<T> rowMapper,
 			final Expression<?>... projection);
+
+	<T> List<T> query(final SQLQuery sqlQuery, final ExpressionBase<T> expression);
 
 	long insert(final RelationalPath<?> entity, final SqlInsertCallback callBack);
 

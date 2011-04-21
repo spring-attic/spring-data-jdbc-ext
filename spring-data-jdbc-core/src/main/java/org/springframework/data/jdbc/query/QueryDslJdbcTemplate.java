@@ -35,6 +35,7 @@ import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionBase;
 
 public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 
@@ -99,6 +100,17 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		return results.get(0);
 	}
 	
+	public <T> T queryForObject(final SQLQuery sqlQuery, final ExpressionBase<T> expression) {
+		List<T> results = query(sqlQuery, expression);
+		if (results.size() == 0) {
+			return null;
+		}
+		if (results.size() > 1) {
+			throw new IncorrectResultSizeDataAccessException(1, results.size());
+		}
+		return results.get(0);
+	}
+	
 	public <T> List<T> query(final SQLQuery sqlQuery, final RowMapper<T> rowMapper, final Expression<?>... projection) {
 		List<T> results = jdbcTemplate.execute(new ConnectionCallback<List<T>>() {
 			public List<T> doInConnection(Connection con) throws SQLException,
@@ -110,6 +122,16 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 				List<T> list = extractor.extractData(resultSet);
 				JdbcUtils.closeResultSet(resultSet);
 				return list;
+			}});
+		return results;
+	}
+	
+	public <T> List<T> query(final SQLQuery sqlQuery, final ExpressionBase<T> expression) {
+		List<T> results = jdbcTemplate.execute(new ConnectionCallback<List<T>>() {
+			public List<T> doInConnection(Connection con) throws SQLException,
+					DataAccessException {
+				SQLQuery liveQuery = sqlQuery.clone(con);
+				return liveQuery.list(expression);
 			}});
 		return results;
 	}

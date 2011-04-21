@@ -3,6 +3,7 @@ package org.springframework.data.jdbc.query;
 import java.util.List;
 
 import org.springframework.data.jdbc.query.domain.Customer;
+import org.springframework.data.jdbc.query.domain.CustomerQ;
 
 public interface CustomerDao {
 
@@ -14,6 +15,10 @@ public interface CustomerDao {
 
 	Customer findById(Long id);
 	
+	CustomerQ findByIdQ(Long id);
+	
 	List<Customer> findAll();
+
+	List<CustomerQ> findAllQ();
 
 }
