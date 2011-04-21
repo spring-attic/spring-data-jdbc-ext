@@ -186,6 +186,16 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		return rowsAffected;
 	}
 
+	public <K> K insertWithKey(final RelationalPath<?> entity, final SqlInsertWithKeyCallback<K> callBack) {
+		K generatedKey = jdbcTemplate.execute(new ConnectionCallback<K>() {
+			public K doInConnection(Connection con) throws SQLException,
+					DataAccessException {
+				SQLInsertClause sqlClause = new SQLInsertClause(con, dialect, entity);
+				return callBack.doInSqlInsertWithKeyClause(sqlClause);
+			}});
+		return generatedKey;
+	}
+
 	public long update(final RelationalPath<?> entity, final SqlUpdateCallback callBack) {
 		long rowsAffected = jdbcTemplate.execute(new ConnectionCallback<Long>() {
 			public Long doInConnection(Connection con) throws SQLException,

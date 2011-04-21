@@ -8,6 +8,10 @@ public interface CustomerDao {
 
 	void add(Customer customer);
 
+	Long addWithKey(Customer customer);
+
+	long addBatch(List<Customer> customers);
+
 	void save(Customer customer);
 
 	void delete(Customer customer);

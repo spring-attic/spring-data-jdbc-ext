@@ -58,6 +58,37 @@ public class QueryDslCustomerDao implements CustomerDao {
 	}
 
 	@Override
+	public Long addWithKey(final Customer customer) {
+		Long generatedKey = template.insertWithKey(qCustomer, new SqlInsertWithKeyCallback<Long>() {
+			@Override
+			public Long doInSqlInsertWithKeyClause(
+					SQLInsertClause sqlInsertClause) {
+				return sqlInsertClause
+						.columns(qCustomer.firstName,
+								qCustomer.lastName)
+						.values(customer.getFirstName(),
+								customer.getLastName()).executeWithKey(qCustomer.id);
+			}
+		});
+		return generatedKey;
+	}
+
+	@Override
+	public long addBatch(final List<Customer> customers) {
+		long inserted = template.insert(qCustomer, new SqlInsertCallback() {
+			@Override
+			public long doInSqlInsertClause(SQLInsertClause insert) {
+				insert.columns(qCustomer.firstName, qCustomer.lastName);
+				for (Customer customer : customers) {
+					insert.values(customer.getFirstName(), customer.getLastName()).addBatch();
+				}
+				return insert.execute();
+			}
+		});
+		return inserted;
+	}
+
+	@Override
 	public void save(final Customer customer) {
 		template.update(qCustomer, new SqlUpdateCallback() {
 			@Override
@@ -112,6 +143,5 @@ public class QueryDslCustomerDao implements CustomerDao {
 		.where(qCustomer.id.eq(c.getId()));
 		return template.exists(sqlQuery);
 	}
-
 	
 }

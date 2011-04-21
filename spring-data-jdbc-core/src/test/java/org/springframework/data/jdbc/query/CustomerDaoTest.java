@@ -1,5 +1,6 @@
 package org.springframework.data.jdbc.query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -55,6 +56,43 @@ public class CustomerDaoTest {
 		Assert.assertEquals(3, customers.size());
 	}
 	
+	@Transactional
+	@Test
+	public void testInsertBatch() {
+		List<Customer> customers = new ArrayList<Customer>();
+		Customer c1 = new Customer();
+		c1.setFirstName("Oliver");
+		c1.setLastName("Gierke");
+		customers.add(c1);
+		Customer c2 = new Customer();
+		c2.setFirstName("Jon");
+		c2.setLastName("Brisbin");
+		customers.add(c2);
+		Customer c3 = new Customer();
+		c3.setFirstName("Costin");
+		c3.setLastName("Leau");
+		customers.add(c3);
+		Customer c4 = new Customer();
+		c4.setFirstName("Mark");
+		c4.setLastName("Fisher");
+		customers.add(c4);
+		customerDao.addBatch(customers);
+		List<Customer> results = customerDao.findAll();
+		Assert.assertEquals(6, results.size());
+	}
+
+	@Transactional
+	@Test
+	public void testInsertAndGetKey() {
+		Customer c = new Customer();
+		c.setFirstName("Oliver");
+		c.setLastName("Gierke");
+		Long key = customerDao.addWithKey(c);
+		Assert.assertNotNull(key);
+		Customer inserted = customerDao.findById(key);
+		Assert.assertEquals("Oliver", inserted.getFirstName());
+	}
+
 	@Transactional
 	@Test
 	public void testUpdate() {

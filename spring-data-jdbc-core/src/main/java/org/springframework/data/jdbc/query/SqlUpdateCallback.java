@@ -4,6 +4,6 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 
 public interface SqlUpdateCallback {
 	
-	long doInSqlUpdateClause(SQLUpdateClause sqlUpdateClause);
+	long doInSqlUpdateClause(SQLUpdateClause update);
 
 }

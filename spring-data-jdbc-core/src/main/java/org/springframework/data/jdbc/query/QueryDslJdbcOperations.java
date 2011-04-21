@@ -40,6 +40,8 @@ public interface QueryDslJdbcOperations {
 
 	long insert(final RelationalPath<?> entity, final SqlInsertCallback callBack);
 
+	<K> K insertWithKey(final RelationalPath<?> entity, final SqlInsertWithKeyCallback<K> callBack);
+
 	long update(final RelationalPath<?> entity, final SqlUpdateCallback callBack);
 
 	long delete(final RelationalPath<?> entity, final SqlDeleteCallback callBack);

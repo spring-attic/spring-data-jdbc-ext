@@ -4,6 +4,6 @@ import com.mysema.query.sql.dml.SQLDeleteClause;
 
 public interface SqlDeleteCallback {
 	
-	long doInSqlDeleteClause(SQLDeleteClause sqlDeleteClause);
+	long doInSqlDeleteClause(SQLDeleteClause delete);
 
 }
