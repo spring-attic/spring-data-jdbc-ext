@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jdbc.query.domain.Customer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,7 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerDaoTest {
 
 	@Autowired
+	@Qualifier("RowMapper")
 	private CustomerDao customerDao;
+	
+	@Autowired
+	@Qualifier("QBean")
+	private CustomerDao customerDaoQBean;
 	
 	@Test
 	public void testFindAllWithRowMapper() {
@@ -29,7 +35,7 @@ public class CustomerDaoTest {
 	
 	@Test
 	public void testFindAllWithQBean() {
-		List<Customer> customers = customerDao.findAll();
+		List<Customer> customers = customerDaoQBean.findAll();
 		Assert.assertEquals(2, customers.size());
 	}
 	
@@ -41,7 +47,7 @@ public class CustomerDaoTest {
 
 	@Test
 	public void testFindOneWithQBean() {
-		Customer c = customerDao.findById(1L);
+		Customer c = customerDaoQBean.findById(1L);
 		Assert.assertEquals("Mark", c.getFirstName());
 	}
 

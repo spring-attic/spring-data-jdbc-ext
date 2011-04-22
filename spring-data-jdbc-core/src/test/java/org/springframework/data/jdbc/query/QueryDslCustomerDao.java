@@ -5,6 +5,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jdbc.query.domain.Customer;
 import org.springframework.data.jdbc.query.generated.QCustomer;
 import org.springframework.data.jdbc.query.generated.QCustomerNames;
@@ -19,6 +20,7 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 
 @Transactional
 @Repository
+@Qualifier("RowMapper")
 public class QueryDslCustomerDao implements CustomerDao {
 
     private final QCustomer qCustomer = QCustomer.customer;
