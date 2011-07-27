@@ -252,7 +252,7 @@
 			<extension>
 				<!--
 					available only in the springframework maven repository. see
-					<repositories> section below
+					<pluginRepositories> section below
 				-->
 				<groupId>org.springframework.build.aws</groupId>
 				<artifactId>org.springframework.build.aws.maven</artifactId>
@@ -302,8 +302,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.5</source>
+					<target>1.5</target>
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>false</showDeprecation>
@@ -377,6 +377,12 @@
 			<id>repository.plugin.springsource.release</id>
 			<name>SpringSource Maven Repository</name>
 			<url>http://repository.springsource.com/maven/bundles/release</url>
+		</pluginRepository>
+		<pluginRepository>
+			<!-- necessary for org.springframework.build.aws.maven -->
+			<id>repository.springframework.maven.release</id>
+			<name>Spring Framework Maven Release Repository</name>
+			<url>http://maven.springframework.org/release</url>
 		</pluginRepository>
 	</pluginRepositories>
 	<repositories>
