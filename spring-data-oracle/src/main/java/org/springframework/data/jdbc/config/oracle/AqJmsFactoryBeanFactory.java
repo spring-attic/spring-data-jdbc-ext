@@ -145,10 +145,18 @@ public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
                 return getCloseSuppressingConnectionProxy(conToUse);
             }
             else {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Using Native JDBC Connection [" + conToUse + "]");
+                if (con instanceof OracleConnection) {
+	                if (logger.isDebugEnabled()) {
+	                    logger.debug("Using Native JDBC Connection [" + conToUse + "]");
+	                }
+	                return conToUse;
                 }
-                return conToUse;
+                else {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Using Closeable Proxy fo JDBC Connection [" + conToUse + "]");
+                    }
+                    return getCloseDelegatingConnectionProxy(conToUse, con);
+                }
             }
         }
 
@@ -166,9 +174,8 @@ public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
     }
 
     /**
-     * Invocation handler that suppresses close calls on JDBC Connections until
-     * the associated instance of the ExtendedConnectionDataSourceProxy
-     * determines the connection should actually be closed.
+     * Invocation handler that suppresses close calls on JDBC Connections until the
+     * associated PlatformTransactiunManager determines the connection should actually be closed.
      */
     private static class CloseSuppressingInvocationHandler implements InvocationHandler {
 
@@ -212,4 +219,64 @@ public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
         }
     }
 
+    /**
+     * Wrap the given Connection with a proxy that delegates every method call
+     * to it and delegates close calls to the source (unwrapped) pooled Connection.
+     * @param target the original Connection to wrap
+     * @param source the pooled Connection to call close on
+     * @return the wrapped Connection
+     */
+    protected Connection getCloseDelegatingConnectionProxy(Connection target, Connection source) {
+        return (Connection) Proxy.newProxyInstance(OracleConnectionProxy.class.getClassLoader(),
+                new Class[] { OracleConnectionProxy.class }, new CloseDelegatingInvocationHandler(target, source));
+    }
+
+    /**
+     * Invocation handler that delegates close calls on JDBC Connections to the source
+     * Connection which usually is the Connection obtained from a pool.
+     */
+    private static class CloseDelegatingInvocationHandler implements InvocationHandler {
+
+        private final Connection target;
+        private final Connection source;
+
+        public CloseDelegatingInvocationHandler(Connection target, Connection source) {
+            this.target = target;
+            this.source = source;
+        }
+
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            // Invocation on ConnectionProxy interface coming in...
+
+            if (method.getName().equals("equals")) {
+                // Only consider equal when proxies are identical.
+                return (proxy == args[0] ? Boolean.TRUE : Boolean.FALSE);
+            }
+            else if (method.getName().equals("hashCode")) {
+                // Use hashCode of Connection proxy.
+                return new Integer(System.identityHashCode(proxy));
+            }
+            else if (method.getName().equals("close")) {
+                // Handle close method: don't pass the call on
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Calling close for Connection [" + target + "] on source [" + source + "]");
+                }
+                source.close();
+                return null;
+            }
+            else if (method.getName().equals("getTargetConnection")) {
+                // Handle getTargetConnection method: return underlying
+                // Connection.
+                return this.target;
+            }
+
+            // Invoke method on target Connection.
+            try {
+                return method.invoke(this.target, args);
+            }
+            catch (InvocationTargetException ex) {
+                throw ex.getTargetException();
+            }
+        }
+    }
 }
