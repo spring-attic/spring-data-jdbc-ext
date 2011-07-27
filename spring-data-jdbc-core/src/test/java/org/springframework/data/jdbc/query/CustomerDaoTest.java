@@ -14,7 +14,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @ContextConfiguration(locations="classpath:query-dsl-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class CustomerDaoTest {
@@ -26,6 +25,10 @@ public class CustomerDaoTest {
 	@Autowired
 	@Qualifier("QBean")
 	private CustomerDao customerDaoQBean;
+	
+	@Autowired
+	@Qualifier("MappingProjection")
+	private CustomerDao customerDaoProjection;
 	
 	@Test
 	public void testFindAllWithRowMapper() {
@@ -40,6 +43,12 @@ public class CustomerDaoTest {
 	}
 	
 	@Test
+	public void testFindAllWithProjection() {
+		List<Customer> customers = customerDaoProjection.findAll();
+		Assert.assertEquals(2, customers.size());
+	}
+	
+	@Test
 	public void testFindOneWithRowMapper() {
 		Customer c = customerDao.findById(1L);
 		Assert.assertEquals("Mark", c.getFirstName());
@@ -49,6 +58,12 @@ public class CustomerDaoTest {
 	public void testFindOneWithQBean() {
 		Customer c = customerDaoQBean.findById(1L);
 		Assert.assertEquals("Mark", c.getFirstName());
+	}
+
+	@Test
+	public void testFindOneWithProjection() {
+		Customer c = customerDaoProjection.findById(1L);
+		Assert.assertEquals("Pollack!", c.getLastName());
 	}
 
 	@Transactional
