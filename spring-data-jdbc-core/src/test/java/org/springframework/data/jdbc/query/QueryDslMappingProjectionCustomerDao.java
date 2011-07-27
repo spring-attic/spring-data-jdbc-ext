@@ -15,7 +15,6 @@ import com.mysema.query.Tuple;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MappingProjection;
-import com.mysema.query.types.QBean;
 
 @Transactional
 @Repository
