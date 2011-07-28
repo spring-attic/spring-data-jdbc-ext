@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="failover">
+<chapter id="orcl.failover">
   <title>Fast Connection Failover</title>
 
   <para>Oracle's RAC (Real Application Clusters) is an option that supports
@@ -21,7 +21,7 @@
   second you need to configure an AOP advisor with a failover interceptor to
   handle the retries.</para>
 
-  <section id="failover.config.datasource">
+  <section id="orcl.failover.config.datasource">
     <title>DataSource Configuration</title>
 
     <para>We are going to need a DataSource that is capable of participating
@@ -92,7 +92,7 @@ password=spring</programlisting>
     </programlistingco>
   </section>
 
-  <section id="failover.config.aop">
+  <section id="orcl.failover.config.aop">
     <title>AOP Configuration for Fast Connection Failover Retry</title>
 
     <para>In order for the Fast Connection Failover to be transparent to the
@@ -117,7 +117,7 @@ password=spring</programlisting>
     <literal>rac-failover-interceptor</literal> tag from the "orcl"
     namespace.</para>
 
-    <section id="failover.config.aop.advice">
+    <section id="orcl.failover.config.aop.advice">
       <title>Configuration when defining transactions using a
       &lt;tx:advice&gt; and an &lt;aop:advisor&gt;</title>
 
@@ -196,7 +196,7 @@ password=spring</programlisting>
       </programlistingco>
     </section>
 
-    <section id="failover.config.aop.annotation">
+    <section id="orcl.failover.config.aop.annotation">
       <title>Configuration when defining transactions using @Transactional
       annotation</title>
 
@@ -271,7 +271,7 @@ password=spring</programlisting>
     </section>
   </section>
 
-  <section id="failover.config.interceptor">
+  <section id="orcl.failover.config.interceptor">
     <title>Configuration options for &lt;rac-failover-interceptor&gt;</title>
 
     <para>There is a number of optional attributes you can use to configure

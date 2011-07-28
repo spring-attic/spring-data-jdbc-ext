@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="xmltypes">
+<chapter id="orcl.xmltypes">
   <title>XML Types</title>
 
   <para>Oracle has some advanced XML Type support built into the database. XML
@@ -13,7 +13,7 @@
   for best practices for the use of these features in an Oracle/Spring
   environment.</para>
 
-  <section id="xmltypes.1">
+  <section id="orcl.xmltypes.1">
     <title>Dependencies</title>
 
     <para>To use the Oracle XML support you need to use a couple of jar files
@@ -38,7 +38,7 @@
 ]]></programlisting>
   </section>
 
-  <section id="xmltypes.2">
+  <section id="orcl.xmltypes.2">
     <title>Writing XML to an XMLTYPE column</title>
 
     <para>To write XML data to a table you need to pass in the XML using a
@@ -104,7 +104,7 @@
 ]]></programlisting>
   </section>
 
-  <section id="xmltypes.3">
+  <section id="orcl.xmltypes.3">
     <title>Reading XML from an XMLTYPE column</title>
 
     <para>Running a query against a table with an XMLTYPE column requires a
@@ -146,7 +146,7 @@
     </note>
   </section>
 
-  <section id="xmltypes.4">
+  <section id="orcl.xmltypes.4">
     <title>Marshalling an object to an XMLTYPE column</title>
 
     <para>To map an object to XML and write this XML to a table you first need
@@ -271,7 +271,7 @@ public class Item{
 ]]></programlisting>
   </section>
 
-  <section id="xmltypes.5">
+  <section id="orcl.xmltypes.5">
     <title>Unmarshalling an object from an XMLTYPE column</title>
 
     <para>Last piece we need is reading the XML from the database and have it

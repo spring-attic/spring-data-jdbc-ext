@@ -13,6 +13,11 @@
             </author>
         </authorgroup>
 
+	    <copyright>
+	      <year>2008-2011</year>
+	      <holder>The original authors</holder>
+	    </copyright>
+
         <legalnotice>
             <para>
                 Copies of this document may be made for your own use and for distribution
@@ -28,7 +33,17 @@
     <xi:include href="preface.xml"/>
 
     <part>
-        <title>JDBC Extensions for the Oracle Database Reference</title>
+        <title>Core JDBC Extensions</title>
+        <partintro>
+            <para>
+                This part of the reference documentation details the core extended JDBC support that can be used for any supported SQL database.
+            </para>
+        </partintro>
+        <xi:include href="core-overview.xml"/>
+        <xi:include href="core-query-dsl.xml"/>
+    </part>
+    <part>
+        <title>JDBC Extensions for the Oracle Database</title>
         <partintro>
             <para>
                 This part of the reference documentation details the extended JDBC support provided for the Oracle database.

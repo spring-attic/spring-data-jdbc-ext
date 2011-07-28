@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="core.querydsl">
+  <title>QueryDSL Support</title>
+
+  <para>QueryDSL's SQL module provides a nice DSL for working with JDBC operations 
+	in a type safe manner.</para>
+
+  <section id="core.querydsl.1">
+    <title>Introduction to QueryDSL</title>
+
+    <para>TBD</para>
+
+  </section>
+
+  <section id="core.querydsl.2">
+    <title>Inserts</title>
+
+    <para>TBD</para>
+
+  </section>
+
+  <section id="core.querydsl.3">
+    <title>Updates</title>
+
+    <para>TBD</para>
+
+  </section>
+
+  <section id="core.querydsl.4">
+    <title>Deletes</title>
+
+    <para>TBD</para>
+
+  </section>
+
+  <section id="core.querydsl.5">
+    <title>Queries</title>
+
+    <para>TBD</para>
+
+  </section>
+</chapter>

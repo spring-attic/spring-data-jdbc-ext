@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="datasource">
+<chapter id="orcl.datasource">
   <title>Oracle Pooling DataSource</title>
 
   <para>Oracle provides an advanced DataSource implementation that has some
   unique features. It provides connection pooling and it is required when
   using "Fast Connection Failover" for RAC.</para>
 
-  <section id="datasource.1">
+  <section id="orcl.datasource.1">
     <title>Configuration using the traditional &lt;bean&gt; element</title>
 
     <para>We'll start by looking at a very basic DataSource configuration
@@ -84,7 +84,7 @@
     </programlistingco>
   </section>
 
-  <section id="datasource.2">
+  <section id="orcl.datasource.2">
     <title>Using the "orcl" namespace to configure the
     OracleDataSource</title>
 
@@ -159,7 +159,7 @@
     </programlistingco>
   </section>
 
-  <section id="datasource.3">
+  <section id="orcl.datasource.3">
     <title>Using a properties file directly for connection properties</title>
 
     <para>We used a <classname>property-placeholder</classname> in the
@@ -255,14 +255,14 @@ password=spring</programlisting>
     </programlistingco>
   </section>
 
-  <section id="datasource.4">
+  <section id="orcl.datasource.4">
     <title>Additional connection and cache properties</title>
 
     <para>It's sometimes necessary to provide additional connection properties
     to control how the database access is configured. There are several ways
     you can provide these properties and they are outlined below.</para>
 
-    <section id="datasource.4.1">
+    <section id="orcl.datasource.4.1">
       <title>Using the property file for additional connection
       properties</title>
 
@@ -324,7 +324,7 @@ conn.processEscapes=false</programlisting>
       </programlistingco>
     </section>
 
-    <section id="datasource.4.2">
+    <section id="orcl.datasource.4.2">
       <title>Using the property file for additional cache properties</title>
 
       <para>We can also specify connection cache properties in the properties
@@ -375,7 +375,7 @@ cache.InitialLimit=10</programlisting>
       </programlistingco>
     </section>
 
-    <section id="datasource.4.3">
+    <section id="orcl.datasource.4.3">
       <title>Using "connection-properties" element for additional connection
       properties</title>
 
@@ -422,7 +422,7 @@ cache.InitialLimit=10</programlisting>
       </programlistingco>
     </section>
 
-    <section id="datasource.4.4">
+    <section id="orcl.datasource.4.4">
       <title>Using "connection-cache-properties" element for additional cache
       properties</title>
 
@@ -472,7 +472,7 @@ cache.InitialLimit=10</programlisting>
       </programlistingco>
     </section>
 
-    <section id="datasource.4.5">
+    <section id="orcl.datasource.4.5">
       <title>Using "username-connection-proxy" element for proxy
       connections</title>
 
@@ -527,7 +527,7 @@ cache.InitialLimit=10</programlisting>
     </section>
   </section>
 
-  <section id="datasource.options">
+  <section id="orcl.datasource.options">
     <title>Summary of configuration options for the
     "pooling-data-source"</title>
 

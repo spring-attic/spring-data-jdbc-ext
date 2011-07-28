@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="connection">
+<chapter id="orcl.connection">
   <title>Custom DataSource Connection Configurations</title>
 
-  <section id="connection.1">
+  <section id="orcl.connection.1">
     <title>Configuration of a Proxy Authentication</title>
 
     <para>The Oracle JDBC implementation provides access to Oracle's Proxy
@@ -107,7 +107,7 @@ password=proxypasswd</programlisting></para>
     </note>
   </section>
 
-  <section id="connection.2">
+  <section id="orcl.connection.2">
     <title>Configuration of a Custom DataSource Connection Preparer</title>
 
     <para>There are times when you want to prepare the database connection in

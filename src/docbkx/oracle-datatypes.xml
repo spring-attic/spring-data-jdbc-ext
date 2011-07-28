@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="datatypes">
+<chapter id="orcl.datatypes">
   <title>Advanced Data Types</title>
 
   <para>The Oracle database and the PL/SQL language used for stored procedures
@@ -45,7 +45,7 @@
     age NUMBER,
     PRIMARY KEY (id));</programlisting>
 
-  <section id="datatypes.struct">
+  <section id="orcl.datatypes.struct">
     <title>Using a STRUCT parameter</title>
 
     <para>When your stored procedures has parameters that are declared using
@@ -587,7 +587,7 @@ public class SqlActor extends Actor implements SQLData {
     </section>
   </section>
 
-  <section id="datatypes.array">
+  <section id="orcl.datatypes.array">
     <title>Using an ARRAY parameter</title>
 
     <para>Sometimes your stored procedures has parameters that are declared as
@@ -787,7 +787,7 @@ END;</programlisting>
     </section>
   </section>
 
-  <section id="datatypes.ref_cur">
+  <section id="orcl.datatypes.ref_cur">
     <title>Handling a REF CURSOR</title>
 
     <para>The Spring Framework already contains implementations that simplify

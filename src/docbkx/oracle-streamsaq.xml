@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter id="streamsaq">
+<chapter id="orcl.streamsaq">
   <title>Oracle's Streams AQ (Advanced Queueing)</title>
 
   <para>Oracle Streams is a feature that enables the propagation and
@@ -98,7 +98,7 @@
       </table></para>
   </section>
 
-  <section id="streamsaq.orcl_config">
+  <section id="orcl.streamsaq.orcl_config">
     <title>Configuration of the Connection Factory using the "orcl"
     namespace</title>
 
@@ -253,7 +253,7 @@
     access.</para>
   </section>
 
-  <section id="streamsaq.tx_config">
+  <section id="orcl.streamsaq.tx_config">
     <title>Configuring the Connection Factory to use the same local
     transaction as your data access code.</title>
 
@@ -389,7 +389,7 @@
     </programlistingco>
   </section>
 
-  <section id="streamsaq.xmltype_config">
+  <section id="orcl.streamsaq.xmltype_config">
     <title>Configuration when using a SYS.XMLType payload</title>
 
     <para>When you use a SYS.XMLType as payload there a few additional
@@ -584,7 +584,7 @@
     </section>
   </section>
 
-  <section id="streamsaq.adt_config">
+  <section id="orcl.streamsaq.adt_config">
     <title>Configuration when using a custom ADT payload</title>
 
     <para>When you use a custom ADT as payload there are certain configuration

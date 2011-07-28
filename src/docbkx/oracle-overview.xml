@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<preface id="overview">
+<preface id="orcl.overview">
   <title>Overview</title>
 
   <para> The Oracle Database is a powerful relational database that continues
@@ -16,7 +16,7 @@
   that is in line with the JDBC support provided by the Spring Framework and
   its JDBC abstraction. </para>
 
-  <section id="overview-whats-covered">
+  <section id="orcl.overview-whats-covered">
     <title>Features provided</title>
 
     <para>The majority of features provided by the Oracle Database and their
@@ -55,7 +55,7 @@
     </itemizedlist>
   </section>
 
-  <section id="requires">
+  <section id="orcl.requires">
     <title>Requirements</title>
 
     <para>The requirements for using the features provided in the
