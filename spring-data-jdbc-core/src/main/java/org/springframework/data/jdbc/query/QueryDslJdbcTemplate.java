@@ -176,42 +176,42 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		return results;
 	}
 	
-	public long insert(final RelationalPath<?> entity, final SqlInsertCallback callBack) {
+	public long insert(final RelationalPath<?> entity, final SqlInsertCallback callback) {
 		long rowsAffected = jdbcTemplate.execute(new ConnectionCallback<Long>() {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLInsertClause sqlClause = new SQLInsertClause(con, dialect, entity);
-				return callBack.doInSqlInsertClause(sqlClause);
+				return callback.doInSqlInsertClause(sqlClause);
 			}});
 		return rowsAffected;
 	}
 
-	public <K> K insertWithKey(final RelationalPath<?> entity, final SqlInsertWithKeyCallback<K> callBack) {
+	public <K> K insertWithKey(final RelationalPath<?> entity, final SqlInsertWithKeyCallback<K> callback) {
 		K generatedKey = jdbcTemplate.execute(new ConnectionCallback<K>() {
 			public K doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLInsertClause sqlClause = new SQLInsertClause(con, dialect, entity);
-				return callBack.doInSqlInsertWithKeyClause(sqlClause);
+				return callback.doInSqlInsertWithKeyClause(sqlClause);
 			}});
 		return generatedKey;
 	}
 
-	public long update(final RelationalPath<?> entity, final SqlUpdateCallback callBack) {
+	public long update(final RelationalPath<?> entity, final SqlUpdateCallback callback) {
 		long rowsAffected = jdbcTemplate.execute(new ConnectionCallback<Long>() {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLUpdateClause sqlClause = new SQLUpdateClause(con, dialect, entity);
-				return callBack.doInSqlUpdateClause(sqlClause);
+				return callback.doInSqlUpdateClause(sqlClause);
 			}});
 		return rowsAffected;
 	}
 
-	public long delete(final RelationalPath<?> entity, final SqlDeleteCallback callBack) {
+	public long delete(final RelationalPath<?> entity, final SqlDeleteCallback callback) {
 		long rowsAffected = jdbcTemplate.execute(new ConnectionCallback<Long>() {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLDeleteClause sqlClause = new SQLDeleteClause(con, dialect, entity);
-				return callBack.doInSqlDeleteClause(sqlClause);
+				return callback.doInSqlDeleteClause(sqlClause);
 			}});
 		return rowsAffected;
 	}
