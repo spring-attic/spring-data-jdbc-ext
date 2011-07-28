@@ -55,7 +55,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- dist.* properties are used by the antrun tasks below -->
 		<dist.id>spring-data-jdbc</dist.id>
-		<dist.name>Spring Data</dist.name>
+		<dist.name>Spring Data JDBC</dist.name>
 		<dist.key>DATAJDBC</dist.key>
 		<dist.version>${project.version}</dist.version>
 		<dist.releaseType>snapshot</dist.releaseType>
