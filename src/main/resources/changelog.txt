@@ -1,6 +1,15 @@
 Spring Data JDBC Extensions Support Changelog
 =============================================
 
+Changes in version 1.0.0.RC1 (Oct 18, 2011)
+-------------------------------------------
+
+General
+* DATAJDBC-13 Added documentation chapter for QueryDSL SQL module
+* DATAJDBC-17 Added OSGi manifests
+* DATAJDBC-14 Fixed slf4j/log4j and other dependencies
+
+
 Changes in version 1.0.0.M2 (July 28, 2011)
 -------------------------------------------
 
