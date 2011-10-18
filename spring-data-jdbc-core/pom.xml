@@ -34,7 +34,6 @@
 		<dependency>
 			<groupId>org.springframework.retry</groupId>
 			<artifactId>spring-retry</artifactId>
-			<version>1.0.0.RC2</version>
 		</dependency>
 
 		<!--  Spring Data -->
