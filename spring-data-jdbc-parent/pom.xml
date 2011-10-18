@@ -17,7 +17,6 @@
 		<org.slf4j.version>1.5.10</org.slf4j.version>
 		<org.springframework.version>3.0.6.RELEASE</org.springframework.version>
 		<spring.retry.version>1.0.0.RELEASE</spring.retry.version>
-		<data.commons.version>1.1.0.RELEASE</data.commons.version>
 		<querydsl.version>2.2.3</querydsl.version>
 	</properties>
 	<profiles>
@@ -139,11 +138,6 @@
 			<!--  Spring Data -->
 			<dependency>
 				<groupId>org.springframework.data</groupId>
-				<artifactId>spring-data-commons-core</artifactId>
-				<version>${data.commons.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-jdbc-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -165,7 +159,6 @@
 				<groupId>com.mysema.querydsl</groupId>
 				<artifactId>querydsl-sql</artifactId>
 				<version>${querydsl.version}</version>
-				<scope>provided</scope>
 			</dependency>
 
 			<!-- Logging -->
@@ -173,6 +166,7 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${org.slf4j.version}</version>
+				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
