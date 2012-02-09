@@ -51,7 +51,6 @@ public class QueryDslCustomerDao implements CustomerDao {
 
 	public void add(final Customer customer) {
 		template.insert(qCustomer, new SqlInsertCallback() {
-			@Override
 			public long doInSqlInsertClause(SQLInsertClause sqlInsertClause) {
 				return sqlInsertClause.columns(qCustomer.firstName, qCustomer.lastName)
 					.values(customer.getFirstName(), customer.getLastName()).execute();
@@ -59,10 +58,8 @@ public class QueryDslCustomerDao implements CustomerDao {
 		});
 	}
 
-	@Override
 	public Long addWithKey(final Customer customer) {
 		Long generatedKey = template.insertWithKey(qCustomer, new SqlInsertWithKeyCallback<Long>() {
-			@Override
 			public Long doInSqlInsertWithKeyClause(
 					SQLInsertClause sqlInsertClause) {
 				return sqlInsertClause
@@ -75,10 +72,8 @@ public class QueryDslCustomerDao implements CustomerDao {
 		return generatedKey;
 	}
 
-	@Override
 	public long addBatch(final List<Customer> customers) {
 		long inserted = template.insert(qCustomer, new SqlInsertCallback() {
-			@Override
 			public long doInSqlInsertClause(SQLInsertClause insert) {
 				insert.columns(qCustomer.firstName, qCustomer.lastName);
 				for (Customer customer : customers) {
@@ -90,10 +85,8 @@ public class QueryDslCustomerDao implements CustomerDao {
 		return inserted;
 	}
 
-	@Override
 	public void save(final Customer customer) {
 		template.update(qCustomer, new SqlUpdateCallback() {
-			@Override
 			public long doInSqlUpdateClause(SQLUpdateClause sqlUpdateClause) {
 				return sqlUpdateClause.where(qCustomer.id.eq(customer.getId()))
 					.set(qCustomer.firstName, customer.getFirstName())
@@ -103,10 +96,8 @@ public class QueryDslCustomerDao implements CustomerDao {
 		});
 	}
 
-	@Override
 	public void delete(final Customer customer) {
 		template.delete(qCustomer, new SqlDeleteCallback() {
-			@Override
 			public long doInSqlDeleteClause(SQLDeleteClause sqlDeleteClause) {
 				return sqlDeleteClause.where(qCustomer.id.eq(customer.getId()))
 					.execute();
@@ -114,14 +105,12 @@ public class QueryDslCustomerDao implements CustomerDao {
 		});
 	}
 
-	@Override
 	public long countCustomers() {
 		SQLQuery sqlQuery = template.newSqlQuery()
 		.from(qCustomer);
 		return template.count(sqlQuery);
 	}
 
-	@Override
 	public long countDistinctForLastName(String name) {
 		QCustomerNames qCustomerNames = QCustomerNames.customerNames;
 		SQLQuery sqlQuery = template.newSqlQuery()
@@ -130,7 +119,6 @@ public class QueryDslCustomerDao implements CustomerDao {
 		return template.countDistinct(sqlQuery);
 	}
 
-	@Override
 	public boolean customerExists(Long id) {
 		SQLQuery sqlQuery = template.newSqlQuery()
 		.from(qCustomer)
@@ -138,7 +126,6 @@ public class QueryDslCustomerDao implements CustomerDao {
 		return !template.notExists(sqlQuery);
 	}
 
-	@Override
 	public boolean customerExists(Customer c) {
 		SQLQuery sqlQuery = template.newSqlQuery()
 		.from(qCustomer)
