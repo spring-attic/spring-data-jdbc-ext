@@ -18,6 +18,8 @@ package org.springframework.data.jdbc.query;
 
 import com.mysema.query.sql.dml.SQLInsertClause;
 
+import java.sql.SQLException;
+
 /**
  * An interface used by {@link QueryDslJdbcTemplate} for insert calls
  * where you are able to provide a {@link SQLInsertClause} 
@@ -31,6 +33,6 @@ import com.mysema.query.sql.dml.SQLInsertClause;
  */
 public interface SqlInsertWithKeyCallback<K> {
 	
-	K doInSqlInsertWithKeyClause(SQLInsertClause insert);
+	K doInSqlInsertWithKeyClause(SQLInsertClause insert) throws SQLException;
 
 }
