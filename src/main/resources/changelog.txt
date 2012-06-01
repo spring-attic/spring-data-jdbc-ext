@@ -1,6 +1,14 @@
 Spring Data JDBC Extensions Support Changelog
 =============================================
 
+Changes in version 1.0.0.RC2 (June 1, 2012)
+-------------------------------------------
+
+General
+* Switched Oracle dependencies to use scope provided
+* DATAJDBC-25 Adding throws clause for SQLException to doInSqlInsertWithKeyClause
+
+
 Changes in version 1.0.0.RC1 (Oct 18, 2011)
 -------------------------------------------
 
