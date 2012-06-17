@@ -19,6 +19,7 @@ package org.springframework.data.jdbc.query;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.mysema.query.sql.RelationalPath;
@@ -87,6 +88,17 @@ public interface QueryDslJdbcOperations {
 	 * Query for a single object using the {@link SQLQuery}. The results are mapped using the
 	 * {@link RowMapper} based on the specified projection.  
 	 * @param sqlQuery the SQLQuery to use
+	 * @param resultSetExtractor the ResultSetExtractor to extract the results
+	 * @param projection the column projection to be used for the mapping
+	 * @return the mapped object
+	 */
+	<T> T queryForObject(final SQLQuery sqlQuery, final ResultSetExtractor<T> resultSetExtractor,
+			final Expression<?>... projection);
+
+	/**
+	 * Query for a single object using the {@link SQLQuery}. The results are mapped using the
+	 * {@link RowMapper} based on the specified projection.
+	 * @param sqlQuery the SQLQuery to use
 	 * @param rowMapper the RowMapper to map the results
 	 * @param projection the column projection to be used for the mapping
 	 * @return the mapped object
@@ -106,6 +118,17 @@ public interface QueryDslJdbcOperations {
 	/**
 	 * Query for a list of objects using the {@link SQLQuery}. The results are mapped using the
 	 * {@link RowMapper} based on the specified projection.  
+	 * @param sqlQuery the SQLQuery to use
+	 * @param resultSetExtractor the ResultSetExtractor to extract the results
+	 * @param projection the column projection to be used for the mapping
+	 * @return the mapped object
+	 */
+	<T> List<T> query(final SQLQuery sqlQuery, final ResultSetExtractor<List<T>> resultSetExtractor,
+			final Expression<?>... projection);
+
+	/**
+	 * Query for a list of objects using the {@link SQLQuery}. The results are mapped using the
+	 * {@link RowMapper} based on the specified projection.
 	 * @param sqlQuery the SQLQuery to use
 	 * @param rowMapper the RowMapper to map the results
 	 * @param projection the column projection to be used for the mapping

@@ -49,7 +49,7 @@
                     <fo:table-row>
                         <fo:table-cell text-align="center">
                             <fo:block font-family="Helvetica" font-size="12pt" padding="10mm">
-                                <xsl:text>Copyright &#xA9; 2010-2011 </xsl:text>
+                                <xsl:text>Copyright &#xA9; 2010-2012 </xsl:text>
                                 <xsl:for-each select="bookinfo/authorgroup/author">
                                     <xsl:if test="position() > 1">
                                         <xsl:text>, </xsl:text>
@@ -360,7 +360,7 @@
     <xsl:param name="callout.unicode">1</xsl:param>
 
     <!-- Place callout marks at this column in annotated areas -->
-    <xsl:param name="callout.defaultcolumn">90</xsl:param>
+    <xsl:param name="callout.defaultcolumn">100</xsl:param>
 
     <!--###################################################
                       Admonitions

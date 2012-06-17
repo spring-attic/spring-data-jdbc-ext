@@ -31,6 +31,7 @@ import org.springframework.data.jdbc.support.DatabaseType;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.RowMapperResultSetExtractor;
 import org.springframework.jdbc.support.JdbcUtils;
@@ -79,7 +80,7 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 
 	public QueryDslJdbcTemplate(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
-		DatabaseType dbType = null;
+		DatabaseType dbType;
 		try {
 			dbType = DatabaseType.fromMetaData(jdbcTemplate.getDataSource());
 		} catch (MetaDataAccessException e) {
@@ -159,6 +160,19 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		return notExists;
 	}
 
+	public <T> T queryForObject(final SQLQuery sqlQuery, final ResultSetExtractor<T> resultSetExtractor, final Expression<?>... projection) {
+		T results = jdbcTemplate.execute(new ConnectionCallback<T>() {
+			public T doInConnection(Connection con) throws SQLException,
+					DataAccessException {
+				SQLQuery liveQuery = sqlQuery.clone(con);
+				ResultSet resultSet = liveQuery.getResults(projection);
+				T t = resultSetExtractor.extractData(resultSet);
+				JdbcUtils.closeResultSet(resultSet);
+				return t;
+			}});
+		return results;
+	}
+
 	public <T> T queryForObject(final SQLQuery sqlQuery, final RowMapper<T> rowMapper, final Expression<?>... projection) {
 		List<T> results = query(sqlQuery, rowMapper, projection);
 		if (results.size() == 0) {
@@ -180,20 +194,22 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		}
 		return results.get(0);
 	}
-	
-	public <T> List<T> query(final SQLQuery sqlQuery, final RowMapper<T> rowMapper, final Expression<?>... projection) {
+
+	public <T> List<T> query(final SQLQuery sqlQuery, final ResultSetExtractor<List<T>> resultSetExtractor, final Expression<?>... projection) {
 		List<T> results = jdbcTemplate.execute(new ConnectionCallback<List<T>>() {
 			public List<T> doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLQuery liveQuery = sqlQuery.clone(con);
-				RowMapperResultSetExtractor<T> extractor = 
-					new RowMapperResultSetExtractor<T>(rowMapper);
 				ResultSet resultSet = liveQuery.getResults(projection);
-				List<T> list = extractor.extractData(resultSet);
+				List<T> list = resultSetExtractor.extractData(resultSet);
 				JdbcUtils.closeResultSet(resultSet);
 				return list;
 			}});
 		return results;
+	}
+
+	public <T> List<T> query(final SQLQuery sqlQuery, final RowMapper<T> rowMapper, final Expression<?>... projection) {
+		return query(sqlQuery, new RowMapperResultSetExtractor<T>(rowMapper), projection);
 	}
 	
 	public <T> List<T> query(final SQLQuery sqlQuery, final ExpressionBase<T> expression) {
