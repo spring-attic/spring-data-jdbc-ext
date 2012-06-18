@@ -27,12 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A results extractor for row mapping operations that map multiple rows to a single root object.
+ * An abstract results extractor for row mapping operations that map multiple rows to a single root object.
  * This is useful when joining a one-to-many relationship where there can be multiple child rows returned per
  * parent root.
  *
- * It's assumed the the Root type R has a primary key (id) of type K and that the Child type C has a foreign key of
- * type K referencing the root primary key.
+ * It's assumed the the root type R table has a primary key (id) of type K and that the child type C table has a
+ * foreign key of type K referencing the root table's primary key.
  *
  * For example, consider the relationship: "a Customer has one-to-many Addresses".
  * When joining the Customer table with the Address table to build a Customer object, multiple rows would be returned
@@ -106,10 +106,37 @@ public abstract class OneToManyResultSetExtractor<R, C, K> implements ResultSetE
 		return results;
 	}
 
+	/**
+	 * Map the primary key value to the required type.
+	 * This method must be implemented by subclasses.
+	 * This method should not call <code>next()</code> on
+	 * the ResultSet; it is only supposed to map values of the current row.
+	 *
+	 * @param rs the ResultSet
+	 * @return the primary key value
+	 * @throws SQLException
+	 */
 	protected abstract K mapPrimaryKey(ResultSet rs) throws SQLException;
 
+	/**
+	 * Map the foreign key value to the required type.
+	 * This method must be implemented by subclasses.
+	 * This method should not call <code>next()</code> on
+	 * the ResultSet; it is only supposed to map values of the current row.
+	 *
+	 * @param rs the ResultSet
+	 * @return the foreign key value
+	 * @throws SQLException
+	 */
 	protected abstract K mapForeignKey(ResultSet rs) throws SQLException;
 
+	/**
+	 * Add the child object to the root object
+	 * This method must be implemented by subclasses.
+	 *
+	 * @param root
+	 * @param child
+	 */
 	protected abstract void addChild(R root, C child);
 
 }

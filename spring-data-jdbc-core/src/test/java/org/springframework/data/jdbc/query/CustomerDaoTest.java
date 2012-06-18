@@ -10,12 +10,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jdbc.query.domain.Customer;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @ContextConfiguration(locations="classpath:query-dsl-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext
 public class CustomerDaoTest {
 
 	@Autowired
