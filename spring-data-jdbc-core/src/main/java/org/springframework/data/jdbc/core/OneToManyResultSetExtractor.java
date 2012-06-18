@@ -19,6 +19,7 @@ package org.springframework.data.jdbc.core;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,11 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An results extractor for row mapping operations that map multiple rows to a single root object.
+ * A results extractor for row mapping operations that map multiple rows to a single root object.
  * This is useful when joining a one-to-many relationship where there can be multiple child rows returned per
  * parent root.
  *
- * It's assumed the the Root type R has a primary key (id) of type K and that the Child type C can map a foreign key of
+ * It's assumed the the Root type R has a primary key (id) of type K and that the Child type C has a foreign key of
  * type K referencing the root primary key.
  *
  * For example, consider the relationship: "a Customer has one-to-many Addresses".
@@ -41,7 +42,7 @@ import java.util.List;
  * @author Keith Donald
  * @since 1.0
  */
-public class OneToManyResultSetExtractor<R, C, K> implements ResultSetExtractor<List<R>> {
+public abstract class OneToManyResultSetExtractor<R, C, K> implements ResultSetExtractor<List<R>> {
 
 	public enum ExpectedResults {
 		ANY,
@@ -52,17 +53,16 @@ public class OneToManyResultSetExtractor<R, C, K> implements ResultSetExtractor<
 
 	private ExpectedResults expectedResults = ExpectedResults.ANY;
 
-	private RootRowMapper<R, K> rootMapper;
+	private RowMapper<R> rootMapper;
 
-	private ChildRowMapper<R, C, K> childMapper;
+	private RowMapper<C> childMapper;
 
-	public OneToManyResultSetExtractor(RootRowMapper<R, K> rootMapper, ChildRowMapper<R, C, K> childMapper) {
+	public OneToManyResultSetExtractor(RowMapper<R> rootMapper, RowMapper<C> childMapper) {
 		this.rootMapper = rootMapper;
 		this.childMapper = childMapper;
 	}
 
-	public OneToManyResultSetExtractor(RootRowMapper<R, K> rootMapper, ChildRowMapper<R, C, K> childMapper,
-			  ExpectedResults expectedResults) {
+	public OneToManyResultSetExtractor(RowMapper<R> rootMapper, RowMapper<C> childMapper, ExpectedResults expectedResults) {
 		this(rootMapper, childMapper);
 		this.expectedResults = expectedResults;
 	}
@@ -77,10 +77,10 @@ public class OneToManyResultSetExtractor<R, C, K> implements ResultSetExtractor<
 		}
 		while (more) {
 			R root = rootMapper.mapRow(rs, row);
-			K primaryKey = rootMapper.mapPrimaryKey(rs, row, root);
-			if (childMapper.mapForeignKey(rs, row) != null) {
-				while (more && primaryKey.equals(childMapper.mapForeignKey(rs, row))) {
-					childMapper.mapAndAddChildRow(rs, row, root);
+			K primaryKey = mapPrimaryKey(rs);
+			if (mapForeignKey(rs) != null) {
+				while (more && primaryKey.equals(mapForeignKey(rs))) {
+					addChild(root, childMapper.mapRow(rs, row));
 					more = rs.next();
 					if (more) {
 						row++;
@@ -105,5 +105,11 @@ public class OneToManyResultSetExtractor<R, C, K> implements ResultSetExtractor<
 		}
 		return results;
 	}
+
+	protected abstract K mapPrimaryKey(ResultSet rs) throws SQLException;
+
+	protected abstract K mapForeignKey(ResultSet rs) throws SQLException;
+
+	protected abstract void addChild(R root, C child);
 
 }
