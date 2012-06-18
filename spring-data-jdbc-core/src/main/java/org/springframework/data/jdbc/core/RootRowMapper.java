@@ -19,6 +19,7 @@ package org.springframework.data.jdbc.core;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Interface to be used when mapping parent data using the {@link OneToManyResultSetExtractor}.
@@ -36,6 +37,6 @@ public interface RootRowMapper<R, K> extends RowMapper<R> {
 	 * @throws java.sql.SQLException if a SQLException is encountered getting
 	 * column values (that is, there's no need to catch SQLException)
 	 */
-	K mapPrimaryKey(ResultSet rs, int rowNum, R root);
+	K mapPrimaryKey(ResultSet rs, int rowNum, R root) throws SQLException;
 
 }
