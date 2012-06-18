@@ -18,6 +18,8 @@ package org.springframework.data.jdbc.core;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import java.sql.ResultSet;
+
 /**
  * Interface to be used when mapping parent data using the {@link OneToManyResultSetExtractor}.
  *
@@ -25,14 +27,15 @@ import org.springframework.jdbc.core.RowMapper;
  * @author Keith Donald
  * @since 1.0
  */
-public interface RootRowMapper<R, PK> extends RowMapper<R> {
+public interface RootRowMapper<R, K> extends RowMapper<R> {
 
 	/**
-	 * Implementations must implement this method to provide the primary key for the root object.
+	 * Implementations must implement this method to map the primary key for the root object.
+	 * This method should not call <code>next()</code> on the ResultSet.
 \	 * @param root the root object
 	 * @throws java.sql.SQLException if a SQLException is encountered getting
 	 * column values (that is, there's no need to catch SQLException)
 	 */
-	PK getPrimaryKey(R root);
+	K mapPrimaryKey(ResultSet rs, int rowNum, R root);
 
 }

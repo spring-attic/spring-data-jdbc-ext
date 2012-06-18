@@ -28,7 +28,7 @@ import java.sql.SQLException;
  * @author Keith Donald
  * @since 1.0
  */
-public interface ChildRowMapper<P, T, FK> extends RowMapper<T> {
+public interface ChildRowMapper<R, C, K> extends RowMapper<C> {
 
 	/**
 	 * Implementations must implement this method to map the ResultSet data for
@@ -37,11 +37,11 @@ public interface ChildRowMapper<P, T, FK> extends RowMapper<T> {
 	 * the ResultSet.
 	 * @param rs the ResultSet to map (pre-initialized for the current row)
 	 * @param rowNum the number of the current row
-	 * @param parent the parent object
+	 * @param root the root object
 	 * @throws SQLException if a SQLException is encountered getting
 	 * column values (that is, there's no need to catch SQLException)
 	 */
-	void mapChildRow(ResultSet rs, int rowNum, P parent) throws SQLException;
+	void mapAndAddChildRow(ResultSet rs, int rowNum, R root) throws SQLException;
 
 	/**
 	 * Implementations must implement this method to map the foreign key for
@@ -53,6 +53,6 @@ public interface ChildRowMapper<P, T, FK> extends RowMapper<T> {
 	 * @throws SQLException if a SQLException is encountered getting
 	 * column values (that is, there's no need to catch SQLException)
 	 */
-	FK mapForeignKey(ResultSet rs, int rowNum) throws SQLException;
+	K mapForeignKey(ResultSet rs, int rowNum) throws SQLException;
 
 }

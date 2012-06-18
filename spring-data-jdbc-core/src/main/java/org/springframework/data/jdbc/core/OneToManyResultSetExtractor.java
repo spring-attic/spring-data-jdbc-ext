@@ -30,7 +30,7 @@ import java.util.List;
  * This is useful when joining a one-to-many relationship where there can be multiple child rows returned per
  * parent root.
  *
- * It's assumed the the Root type R has a primary key (id) of type K and the the Child type C can map a foreign key of
+ * It's assumed the the Root type R has a primary key (id) of type K and that the Child type C can map a foreign key of
  * type K referencing the root primary key.
  *
  * For example, consider the relationship: "a Customer has one-to-many Addresses".
@@ -76,10 +76,11 @@ public class OneToManyResultSetExtractor<R, C, K> implements ResultSetExtractor<
 			row++;
 		}
 		while (more) {
-			R c = rootMapper.mapRow(rs, row);
+			R root = rootMapper.mapRow(rs, row);
+			K primaryKey = rootMapper.mapPrimaryKey(rs, row, root);
 			if (childMapper.mapForeignKey(rs, row) != null) {
-				while (more && rootMapper.getPrimaryKey(c).equals(childMapper.mapForeignKey(rs, row))) {
-					childMapper.mapChildRow(rs, row, c);
+				while (more && primaryKey.equals(childMapper.mapForeignKey(rs, row))) {
+					childMapper.mapAndAddChildRow(rs, row, root);
 					more = rs.next();
 					if (more) {
 						row++;
@@ -92,7 +93,7 @@ public class OneToManyResultSetExtractor<R, C, K> implements ResultSetExtractor<
 					row++;
 				}
 			}
-			results.add(c);
+			results.add(root);
 		}
 		if ((expectedResults == ExpectedResults.ONE_AND_ONLY_ONE || expectedResults == ExpectedResults.ONE_OR_NONE) &&
 				results.size() > 1) {
