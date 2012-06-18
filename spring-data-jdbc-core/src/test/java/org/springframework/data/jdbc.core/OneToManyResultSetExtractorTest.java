@@ -1,5 +1,6 @@
 package org.springframework.data.jdbc.core;
 
+import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +22,7 @@ import java.util.List;
 @ContextConfiguration(locations="classpath:core-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext
-public class OneToManyResultSetExtractorTests {
+public class OneToManyResultSetExtractorTest {
 
 	@Autowired
 	DataSource dataSource;
@@ -38,12 +39,17 @@ public class OneToManyResultSetExtractorTests {
 
 	@Test
 	public void testExtractingData() {
-		System.out.println("TEST");
 		List<Customer> result = template.query(
 				"select customer.id, customer.name, address.id, address.customer_id, address.street, address.city from customer " +
-				"left join address on customer.id = address.customer_id",
+				"left join address on customer.id = address.customer_id order by customer.id",
 				resultSetExtractor);
-		System.out.println(result);
+		Assert.assertEquals(3, result.size());
+		Assert.assertEquals(Integer.valueOf(1), result.get(0).getId());
+		Assert.assertEquals(2, result.get(0).getAddresses().size());
+		Assert.assertEquals(Integer.valueOf(2), result.get(1).getId());
+		Assert.assertEquals(1, result.get(1).getAddresses().size());
+		Assert.assertEquals(Integer.valueOf(3), result.get(2).getId());
+		Assert.assertEquals(0, result.get(2).getAddresses().size());
 	}
 
 	private static class CustomerAddressExtractor extends OneToManyResultSetExtractor<Customer, Address, Integer> {

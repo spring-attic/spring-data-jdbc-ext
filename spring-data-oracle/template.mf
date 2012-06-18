@@ -16,7 +16,7 @@ Import-Template:
  org.springframework.oxm.*;version="[3.0.0, 4.0.0)";resolution:=optional,
  org.springframework.transaction.*;version="[3.0.0, 4.0.0)",
  org.springframework.util.*;version="[3.0.0, 4.0.0)",
- org.springframework.data.core.*;version="[1.0.0, 2.0.0)",
+ org.springframework.data.jdbc.core.*;version="[1.0.0, 2.0.0)",
  org.springframework.data.persistence.*;version="[1.0.0, 2.0.0)",
  org.springframework.retry.*;version="[1.0.0, 2.0.0)";resolution:=optional,
  org.springframework.data.jdbc.*;version="[1.0.0, 2.0.0)";resolution:=optional,
