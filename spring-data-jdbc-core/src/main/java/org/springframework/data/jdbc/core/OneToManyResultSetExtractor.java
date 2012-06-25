@@ -51,11 +51,13 @@ public abstract class OneToManyResultSetExtractor<R, C, K> implements ResultSetE
 		AT_LEAST_ONE
 	}
 
-	private ExpectedResults expectedResults = ExpectedResults.ANY;
+	protected List<R> results;
 
-	private RowMapper<R> rootMapper;
+	protected ExpectedResults expectedResults = ExpectedResults.ANY;
 
-	private RowMapper<C> childMapper;
+	protected RowMapper<R> rootMapper;
+
+	protected RowMapper<C> childMapper;
 
 	public OneToManyResultSetExtractor(RowMapper<R> rootMapper, RowMapper<C> childMapper) {
 		this.rootMapper = rootMapper;
@@ -68,9 +70,10 @@ public abstract class OneToManyResultSetExtractor<R, C, K> implements ResultSetE
 	}
 
 	public List<R> extractData(ResultSet rs) throws SQLException, DataAccessException {
-
+		if (results == null) {
+			results = new ArrayList<R>();
+		}
 		int row = 0;
-		List<R> results = new ArrayList<R>();
 		boolean more = rs.next();
 		if (more) {
 			row++;
@@ -134,8 +137,8 @@ public abstract class OneToManyResultSetExtractor<R, C, K> implements ResultSetE
 	 * Add the child object to the root object
 	 * This method must be implemented by subclasses.
 	 *
-	 * @param root
-	 * @param child
+	 * @param root the Root object
+	 * @param child the Child object
 	 */
 	protected abstract void addChild(R root, C child);
 
