@@ -40,7 +40,7 @@
             </para>
         </partintro>
         <xi:include href="core-overview.xml"/>
-        <xi:include href="core-query-dsl.xml"/>
+        <xi:include href="core-querydsl.xml"/>
     </part>
     <part>
         <title>JDBC Extensions for the Oracle Database</title>

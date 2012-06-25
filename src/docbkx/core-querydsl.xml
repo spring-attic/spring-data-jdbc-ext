@@ -2,25 +2,25 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="core.querydsl">
-  <title>QueryDSL Support</title>
+  <title>Querydsl Support</title>
 
-  <para>The QueryDSL project provides a framework that let's you write
+  <para>The Querydsl project provides a framework that let's you write
   type-safe queries in Java rather than constructing them using strings. This
   has several advantages like code completion in your IDE, domain types and
   properties can be accessed in a type-safe manner reducing the probability of
-  query syntax errors during run-time. QueryDSL has modules that support JPA,
+  query syntax errors during run-time. Querydsl has modules that support JPA,
   JDO, SQL, MongoDB and more. It is the SQL support that is used for the JDBC
-  Extensions project. You can read more about QueryDSL at their website <ulink
+  Extensions project. You can read more about Querydsl at their website <ulink
   url="http://www.querydsl.com">http://www.querydsl.com</ulink>.</para>
 
   <section id="core.querydsl.intro">
-    <title>Introduction to QueryDSL</title>
+    <title>Introduction to Querydsl</title>
 
-    <para>Before you can use the Spring support for QueryDSL you need to
-    configure your application to use the QueryDSL SQL support. See the
+    <para>Before you can use the Spring support for Querydsl you need to
+    configure your application to use the Querydsl SQL support. See the
     instruction in the Mysema <ulink
     url="http://blog.mysema.com/2011/01/querying-in-sql-with-querydsl.html">blog
-    post</ulink> on how this is done. Once you have generated your QueryDSL
+    post</ulink> on how this is done. Once you have generated your Querydsl
     query types then you can start using the Spring support as outlined
     bellow.</para>
   </section>
@@ -28,7 +28,7 @@
   <section id="core.querydsl.template">
     <title>QueryDslJdbcTemplate</title>
 
-    <para>The central class in the QueryDSL support is the
+    <para>The central class in the Querydsl support is the
     <classname>QueryDslJdbcTemplate</classname>. Just like the
     <classname>NamedParameterJdbcTemplate</classname> it wraps a regular
     <classname>JdbcTemplate</classname> that you can get access to by calling
@@ -91,7 +91,7 @@ public void setDataSource(DataSource dataSource) {
       <listitem>
         <para>use the method taking a regular Spring
         <classname>RowMapper</classname> together with a projection in the
-        form of a QueryDSL <classname>Expression</classname>.</para>
+        form of a Querydsl <classname>Expression</classname>.</para>
       </listitem>
     </itemizedlist>
 
@@ -99,11 +99,11 @@ public void setDataSource(DataSource dataSource) {
 
     <itemizedlist>
       <listitem>
-        <para>use the method that takes a QueryDSL class derived from
+        <para>use the method that takes a Querydsl class derived from
         <classname>ExpressionBase</classname> like an extension of the handy
         <classname>MappingProjection</classname>, a
-        <classname>QBean</classname> implementation or a QueryDSL query type
-        combined with a QueryDSL bean type to specify the mapping.</para>
+        <classname>QBean</classname> implementation or a Querydsl query type
+        combined with a Querydsl bean type to specify the mapping.</para>
       </listitem>
     </itemizedlist>
 

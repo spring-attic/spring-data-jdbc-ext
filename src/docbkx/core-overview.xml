@@ -14,8 +14,8 @@
     feature is documented in more detail in the following chapters</para>
 
     <itemizedlist>
-      <listitem>QueryDSL<remark>The QueryDSL project provides a way to work with many datastore in a type-safe manner. 
-	  This includes support for working with SQL databases. We provide the "glue" that let's you easily work with QueryDSL 
+      <listitem>Querydsl<remark>The Querydsl project provides a way to work with many datastore in a type-safe manner. 
+	  This includes support for working with SQL databases. We provide the "glue" that let's you easily work with Querydsl 
 	  in a Spring based project.</remark></listitem>
     </itemizedlist>
   </section>
@@ -38,7 +38,7 @@
       required by the Spring Framework and we recommend version
       1.1.1.</remark></listitem>
 
-      <listitem>QueryDSL<remark>The QueryDSL support requires the use of QueryDSL SQL module version 2.2.2 or later and this module does require Java 6.</remark>
+      <listitem>Querydsl<remark>The Querydsl support requires the use of Querydsl SQL module version 2.2.2 or later and this module does require Java 6.</remark>
       </listitem>
     </itemizedlist>
   </section>
