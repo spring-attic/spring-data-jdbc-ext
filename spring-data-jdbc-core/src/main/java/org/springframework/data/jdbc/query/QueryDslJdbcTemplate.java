@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2011 the original author or authors.
+ * Copyright 2008-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.mysema.query.QueryException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -125,7 +126,11 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLQuery liveQuery = sqlQuery.clone(con);
-				return liveQuery.count();
+				try {
+					return liveQuery.count();
+				} catch (QueryException qe) {
+					throw translateQueryException(qe, "SQLQuery", liveQuery.toString());
+				}
 			}});
 		return count;
 	}
@@ -135,7 +140,11 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLQuery liveQuery = sqlQuery.clone(con);
-				return liveQuery.countDistinct();
+				try {
+					return liveQuery.countDistinct();
+				} catch (QueryException qe) {
+					throw translateQueryException(qe, "SQLQuery", liveQuery.toString());
+				}
 			}});
 		return count;
 	}
@@ -145,7 +154,11 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 			public Boolean doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLQuery liveQuery = sqlQuery.clone(con);
-				return liveQuery.exists();
+				try {
+					return liveQuery.exists();
+				} catch (QueryException qe) {
+					throw translateQueryException(qe, "SQLQuery", liveQuery.toString());
+				}
 			}});
 		return exists;
 	}
@@ -155,17 +168,22 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 			public Boolean doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLQuery liveQuery = sqlQuery.clone(con);
-				return liveQuery.notExists();
+				try {
+					return liveQuery.notExists();
+				} catch (QueryException qe) {
+					throw translateQueryException(qe, "SQLQuery", liveQuery.toString());
+				}
 			}});
 		return notExists;
 	}
 
-	public <T> T queryForObject(final SQLQuery sqlQuery, final ResultSetExtractor<T> resultSetExtractor, final Expression<?>... projection) {
+	public <T> T queryForObject(final SQLQuery sqlQuery, final ResultSetExtractor<T> resultSetExtractor,
+				final Expression<?>... projection) {
 		T results = jdbcTemplate.execute(new ConnectionCallback<T>() {
 			public T doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLQuery liveQuery = sqlQuery.clone(con);
-				ResultSet resultSet = liveQuery.getResults(projection);
+				ResultSet resultSet = queryForResultSet(liveQuery, projection);
 				T t = resultSetExtractor.extractData(resultSet);
 				JdbcUtils.closeResultSet(resultSet);
 				return t;
@@ -173,7 +191,8 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		return results;
 	}
 
-	public <T> T queryForObject(final SQLQuery sqlQuery, final RowMapper<T> rowMapper, final Expression<?>... projection) {
+	public <T> T queryForObject(final SQLQuery sqlQuery, final RowMapper<T> rowMapper,
+				final Expression<?>... projection) {
 		List<T> results = query(sqlQuery, rowMapper, projection);
 		if (results.size() == 0) {
 			return null;
@@ -195,12 +214,13 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		return results.get(0);
 	}
 
-	public <T> List<T> query(final SQLQuery sqlQuery, final ResultSetExtractor<List<T>> resultSetExtractor, final Expression<?>... projection) {
+	public <T> List<T> query(final SQLQuery sqlQuery, final ResultSetExtractor<List<T>> resultSetExtractor,
+				final Expression<?>... projection) {
 		List<T> results = jdbcTemplate.execute(new ConnectionCallback<List<T>>() {
 			public List<T> doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLQuery liveQuery = sqlQuery.clone(con);
-				ResultSet resultSet = liveQuery.getResults(projection);
+				ResultSet resultSet = queryForResultSet(liveQuery, projection);
 				List<T> list = resultSetExtractor.extractData(resultSet);
 				JdbcUtils.closeResultSet(resultSet);
 				return list;
@@ -217,7 +237,11 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 			public List<T> doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLQuery liveQuery = sqlQuery.clone(con);
-				return liveQuery.list(expression);
+				try {
+					return liveQuery.list(expression);
+				} catch (QueryException qe) {
+					throw translateQueryException(qe, "SQLQuery", liveQuery.toString());
+				}
 			}});
 		return results;
 	}
@@ -227,7 +251,11 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLInsertClause sqlClause = new SQLInsertClause(con, dialect, entity);
-				return callback.doInSqlInsertClause(sqlClause);
+				try {
+					return callback.doInSqlInsertClause(sqlClause);
+				} catch (QueryException qe) {
+					throw  translateQueryException(qe, "SQLInsertClause", sqlClause.toString());
+				}
 			}});
 		return rowsAffected;
 	}
@@ -237,7 +265,11 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 			public K doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLInsertClause sqlClause = new SQLInsertClause(con, dialect, entity);
-				return callback.doInSqlInsertWithKeyClause(sqlClause);
+				try {
+					return callback.doInSqlInsertWithKeyClause(sqlClause);
+				} catch (QueryException qe) {
+					throw translateQueryException(qe, "SQLInsertClause", sqlClause.toString());
+				}
 			}});
 		return generatedKey;
 	}
@@ -247,7 +279,11 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLUpdateClause sqlClause = new SQLUpdateClause(con, dialect, entity);
-				return callback.doInSqlUpdateClause(sqlClause);
+				try {
+					return callback.doInSqlUpdateClause(sqlClause);
+				} catch (QueryException qe) {
+					throw  translateQueryException(qe, "SQLUpdateClause", sqlClause.toString());
+				}
 			}});
 		return rowsAffected;
 	}
@@ -257,8 +293,31 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLDeleteClause sqlClause = new SQLDeleteClause(con, dialect, entity);
-				return callback.doInSqlDeleteClause(sqlClause);
+				try {
+					return callback.doInSqlDeleteClause(sqlClause);
+				} catch (QueryException qe) {
+					throw  translateQueryException(qe, "SQLDeleteClause", sqlClause.toString());
+				}
 			}});
 		return rowsAffected;
+	}
+
+	private ResultSet queryForResultSet(SQLQuery liveQuery, Expression<?>[] projection) throws DataAccessException {
+		ResultSet resultSet;
+		try {
+			resultSet = liveQuery.getResults(projection);
+		} catch (QueryException qe) {
+			throw  translateQueryException(qe, "SQLQuery", liveQuery.toString());
+		}
+		return resultSet;
+	}
+
+	private RuntimeException translateQueryException(QueryException qe, String task, String query) {
+		Throwable t = qe.getCause();
+		if (t instanceof SQLException) {
+			return jdbcTemplate.getExceptionTranslator()
+					.translate(task, query, (SQLException) t);
+		}
+		return new UncategorizedQueryException("Error in " + "SQLQuery", qe);
 	}
 }
