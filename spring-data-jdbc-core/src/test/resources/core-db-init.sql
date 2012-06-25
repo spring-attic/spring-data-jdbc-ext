@@ -1,5 +1,5 @@
-create table customer(id IDENTITY PRIMARY KEY, name VARCHAR(255));
-CREATE TABLE address (id IDENTITY PRIMARY KEY, customer_id INTEGER CONSTRAINT address_customer_ref FOREIGN KEY REFERENCES customer (id), street VARCHAR(255), city VARCHAR(255));
+create table customer(id BIGINT IDENTITY PRIMARY KEY, name VARCHAR(255));
+CREATE TABLE address (id BIGINT IDENTITY PRIMARY KEY, customer_id BIGINT CONSTRAINT address_customer_ref FOREIGN KEY REFERENCES customer (id), street VARCHAR(255), city VARCHAR(255));
 insert into customer(id, name) values(1, 'Thomas');
 insert into customer(id, name) values(2, 'Mark');
 insert into customer(id, name) values(3, 'Oliver');

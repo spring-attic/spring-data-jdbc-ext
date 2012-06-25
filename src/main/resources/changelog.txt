@@ -1,6 +1,17 @@
 Spring Data JDBC Extensions Support Changelog
 =============================================
 
+Changes in version 1.0.0.RC3 (June 25, 2012)
+--------------------------------------------
+
+General
+* Updated dependencies - Spring to 3.0.7, Querydsl to 2.6.0
+
+Core
+* Adding One-to-Many ResultSetExtractor implementation 
+* DATAJDBC-32 Adding exception translation to QueryDslJdbcTemplate
+
+
 Changes in version 1.0.0.RC2 (June 1, 2012)
 -------------------------------------------
 
