@@ -4,7 +4,7 @@
 
     <bookinfo>
         <title>Spring Data JDBC Extensions - Reference Documentation</title>
-        <releaseinfo>&version;</releaseinfo>
+        <releaseinfo>1.0</releaseinfo>
 
         <authorgroup>
             <author>
@@ -40,6 +40,7 @@
             </para>
         </partintro>
         <xi:include href="core-overview.xml"/>
+        <xi:include href="core-support.xml"/>
         <xi:include href="core-querydsl.xml"/>
     </part>
     <part>

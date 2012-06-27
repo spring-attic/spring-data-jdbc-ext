@@ -31,10 +31,6 @@ public class Customer {
 		return addresses;
 	}
 
-	public void setAddresses(Set<Address> addresses) {
-		this.addresses = addresses;
-	}
-
 	public void addAddress(Address address) {
 		this.addresses.add(address);
 	}

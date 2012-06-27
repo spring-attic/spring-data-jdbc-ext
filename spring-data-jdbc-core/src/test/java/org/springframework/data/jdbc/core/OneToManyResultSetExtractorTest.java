@@ -40,8 +40,11 @@ public class OneToManyResultSetExtractorTest {
 	@Test
 	public void testExtractingData() {
 		List<Customer> result = template.query(
-				"select customer.id, customer.name, address.id, address.customer_id, address.street, address.city from customer " +
-				"left join address on customer.id = address.customer_id order by customer.id",
+				"select customer.id, customer.name, address.id, " +
+				"address.customer_id, address.street, address.city " +
+				"from customer " +
+				"left join address on customer.id = address.customer_id " +
+				"order by customer.id",
 				resultSetExtractor);
 		Assert.assertEquals(3, result.size());
 		Assert.assertEquals(Integer.valueOf(1), result.get(0).getId());
@@ -52,27 +55,11 @@ public class OneToManyResultSetExtractorTest {
 		Assert.assertEquals(0, result.get(2).getAddresses().size());
 	}
 
-	private static class CustomerAddressExtractor extends OneToManyResultSetExtractor<Customer, Address, Integer> {
+	public class CustomerAddressExtractor extends
+			OneToManyResultSetExtractor<Customer, Address, Integer> {
 
 		public CustomerAddressExtractor() {
-			super(
-				new RowMapper<Customer>() {
-					public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
-						Customer c = new Customer();
-						c.setId(rs.getInt("customer.id"));
-						c.setName(rs.getString("customer.name"));
-						return c;
-					}
-				},
-				new RowMapper<Address>() {
-					public Address mapRow(ResultSet rs, int rowNum) throws SQLException {
-						Address a = new Address();
-						a.setId(rs.getInt("address.id"));
-						a.setStreet(rs.getString("address.street"));
-						a.setCity(rs.getString("address.city"));
-						return a;
-					}
-				});
+			super(new CustomerMapper(), new AddressMapper());
 		}
 
 		@Override
@@ -93,6 +80,27 @@ public class OneToManyResultSetExtractorTest {
 		@Override
 		protected void addChild(Customer root, Address child) {
 			root.addAddress(child);
+		}
+	}
+
+	private static class CustomerMapper implements RowMapper<Customer> {
+
+		public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Customer c = new Customer();
+			c.setId(rs.getInt("customer.id"));
+			c.setName(rs.getString("customer.name"));
+			return c;
+		}
+	}
+
+	private static class AddressMapper implements RowMapper<Address> {
+
+		public Address mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Address a = new Address();
+			a.setId(rs.getInt("address.id"));
+			a.setStreet(rs.getString("address.street"));
+			a.setCity(rs.getString("address.city"));
+			return a;
 		}
 	}
 }
