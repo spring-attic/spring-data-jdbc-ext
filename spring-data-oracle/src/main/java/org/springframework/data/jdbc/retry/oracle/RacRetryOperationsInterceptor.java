@@ -27,12 +27,12 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * A RetryOperationsInterceptor that will start the RAC retry interception logic. It will keep track
- * of started RAC retry interceptions usinga ThreadLocal and only allow one to be started if there
+ * of started RAC retry interceptions using a ThreadLocal and only allow one to be started if there
  * is no current transaction.
  *
  * @author Thomas Risberg
  * @since 1.0
- * @see com.springsource.data.retry.JdbcRetryPolicy
+ * @see org.springframework.data.jdbc.retry.JdbcRetryPolicy
  */
 public class RacRetryOperationsInterceptor extends RetryOperationsInterceptor {
 

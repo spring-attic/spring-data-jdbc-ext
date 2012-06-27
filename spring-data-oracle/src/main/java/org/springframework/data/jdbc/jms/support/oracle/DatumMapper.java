@@ -26,7 +26,6 @@ import java.sql.Connection;
  *
  * @author Thomas Risberg
  * @since 1.0
- * @throws java.sql.SQLException
  */
 public interface DatumMapper {
 

@@ -191,7 +191,7 @@
 					<!-- copies doc-files subdirectory which contains image resources -->
 					<docfilessubdirs>true</docfilessubdirs>
 					<links>
-						<link>http://static.springframework.org/spring/docs/3.0.x/javadoc-api</link>
+						<link>http://static.springsource.org/spring/docs/3.0.x/javadoc-api</link>
 						<link>http://java.sun.com/javase/6/docs/api</link>
 					</links>
 				</configuration>

@@ -40,7 +40,6 @@ import oracle.jdbc.OracleConnection;
  *
  * @author Thomas Risberg
  * @since 1.0
- * @see com.springsource.data.retry.JdbcRetryPolicy
  */
 public class ProxyConnectionPreparer implements ConnectionPreparer {
 

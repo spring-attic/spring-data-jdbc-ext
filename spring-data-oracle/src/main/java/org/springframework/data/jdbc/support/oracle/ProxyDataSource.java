@@ -32,7 +32,7 @@ import javax.sql.DataSource;
  *
  * @author Thomas Risberg
  * @since 1.0
- * @see com.springsource.data.retry.JdbcRetryPolicy
+ * @see org.springframework.jdbc.datasource.SmartDataSource
  */
 public class ProxyDataSource implements SmartDataSource {
 

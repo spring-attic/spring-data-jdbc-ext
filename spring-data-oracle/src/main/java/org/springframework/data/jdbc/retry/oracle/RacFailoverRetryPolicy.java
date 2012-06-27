@@ -25,7 +25,7 @@ import org.springframework.data.jdbc.retry.JdbcRetryPolicy;
  *
  * @author Thomas Risberg
  * @since 1.0
- * @see com.springsource.data.retry.JdbcRetryPolicy
+ * @see org.springframework.data.jdbc.retry.JdbcRetryPolicy
  */
 public class RacFailoverRetryPolicy extends JdbcRetryPolicy {
     private static Integer[] DEFAULT_RECOVERABLE_ERROR_CODES =
