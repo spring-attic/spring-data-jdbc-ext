@@ -16,30 +16,31 @@
 
 package org.springframework.data.jdbc.core;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowMapper;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.util.Assert;
+
 /**
- * An abstract results extractor for row mapping operations that map multiple rows to a single root object.
- * This is useful when joining a one-to-many relationship where there can be multiple child rows returned per
- * parent root.
- *
+ * An abstract results extractor for row mapping operations that map multiple rows to a single root object. This is
+ * useful when joining a one-to-many relationship where there can be multiple child rows returned per parent root.
+ * <p>
  * It's assumed that the root type R table has a primary key (id) of type K and that the child type C table has a
  * foreign key of type K referencing the root table's primary key.
- *
- * For example, consider the relationship: "a Customer has one-to-many Addresses".
- * When joining the Customer table with the Address table to build a Customer object, multiple rows would be returned
- * for a Customer if it has more than one Address. This extractor is useful in that case.
- *
+ * <p>
+ * For example, consider the relationship: "a Customer has one-to-many Addresses". When joining the Customer table with
+ * the Address table to build a Customer object, multiple rows would be returned for a Customer if it has more than one
+ * Address. This extractor is useful in that case.
+ * 
  * @author Thomas Risberg
  * @author Keith Donald
+ * @author Oliver Gierke
  * @since 1.0
  */
 public abstract class OneToManyResultSetExtractor<R, C, K> implements ResultSetExtractor<List<R>> {
@@ -51,22 +52,37 @@ public abstract class OneToManyResultSetExtractor<R, C, K> implements ResultSetE
 		AT_LEAST_ONE
 	}
 
+	protected final ExpectedResults expectedResults;
+	protected final RowMapper<R> rootMapper;
+	protected final RowMapper<C> childMapper;
+
 	protected List<R> results;
 
-	protected ExpectedResults expectedResults = ExpectedResults.ANY;
-
-	protected RowMapper<R> rootMapper;
-
-	protected RowMapper<C> childMapper;
-
+	/**
+	 * Creates a new {@link OneToManyResultSetExtractor} from the given {@link RowMapper}s.
+	 * 
+	 * @param rootMapper {@link RowMapper} to map the root entity, must not be {@literal null}.
+	 * @param childMapper {@link RowMapper} to map the root entities, must not be {@literal null}.
+	 */
 	public OneToManyResultSetExtractor(RowMapper<R> rootMapper, RowMapper<C> childMapper) {
-		this.rootMapper = rootMapper;
-		this.childMapper = childMapper;
+		this(rootMapper, childMapper, null);
 	}
 
+	/**
+	 * Creates a new {@link OneToManyResultSetExtractor} from the given {@link RowMapper}s and {@link ExpectedResults}.
+	 * 
+	 * @param rootMapper {@link RowMapper} to map the root entity, must not be {@literal null}.
+	 * @param childMapper {@link RowMapper} to map the root entities, must not be {@literal null}.
+	 * @param expectedResults
+	 */
 	public OneToManyResultSetExtractor(RowMapper<R> rootMapper, RowMapper<C> childMapper, ExpectedResults expectedResults) {
-		this(rootMapper, childMapper);
-		this.expectedResults = expectedResults;
+
+		Assert.notNull(rootMapper, "Root RowMapper must not be null!");
+		Assert.notNull(childMapper, "Child RowMapper must not be null!");
+
+		this.childMapper = childMapper;
+		this.rootMapper = rootMapper;
+		this.expectedResults = expectedResults == null ? ExpectedResults.ANY : expectedResults;
 	}
 
 	public List<R> extractData(ResultSet rs) throws SQLException, DataAccessException {
