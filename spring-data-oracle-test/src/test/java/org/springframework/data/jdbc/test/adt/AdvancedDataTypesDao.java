@@ -21,4 +21,7 @@ public interface AdvancedDataTypesDao {
 
     List<Actor> getActors();
 
+	List<Actor> getAllActors();
+
+	void saveActors(List<Actor> actors);
 }

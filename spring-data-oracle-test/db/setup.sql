@@ -29,6 +29,8 @@ CREATE OR REPLACE TYPE actor_type
 /
 CREATE OR REPLACE TYPE actor_tab_type AS TABLE OF actor_type;
 /
+CREATE OR REPLACE TYPE actor_array_type AS VARRAY(20) OF actor_type;
+/
 CREATE OR REPLACE PROCEDURE add_actor (in_actor IN actor_type)
 AS
 BEGIN
@@ -41,18 +43,18 @@ BEGIN
   SELECT actor_type(id, name, age) INTO out_actor FROM actor WHERE id = in_actor_id;
 END;
 /
-CREATE OR REPLACE FUNCTION get_all_actor_types RETURN actor_tab_type
+CREATE OR REPLACE FUNCTION get_all_actor_types RETURN actor_array_type
 AS
-  m_actor_tab actor_tab_type;
+  m_actor_array actor_array_type;
   cursor c_actor is
-    select id, first_name from actor a;
+    select id, name, age from actor a where rownum <= 20;
 BEGIN
-  m_actor_tab := actor_tab_type();
+  m_actor_array := actor_array_type();
   FOR r_actor IN c_actor loop
-    m_actor_tab.extend;
-    m_actor_tab(m_actor_tab.count) := actor_type(r_actor.id, r_actor.first_name, 0);
+    m_actor_array.extend;
+    m_actor_array(m_actor_array.count) := actor_type(r_actor.id, r_actor.name, r_actor.age);
   END LOOP;
-  RETURN m_actor_tab;
+  RETURN m_actor_array;
 END;
 /
 CREATE OR REPLACE TYPE actor_name_array AS VARRAY(20) OF VARCHAR2(50);
@@ -76,6 +78,20 @@ AS
 BEGIN
   FOR i IN 1..in_actor_ids.count loop
     DELETE FROM actor WHERE id = in_actor_ids(i);
+  END LOOP;
+END;
+/
+CREATE OR REPLACE PROCEDURE read_actors (out_actors_cur OUT sys_refcursor)
+AS
+BEGIN
+  OPEN out_actors_cur FOR 'select * from actor';
+END;
+/
+CREATE OR REPLACE PROCEDURE save_actors (in_actors IN actor_array_type)
+AS
+BEGIN
+  FOR i IN 1..in_actors.count loop
+    INSERT INTO actor (id, name, age) VALUES (in_actors(i).id, in_actors(i).name, in_actors(i).age);
   END LOOP;
 END;
 /

@@ -1,6 +1,9 @@
 package org.springframework.data.jdbc.test.adt;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +12,12 @@ import javax.sql.DataSource;
 
 import oracle.jdbc.OracleTypes;
 
+import oracle.sql.STRUCT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.data.jdbc.support.oracle.SqlReturnStructArray;
+import org.springframework.data.jdbc.support.oracle.SqlStructArrayValue;
+import org.springframework.data.jdbc.support.oracle.StructMapper;
 import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
@@ -26,6 +34,7 @@ import org.springframework.data.jdbc.support.oracle.SqlStructValue;
  * @author trisberg
  */
 @Repository
+@SuppressWarnings("unused")
 public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
 
     private AddSqlActorProc addSqlActorProc;
@@ -41,6 +50,10 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
     private DeleteActorsProc deleteActorsProc;
 
     private ReadActorsProc readActorsProc;
+
+    private GetActorArrayProc getActorArrayProc;
+
+	private SaveActorArrayProc saveActorArrayProc;
 
     @Autowired
     public void init(DataSource dataSource) {
@@ -65,6 +78,12 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
 
         this.readActorsProc =
                 new ReadActorsProc(dataSource);
+
+		this.getActorArrayProc =
+				new GetActorArrayProc(dataSource);
+
+		this.saveActorArrayProc =
+				new SaveActorArrayProc(dataSource);
     }
 
     public void addSqlActor(final SqlActor actor) {
@@ -96,7 +115,22 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
         return readActorsProc.execute();
     }
 
-    private class AddSqlActorProc extends StoredProcedure {
+	public List<Actor> getAllActors() {
+		Object[] actors = getActorArrayProc.execute();
+		List<Actor> result = new ArrayList<Actor>();
+			for (Object actor : actors) {
+				if (actor instanceof Actor) {
+					result.add((Actor) actor);
+				}
+			}
+		return result;
+	}
+
+	public void saveActors(List<Actor> actors) {
+		saveActorArrayProc.execute(actors);
+	}
+
+	private class AddSqlActorProc extends StoredProcedure {
 
         public AddSqlActorProc(DataSource dataSource) {
             super(dataSource, "add_actor");
@@ -218,4 +252,53 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
         }
 
     }
+
+	private class GetActorArrayProc extends StoredProcedure {
+
+		public GetActorArrayProc(DataSource dataSource) {
+			super(dataSource, "get_all_actor_types");
+			setFunction(true);
+			declareParameter(new SqlOutParameter("return", Types.ARRAY, "ACTOR_ARRAY_TYPE",
+					new SqlReturnStructArray<Actor>(
+					  new StructMapper<Actor>() {
+						  public STRUCT toStruct(Actor source, Connection conn, String typeName) throws SQLException {
+							  throw new InvalidDataAccessApiUsageException("Not implemented");
+						  }
+
+						  public Actor fromStruct(STRUCT struct) throws SQLException {
+							  Actor a = new Actor();
+							  Object[] attributes = struct.getAttributes();
+							  a.setId(Long.valueOf(((Number) attributes[0]).longValue()));
+							  a.setName(String.valueOf(attributes[1]));
+							  a.setAge(Integer.valueOf(((Number) attributes[2]).intValue()));
+							  return a;
+						  }
+					  }
+			  )));
+		}
+
+		@SuppressWarnings("unchecked")
+		public Object[] execute() {
+			Map in = Collections.emptyMap();
+			Map out = this.execute(in);
+			return (Object[]) out.get("return");
+		}
+
+	}
+
+	private class SaveActorArrayProc extends StoredProcedure {
+
+		public SaveActorArrayProc(DataSource dataSource) {
+			super(dataSource, "save_actors");
+			declareParameter(new SqlParameter("in_actors", OracleTypes.ARRAY, "ACTOR_ARRAY_TYPE"));
+		}
+
+		@SuppressWarnings("unchecked")
+		public void execute(List<Actor> actors) {
+			Map in = Collections.singletonMap("in_actors",
+					new SqlStructArrayValue<Actor>(actors.toArray(new Actor[0]), new ActorMapper(), "ACTOR_TYPE"));
+			this.execute(in);
+		}
+
+	}
 }

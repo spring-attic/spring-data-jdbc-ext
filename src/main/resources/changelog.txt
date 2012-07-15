@@ -6,6 +6,7 @@ Changes in version 1.0.0.RC4 (July 15, 2012)
 
 Core
 * Parameterizing classes used for mapping of advanced data types
+* Adding support for mapping ARRAYs of STRUCTs in addition to scalar values
 
 
 Changes in version 1.0.0.RC3 (June 25, 2012)

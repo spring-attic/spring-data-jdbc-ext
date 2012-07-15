@@ -1,9 +1,9 @@
 package org.springframework.data.jdbc.test.adt;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
 
@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import oracle.jdbc.OracleTypes;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
@@ -38,6 +39,10 @@ public class SimpleAdvancedDataTypesDao implements AdvancedDataTypesDao {
     private SimpleJdbcCall deleteActorsCall;
 
     private SimpleJdbcCall readActorsCall;
+
+    private SimpleJdbcCall readActorsArrayCall;
+
+    private SimpleJdbcCall saveActorsArrayCall;
 
     @Autowired
     public void init(DataSource dataSource) {
@@ -78,8 +83,22 @@ public class SimpleAdvancedDataTypesDao implements AdvancedDataTypesDao {
         this.readActorsCall =
                 new SimpleJdbcCall(dataSource).withProcedureName("read_actors")
                     .returningResultSet("out_actors_cur",
-                            ParameterizedBeanPropertyRowMapper.newInstance(Actor.class));
-    }
+                            BeanPropertyRowMapper.newInstance(Actor.class));
+
+        this.readActorsArrayCall =
+                new SimpleJdbcCall(dataSource).withFunctionName("get_all_actor_types")
+						.withoutProcedureColumnMetaDataAccess()
+      					.declareParameters(new SqlOutParameter(
+								  "return", Types.ARRAY,
+								  "ACTOR_ARRAY_TYPE",
+								  new SqlReturnStructArray<Actor>(new ActorMapper())
+						 ));
+
+		this.saveActorsArrayCall =
+				new SimpleJdbcCall(dataSource).withProcedureName("save_actors")
+					.withoutProcedureColumnMetaDataAccess()
+					.declareParameters(new SqlParameter("in_actors", Types.ARRAY, "ACTOR_ARRAY_TYPE"));
+	}
 
     @SuppressWarnings("unchecked")
 	public void addSqlActor(final SqlActor actor) {
@@ -93,6 +112,7 @@ public class SimpleAdvancedDataTypesDao implements AdvancedDataTypesDao {
         return getSqlActorCall.executeObject(SqlActor.class, in);
     }
 
+	@SuppressWarnings("unchecked")
 	public void addActor(final Actor actor) {
     	Map<String, Object> in = new HashMap<String, Object>();
     	in.put("in_actor", new SqlStructValue(actor));
@@ -111,6 +131,7 @@ public class SimpleAdvancedDataTypesDao implements AdvancedDataTypesDao {
         return getActorNamesCall.executeFunction(String[].class, in);
     }
 
+	@SuppressWarnings("unchecked")
 	public void deleteActors(final Long[] ids) {
     	Map<String, Object> in = new HashMap<String, Object>();
     	in.put("in_actor_ids", new SqlArrayValue(ids));
@@ -122,4 +143,21 @@ public class SimpleAdvancedDataTypesDao implements AdvancedDataTypesDao {
 	public List<Actor> getActors() {
         return readActorsCall.executeObject(List.class, Collections.emptyMap());
     }
+
+	public List<Actor> getAllActors() {
+		Object[] actors = readActorsArrayCall.executeObject(Object[].class, Collections.emptyMap());
+        List<Actor> result = new ArrayList<Actor>();
+		for (Object actor : actors) {
+			if (actor instanceof Actor) {
+				result.add((Actor) actor);
+			}
+		}
+        return result;
+    }
+
+	public void saveActors(List<Actor> actors) {
+		Map<String, Object> in = new HashMap<String, Object>();
+		in.put("in_actors", new SqlStructArrayValue<Actor>(actors.toArray(new Actor[0]), new ActorMapper(), "ACTOR_TYPE"));
+		saveActorsArrayCall.execute(in);
+	}
 }

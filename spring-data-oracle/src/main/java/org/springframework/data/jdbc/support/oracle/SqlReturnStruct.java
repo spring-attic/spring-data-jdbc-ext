@@ -60,7 +60,7 @@ public class SqlReturnStruct implements SqlReturnType {
     }
 
 	/**
-	 * Constructor that takes one parameter with the {@link StructMapper} to be used
+	 * Constructor that takes one parameter with the {@link StructMapper} to be used.
 	 * @param mapper the mapper
 	*/
     public SqlReturnStruct(StructMapper<?> mapper) {

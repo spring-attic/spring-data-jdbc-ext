@@ -16,25 +16,25 @@
 
 package org.springframework.data.jdbc.support.oracle;
 
+import oracle.sql.ARRAY;
+import oracle.sql.ArrayDescriptor;
+import oracle.sql.STRUCT;
 import org.springframework.jdbc.core.support.AbstractSqlTypeValue;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import oracle.sql.ArrayDescriptor;
-import oracle.sql.ARRAY;
-
 /**
  * Implementation of the SqlTypeValue interface, for convenient
- * creation of provided scalar values as an ARRAY.
+ * creation of provided type values as an ARRAY of STRUCTS.
  *
  * <p>A usage example from a StoredProcedure:
  *
- * <pre class="code">proc.declareParameter(new SqlParameter("myarray", Types.ARRAY, "NUMBERS"));
+ * <pre class="code">proc.declareParameter(new SqlParameter("myarray", Types.ARRAY, "ACTOR_TYPE_ARRAY"));
  * ...
  *
  * Map in = new HashMap();
- * in.put("myarray", new SqlArrayValue&lt;Number&gt;(objectArray);
+ * in.put("myarray", new SqlStructArrayValue&lt;Number&gt;(objectArray, actorMapper);
  * Map out = proc.execute(in);
  * </pre>
  *
@@ -45,18 +45,28 @@ import oracle.sql.ARRAY;
  * @see org.springframework.jdbc.core.simple.SimpleJdbcCall
  * @see org.springframework.jdbc.object.StoredProcedure
  */
-public class SqlArrayValue<T> extends AbstractSqlTypeValue {
+public class SqlStructArrayValue<T> extends AbstractSqlTypeValue {
 
     private T[] values;
 
+	/** The object that will do the mapping **/
+	private StructMapper<T> mapper;
+
+	/** The type name of the STRUCT **/
+	private String structTypeName;
 
     /**
-     * Constructor that takes one parameter with the array of values passed in to the stored
-     * procedure.
-     * @param values the array containing the values.
+     * Constructor that takes a parameter with the array of values passed in to the stored
+     * procedure, a parameter with the {@link StructMapper} to be used plus the type name of the STRUCT
+	 * that the array will contain.
+     * @param values the array containing the values
+     * @param mapper the mapper to create the STRUCT values
+     * @param structTypeName the type name of the STRUCT.
      */
-    public SqlArrayValue(T[] values) {
+    public SqlStructArrayValue(T[] values, StructMapper<T> mapper, String structTypeName) {
         this.values = values;
+		this.mapper = mapper;
+		this.structTypeName = structTypeName;
     }
     
 
@@ -69,8 +79,11 @@ public class SqlArrayValue<T> extends AbstractSqlTypeValue {
     protected Object createTypeValue(Connection conn, int sqlType, String typeName)
             throws SQLException {
         ArrayDescriptor arrayDescriptor = new ArrayDescriptor(typeName, conn);
-        ARRAY array =
-                new ARRAY(arrayDescriptor, conn, values);
+		STRUCT[] structValues = new STRUCT[values.length];
+		for (int i = 0; i < values.length; i++) {
+			structValues[i] = mapper.toStruct(values[i], conn, structTypeName);
+		}
+        ARRAY array = new ARRAY(arrayDescriptor, conn, structValues);
         return array;
     }
 }

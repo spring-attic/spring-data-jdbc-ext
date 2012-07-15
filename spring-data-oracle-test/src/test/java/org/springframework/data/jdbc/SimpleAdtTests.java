@@ -14,8 +14,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jdbc.test.adt.SimpleAdvancedDataTypesDao;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -82,10 +84,25 @@ public class SimpleAdtTests {
     	String[] names = dao.getActorNames();
     	assertTrue("", names.length == 1);
     }
+
     @Transactional @Test
     public void testRefCursor() {
     	List<Actor> actors = dao.getActors();
     	assertTrue("", actors.size() > 0);
+    }
+
+    @Transactional @Test
+    public void testStructArray() {
+    	List<Actor> actors = dao.getAllActors();
+    	assertTrue("", actors.size() > 0);
+		Long[] ids = new Long[actors.size()];
+		for (int i = 0; i < actors.size(); i++) {
+			ids[i] = actors.get(i).getId();
+		}
+		dao.deleteActors(ids);
+		assertTrue("", dao.getAllActors().size() == 0);
+		dao.saveActors(actors);
+		assertTrue("", dao.getAllActors().size() == actors.size());
     }
 
 }
