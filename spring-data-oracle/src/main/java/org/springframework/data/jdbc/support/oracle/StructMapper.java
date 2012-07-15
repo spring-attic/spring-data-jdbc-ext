@@ -28,17 +28,17 @@ import java.sql.SQLException;
  * @author Thomas Risberg
  * @since 1.0
  */
-public interface StructMapper {
+public interface StructMapper<T> {
 
     /**
-     * Create a struct of the defined type and populate it with values from the passed in object.
-     * @param object instance containng the values to map
+     * Create a struct of the defined type and populate it with values from the passed in source object.
+     * @param source instance containing the values to map
      * @param conn database connection to be used to create the STRUCT
      * @param typeName name of the STRUCT type
      * @return the new STRUCT
      * @throws SQLException
      */
-    STRUCT toStruct(Object object, Connection conn, String typeName) throws SQLException;
+    STRUCT toStruct(T source, Connection conn, String typeName) throws SQLException;
 
     /**
      * Map attributes from the passed in STRUCT to the desired object type.
@@ -46,5 +46,5 @@ public interface StructMapper {
      * @return new instance of the target class populated with attribute values
      * @throws SQLException
      */
-    Object fromStruct(STRUCT struct) throws SQLException;
+    T fromStruct(STRUCT struct) throws SQLException;
 }

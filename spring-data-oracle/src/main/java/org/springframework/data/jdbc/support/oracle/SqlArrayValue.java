@@ -34,7 +34,7 @@ import oracle.sql.ARRAY;
  * ...
  *
  * Map in = new HashMap();
- * in.put("myarray", new SqlArrayValue(objectArray);
+ * in.put("myarray", new SqlArrayValue&lt;Number&gt;(objectArray);
  * Map out = proc.execute(in);
  * </pre>
  *
@@ -45,9 +45,9 @@ import oracle.sql.ARRAY;
  * @see org.springframework.jdbc.core.simple.SimpleJdbcCall
  * @see org.springframework.jdbc.object.StoredProcedure
  */
-public class SqlArrayValue extends AbstractSqlTypeValue {
+public class SqlArrayValue<T> extends AbstractSqlTypeValue {
 
-    private Object[] values;
+    private T[] values;
 
 
     /**
@@ -55,7 +55,7 @@ public class SqlArrayValue extends AbstractSqlTypeValue {
      * procedure.
      * @param values the array containing the values.
      */
-    public SqlArrayValue(Object[] values) {
+    public SqlArrayValue(T[] values) {
         this.values = values;
     }
     

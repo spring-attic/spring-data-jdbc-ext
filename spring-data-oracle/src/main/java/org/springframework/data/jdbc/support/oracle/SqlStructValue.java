@@ -34,7 +34,7 @@ import java.sql.Struct;
  * ...
  *
  * Map in = new HashMap();
- * in.put("myarray", new SqlArrayValue(actor);
+ * in.put("myarray", new SqlArrayValue&lt;Actor&gt;(actor);
  * Map out = proc.execute(in);
  * </pre>
  *
@@ -45,28 +45,46 @@ import java.sql.Struct;
  * @see org.springframework.jdbc.core.simple.SimpleJdbcCall
  * @see org.springframework.jdbc.object.StoredProcedure
  */
-public class SqlStructValue extends AbstractSqlTypeValue {
+public class SqlStructValue<T> extends AbstractSqlTypeValue {
 
     /** Logger available to subclasses */
     protected final Log logger = LogFactory.getLog(getClass());
 
-    private Object source;
+    private T source;
 
     /** The object that will do the mapping **/
     private StructMapper mapper;
 
     /**
-     * Constructor that takes one parameter with the array of values passed in to the stored
+     * Constructor that takes one parameter with the Object value passed in to the stored
      * procedure.
      * @param source the Object containing the values to be mapped to the STRUCT.
      */
-    public SqlStructValue(Object source) {
+    public SqlStructValue(T source) {
         this.source = source;
         this.mapper = new BeanPropertyStructMapper(source.getClass());
     }
-    
 
     /**
+     * Constructor that takes two parameters, the Object value passed in to the stored
+	 * procedure and the {@link StructMapper} to be used
+     * @param source the Object containing the values to be mapped to the STRUCT.
+	 * @param mapper the mapper
+     */
+    public SqlStructValue(T source, StructMapper mapper) {
+        this.source = source;
+        this.mapper = mapper;
+    }
+
+	/**
+	 * Set the <code>StructMapper</code> to be used
+	 * @param mapper the mapper
+	 */
+	public void setMapper(StructMapper mapper) {
+		this.mapper = mapper;
+	}
+
+	/**
      * The implementation for this specific type. This method is called internally by the
      * Spring Framework during the out parameter processing and it's not accessed by application
      * code directly.

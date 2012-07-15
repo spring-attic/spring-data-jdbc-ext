@@ -27,17 +27,17 @@ import java.sql.Connection;
  * @author Thomas Risberg
  * @since 1.0
  */
-public interface DatumMapper {
+public interface DatumMapper<T> {
 
     /**
      * Create a <code>Datum</code> object based on the passed in object using the connection if necessary.
      * 
-     * @param object the object containing tha data to be used
+     * @param source the object containing tha data to be used
      * @param conn the database <code>Connection</code> that can be used to create database specific instances
      * @return the created Datum
      * @throws SQLException
      */
-    public Datum toDatum(Object object, Connection conn) throws SQLException;
+    public Datum toDatum(T source, Connection conn) throws SQLException;
 
     /**
      * Extract the <code>Datum</code> content and return it in a domain class instance.
@@ -46,6 +46,6 @@ public interface DatumMapper {
      * @return the instance of the domain class populated with extracted data from the <code>Datum</code>
      * @throws SQLException
      */
-    public Object fromDatum(Datum datum) throws SQLException;
+    public T fromDatum(Datum datum) throws SQLException;
 
 }

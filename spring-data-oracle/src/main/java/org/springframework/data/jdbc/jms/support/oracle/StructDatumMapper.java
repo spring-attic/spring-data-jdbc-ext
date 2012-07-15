@@ -34,7 +34,7 @@ import java.sql.SQLException;
  * @author Thomas Risberg
  * @since 1.0
  */
-public class StructDatumMapper implements DatumMapper {
+public class StructDatumMapper<T> implements DatumMapper<T> {
 
     /** Logger available to subclasses */
     protected final Log logger = LogFactory.getLog(getClass());
@@ -43,7 +43,7 @@ public class StructDatumMapper implements DatumMapper {
     protected String typeName;
 
     /** The object that will do the mapping **/
-    private StructMapper mapper;
+    private StructMapper<T> mapper;
 
 
     /**
@@ -53,7 +53,7 @@ public class StructDatumMapper implements DatumMapper {
      * @param typeName name of the database type
      * @param mapper {@link StructMapper} implementation to do the mapping
      */
-    public StructDatumMapper(String typeName, StructMapper mapper) {
+    public StructDatumMapper(String typeName, StructMapper<T> mapper) {
         this.typeName = typeName;
         this.mapper = mapper;
     }
@@ -66,20 +66,20 @@ public class StructDatumMapper implements DatumMapper {
      * @param typeName name of the database type
      * @param targetClass JavaBean class that STRUCT attributes will be mapped to
      */
-    public StructDatumMapper(String typeName, Class<?> targetClass) {
+    public StructDatumMapper(String typeName, Class<T> targetClass) {
         this.typeName = typeName;
-        this.mapper = new BeanPropertyStructMapper(targetClass);
+        this.mapper = new BeanPropertyStructMapper<T>(targetClass);
     }
 
 
-    public Datum toDatum(Object object, Connection conn) throws SQLException {
-        STRUCT struct = mapper.toStruct(object, conn, typeName);
+    public Datum toDatum(T source, Connection conn) throws SQLException {
+        STRUCT struct = mapper.toStruct(source, conn, typeName);
         return struct;
     }
 
-    public Object fromDatum(Datum datum) throws SQLException {
+    public T fromDatum(Datum datum) throws SQLException {
         STRUCT struct = (STRUCT) datum;
-        Object result = mapper.fromStruct(struct);
+        T result = mapper.fromStruct(struct);
         return result;
     }
 

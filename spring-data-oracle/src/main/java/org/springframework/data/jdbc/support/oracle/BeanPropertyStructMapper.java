@@ -52,13 +52,13 @@ import java.util.Map;
  * @author Juergen Hoeller
  * @since 1.0
  */
-public class BeanPropertyStructMapper implements StructMapper {
+public class BeanPropertyStructMapper<T> implements StructMapper<T> {
 
 	/** Logger available to subclasses */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	/** The class we are mapping to */
-	protected Class<?> mappedClass;
+	protected Class<T> mappedClass;
 
 	/** Map of the fields we provide mapping for */
 	private Map<String, PropertyDescriptor> mappedFields;
@@ -75,7 +75,7 @@ public class BeanPropertyStructMapper implements StructMapper {
 	 * Create a new BeanPropertyRowMapper.
 	 * @param mappedClass the class that each row should be mapped to.
 	 */
-	public BeanPropertyStructMapper(Class<?> mappedClass) {
+	public BeanPropertyStructMapper(Class<T> mappedClass) {
 		initialize(mappedClass);
 	}
 
@@ -83,7 +83,7 @@ public class BeanPropertyStructMapper implements StructMapper {
 	/**
 	 * Set the class that each row should be mapped to.
 	 */
-	public void setMappedClass(Class<?> mappedClass) {
+	public void setMappedClass(Class<T> mappedClass) {
 		if (this.mappedClass == null) {
 			initialize(mappedClass);
 		}
@@ -99,7 +99,7 @@ public class BeanPropertyStructMapper implements StructMapper {
 	 * Initialize the mapping metadata for the given class.
 	 * @param mappedClass the mapped class.
 	 */
-	protected void initialize(Class<?> mappedClass) {
+	protected void initialize(Class<T> mappedClass) {
 		this.mappedClass = mappedClass;
 		this.mappedFields = new HashMap<String, PropertyDescriptor>();
 		PropertyDescriptor[] pds = BeanUtils.getPropertyDescriptors(mappedClass);
@@ -142,7 +142,7 @@ public class BeanPropertyStructMapper implements StructMapper {
 	/**
 	 * Get the class that we are mapping to.
 	 */
-	public final Class<?> getMappedClass() {
+	public final Class<T> getMappedClass() {
 		return this.mappedClass;
 	}
 
@@ -154,7 +154,7 @@ public class BeanPropertyStructMapper implements StructMapper {
 	}
 
 
-    public STRUCT toStruct(Object object, Connection conn, String typeName) throws SQLException {
+    public STRUCT toStruct(T source, Connection conn, String typeName) throws SQLException {
         StructDescriptor descriptor = new StructDescriptor(typeName, conn);
         ResultSetMetaData rsmd = descriptor.getMetaData();
         int columns = rsmd.getColumnCount();
@@ -163,7 +163,7 @@ public class BeanPropertyStructMapper implements StructMapper {
             String column = JdbcUtils.lookupColumnName(rsmd, i).toLowerCase();
             PropertyDescriptor fieldMeta = (PropertyDescriptor) this.mappedFields.get(column);
             if (fieldMeta != null) {
-                BeanWrapper bw = new BeanWrapperImpl(object);
+                BeanWrapper bw = new BeanWrapperImpl(source);
                 if (bw.isReadableProperty(fieldMeta.getName())) {
                     try {
                         if (logger.isDebugEnabled()) {
@@ -193,9 +193,9 @@ public class BeanPropertyStructMapper implements StructMapper {
 	 * <p>Utilizes public setters and result set metadata.
 	 * @see java.sql.ResultSetMetaData
 	 */
-	public Object fromStruct(STRUCT struct) throws SQLException {
+	public T fromStruct(STRUCT struct) throws SQLException {
         Assert.state(this.mappedClass != null, "Mapped class was not specified");
-        Object mappedObject = BeanUtils.instantiateClass(this.mappedClass);
+        T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(mappedObject);
         initBeanWrapper(bw);
 
@@ -233,4 +233,14 @@ public class BeanPropertyStructMapper implements StructMapper {
 	protected void initBeanWrapper(BeanWrapper bw) {
 	}
 
+	/**
+	 * Static factory method to create a new BeanPropertyStructMapper
+	 * (with the mapped class specified only once).
+	 * @param mappedClass the class that each row should be mapped to
+	 */
+	public static <T> BeanPropertyStructMapper<T> newInstance(Class<T> mappedClass) {
+		BeanPropertyStructMapper<T> newInstance = new BeanPropertyStructMapper<T>();
+		newInstance.setMappedClass(mappedClass);
+		return newInstance;
+	}
 }

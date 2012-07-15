@@ -47,7 +47,7 @@ public class SqlReturnStruct implements SqlReturnType {
     protected final Log logger = LogFactory.getLog(getClass());
 
     /** The object that will do the mapping **/
-    private StructMapper mapper;
+    private StructMapper<?> mapper;
 
     
     /**
@@ -56,7 +56,15 @@ public class SqlReturnStruct implements SqlReturnType {
      * @param targetClass JavaBean class that STRUCT attributes will be mapped into
      */
     public SqlReturnStruct(Class<?> targetClass) {
-        this.mapper = new BeanPropertyStructMapper(targetClass);
+        this.mapper = BeanPropertyStructMapper.newInstance(targetClass);
+    }
+
+	/**
+	 * Constructor that takes one parameter with the {@link StructMapper} to be used
+	 * @param mapper the mapper
+	*/
+    public SqlReturnStruct(StructMapper<?> mapper) {
+        this.mapper = mapper;
     }
 
     /**
