@@ -16,6 +16,7 @@
 
 package org.springframework.data.jdbc.support.oracle;
 
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.core.support.AbstractSqlTypeValue;
 
 import java.sql.Connection;
@@ -49,26 +50,44 @@ public class SqlArrayValue<T> extends AbstractSqlTypeValue {
 
     private T[] values;
 
+    private String defaultTypeName;
+
 
     /**
-     * Constructor that takes one parameter with the array of values passed in to the stored
-     * procedure.
+     * Constructor that takes one parameter with the array of values passed in to the
+     * statement.
      * @param values the array containing the values.
      */
     public SqlArrayValue(T[] values) {
         this.values = values;
     }
     
+    /**
+     * Constructor that takes two parameters, one parameter with the array of values passed in to the
+     * statement and one that takes the default type name to be used when the context where this class
+	 * is used is not aware of the type name to use.
+     * @param values the array containing the values.
+     * @param defaultTypeName the default type name.
+     */
+    public SqlArrayValue(T[] values, String defaultTypeName) {
+        this.values = values;
+		this.defaultTypeName = defaultTypeName;
+    }
+
 
     /**
      * The implementation for this specific type. This method is called internally by the
-     * Spring Framework during the out parameter processing and it's not accessed by appplication
+     * Spring Framework during the out parameter processing and it's not accessed by application
      * code directly.
      * @see org.springframework.jdbc.core.support.AbstractSqlTypeValue
      */
     protected Object createTypeValue(Connection conn, int sqlType, String typeName)
             throws SQLException {
-        ArrayDescriptor arrayDescriptor = new ArrayDescriptor(typeName, conn);
+		if (typeName == null && defaultTypeName == null) {
+			throw new InvalidDataAccessApiUsageException(
+					"The typeName is null in this context. Consider setting the defaultTypeName.");
+		}
+        ArrayDescriptor arrayDescriptor = new ArrayDescriptor(typeName != null ? typeName : defaultTypeName, conn);
         ARRAY array =
                 new ARRAY(arrayDescriptor, conn, values);
         return array;
