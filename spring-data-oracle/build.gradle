@@ -3,6 +3,11 @@ test {
   jvmArgs '-Xms128m', '-Xmx512m', '-XX:MaxPermSize=128m'
 }
 
+repositories {
+  mavenLocal()
+  maven { url "http://repo.springsource.org/ext-private-local" }
+}
+
 dependencies {
 
   compile project(":spring-data-jdbc-core")
@@ -13,13 +18,15 @@ dependencies {
 
   compile("javax.jms:jms-api:1.1-rev-1")
 
+  // Oracle proprietary jars - see 'spring-data-oracle/README.txt' for details on how to add these to your system
+  compile("com.oracle.jdbc:oracle.jdbc:10.2.0.2")
+  compile("com.oracle.aq:oracle.aq:10.1.0.1")
+  compile("com.oracle.xdb:oracle.xdb:10.2.0.2")
+  compile("com.oracle.xml:oracle.xml:10.2.0.2")
+
   // Testing
   testCompile "org.easymock:easymock:2.4"
   testRuntime "org.aspectj:aspectjrt:$aspectjVersion"
   testRuntime "org.aspectj:aspectjtools:$aspectjVersion"
   testRuntime "cglib:cglib:2.2"
-
-  // proprietary jars
-  compile fileTree(dir: 'lib', include: '*.jar')
-
 }

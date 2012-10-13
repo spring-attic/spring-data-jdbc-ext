@@ -61,7 +61,7 @@ dependencies {
 
 # Building
 
-NOTE: Before you build the project you will need to download the necessary Oracle jars and place them in the lib directory of the spring-data-oracle module. See spring-data-oracle/lib/README.txt for more details on how to obtain these jars.
+NOTE: Before you build the project you will need to download the necessary Oracle jars and import them into your local Maven repository. See spring-data-oracle/README.txt for more details on how to obtain and install these jars.
 
 Spring Data JDBC Extensions uses Gradle as its build system. To build the project run:
 
