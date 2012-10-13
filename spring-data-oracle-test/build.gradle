@@ -13,6 +13,8 @@ repositories {
   mavenLocal()
   mavenCentral()
   maven { url "http://repo.springsource.org/libs-milestone" }
+  maven { url "http://repo.springsource.org/libs-release" }
+  maven { url "http://repo.springsource.org/ext-private-local" }
 }
 
 dependencies {
@@ -32,21 +34,22 @@ dependencies {
   compile "org.springframework:spring-oxm:$springVersion" 
   compile "org.springframework.retry:spring-retry:$springRetryVersion"
 
+  // SpringData
+  compile "org.springframework.data:spring-data-oracle:$sdJdbcVersion"
+
+  // Oracle proprietary jars - see 'spring-data-oracle/README.txt' for details on how to add these to your system
+  compile("com.oracle.jdbc:oracle.jdbc:10.2.0.2")
+  compile("com.oracle.aq:oracle.aq:10.1.0.1")
+  compile("com.oracle.xdb:oracle.xdb:10.2.0.2")
+  compile("com.oracle.xml:oracle.xml:10.2.0.2")
+
   // Testing
   testCompile "junit:junit:$junitVersion"
   testCompile "org.springframework:spring-test:$springVersion"
   testRuntime "org.springframework:spring-context-support:$springVersion"
+  testRuntime "javax.transaction:transaction-api:1.1-rev-1"
+  testRuntime "javax.jms:jms-api:1.1-rev-1"
   testRuntime "org.aspectj:aspectjrt:$aspectjVersion"
   testRuntime "org.aspectj:aspectjtools:$aspectjVersion"
   testRuntime "cglib:cglib:2.2"
-
-  // SpringData
-  compile "org.springframework.data:spring-data-oracle:$sdJdbcVersion"
-
-  // Transaction / JMS
-  testRuntime "javax.transaction:transaction-api:1.1-rev-1"
-  testRuntime "javax.jms:jms-api:1.1-rev-1"
-
-  // proprietary jars
-  compile fileTree(dir: '../spring-data-oracle/lib', include: '*.jar')
 }
