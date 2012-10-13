@@ -4,3 +4,5 @@ target
 src/ant/.ant-targets-upload-dist.xml
 /.idea/
 /*.iml
+/.gradle/
+/build/
