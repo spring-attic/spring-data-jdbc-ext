@@ -7,7 +7,7 @@ There are still many good uses for a relational database and this modules provid
 
 # Docs
 
-You can find out more details from the [user documentation](http://static.springsource.org/spring-data/jdbc/docs/current/reference/) or by browsing the [javadocs](http://static.springsource.org/spring-data/jdbc/docs/current/api/).
+You can find out more details from the [user documentation](http://static.springsource.org/spring-data/data-jdbc/docs/current/reference/) or by browsing the [javadocs](http://static.springsource.org/spring-data/data-jdbc/docs/current/api/).
 
 
 # Artifacts
