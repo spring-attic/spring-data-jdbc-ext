@@ -1,0 +1,646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter id="orcl.datasource">
+  <title>Oracle Pooling DataSource</title>
+
+  <para>Oracle provides an advanced DataSource implementation that has some
+  unique features. It provides connection pooling and it is required when
+  using "Fast Connection Failover" for RAC.</para>
+
+  <section id="orcl.datasource.1">
+    <title>Configuration using the traditional &lt;bean&gt; element</title>
+
+    <para>We'll start by looking at a very basic DataSource configuration
+    using the traditional &lt;bean&gt; element.</para>
+
+      <programlisting language="xml">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd"&gt;
+
+    &lt;bean id="dataSource" class="oracle.jdbc.pool.OracleDataSource" destroy-method="close"&gt; <co id="datasource.class" />
+        &lt;property name="URL" value="${jdbc.url}" /&gt; <co id="datasource.url" />
+        &lt;property name="user" value="${jdbc.username}"/&gt; <co id="datasource.username" />
+        &lt;property name="password" value="${jdbc.password}"/&gt; <co id="datasource.password" />
+        &lt;property name="connectionCachingEnabled" value="true"/&gt; <co id="datasource.cache" />
+    &lt;/bean&gt;
+
+    &lt;context:property-placeholder location="classpath:jdbc.properties"/&gt; <co id="datasource.propertyPlaceholder" />
+
+&lt;/beans&gt;</programlisting>
+
+      <calloutlist>
+        <callout arearefs="datasource.class">
+          <para>Here we specify the <classname>DataSource</classname>
+          implementation class as the
+          <classname>OracleDataSource</classname>.</para>
+        </callout>
+
+        <callout arearefs="datasource.url">
+          <para>We specify the URL using the <classname>URL</classname>
+          property. Note that it is upper case in this implementation while it
+          is lower case in most other <classname>DataSource</classname>
+          implementations.</para>
+        </callout>
+
+        <callout arearefs="datasource.username">
+          <para>The user name is specified using the
+          <classname>user</classname> property.</para>
+        </callout>
+
+        <callout arearefs="datasource.password">
+          <para>The password is specified using the
+          <classname>password</classname> property.</para>
+        </callout>
+
+        <callout arearefs="datasource.cache">
+          <para>The connection caching must be enabled explicitly using the
+          <classname>connectionCachingEnabled</classname> property.</para>
+        </callout>
+
+        <callout arearefs="datasource.propertyPlaceholder">
+          <para>The property place holders will be filled in using this
+          <classname>&lt;context:property-placeholder&gt;</classname> element
+          from the context namespace.</para>
+        </callout>
+      </calloutlist>
+  </section>
+
+  <section id="orcl.datasource.2">
+    <title>Using the "orcl" namespace to configure the
+    OracleDataSource</title>
+
+    <para>The new "orcl" namespace contains a
+    <classname>pooling-data-source</classname> element used for easy
+    configuration of the <classname>OracleDataSource</classname>. We will show
+    several ways this element can be used and we will start with a basic one
+    that can replace the traditional &lt;bean&gt; element configuration used
+    above.</para>
+
+    <para>When using the <classname>pooling-data-source</classname> element
+    connection caching is enabled by default and must explicitly be turned off
+    using the <classname>connection-caching-enabled</classname> attribute if
+    you don't want to use this pooling support.</para>
+
+      <programlisting language="xml">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       <emphasis role="bold">xmlns:orcl="http://www.springframework.org/schema/data/orcl"</emphasis> <co id="datasource2.ns" />
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       <emphasis role="bold">http://www.springframework.org/schema/data/orcl <co id="datasource2.xsd" />
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;</emphasis>
+
+    <emphasis role="bold">&lt;orcl:pooling-datasource id="dataSource"
+        url="${jdbc.url}" username="${jdbc.username}" password="${jdbc.password}"/&gt;</emphasis> <co id="datasource2.properties" />
+
+    &lt;context:property-placeholder location="classpath:jdbc.properties"/&gt; <co id="datasource2.propertyPlaceholder" />
+
+&lt;/beans&gt;</programlisting>
+
+      <calloutlist>
+        <callout arearefs="datasource2.ns">
+          <para>Here we specify the reference to the
+          <classname>orcl</classname> schema.</para>
+        </callout>
+
+        <callout arearefs="datasource2.xsd">
+          <para>We also specify the location for the
+          <classname>orcl</classname> schema.</para>
+        </callout>
+
+        <callout arearefs="datasource2.properties">
+          <para>The properties needed to connect to the database in this
+          example are <classname>url</classname>,
+          <classname>username</classname> and <classname>password</classname>.
+          The <classname>url</classname> property could also be specifiec as
+          <classname>URL</classname> and the <classname>username</classname>
+          property could be specifed as <classname>user</classname>.</para>
+        </callout>
+
+        <callout arearefs="datasource2.propertyPlaceholder">
+          <para>Just as in the previous example, the property place holders
+          will be filled in using this
+          <classname>&lt;context:property-placeholder&gt;</classname> element
+          from the context namespace.</para>
+        </callout>
+      </calloutlist>
+  </section>
+
+  <section id="orcl.datasource.3">
+    <title>Using a properties file directly for connection properties</title>
+
+    <para>We used a <classname>property-placeholder</classname> in the
+    previous example to provide connection properties. We can also read the
+    properties directly from a properties file without using placeholders.
+    This is done by using a <classname>properties-location</classname>
+    attribute specifying the location of the properties file.</para>
+
+    <note>
+      <para>When you specify properties using a property file there are two
+      basic properties, url and username, where you can use the Oracle
+      property name or the name traditionally used by Spring developers. For
+      url we also accept URL and for username we also accept user.</para>
+    </note>
+
+    <para>We will use the following property file named
+    <filename>orcl.properties</filename> and we will place it at the root of
+    the classpath.</para>
+
+    <programlisting>url=jdbc:oracle:thin:@//maui:1521/xe
+username=spring
+password=spring</programlisting>
+
+    <para>Once we have this file in place we can reference it from our
+    <classname>pooling-data-source</classname> entry and omit the property
+    plceholder declarations for any properties provided in this file.</para>
+
+      <programlisting language="xml">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data/orcl"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/data/orcl
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;
+
+    <emphasis role="bold">&lt;orcl:pooling-datasource id="dataSource" 
+        properties-location="classpath:orcl.properties"/&gt;</emphasis> <co id="datasource3.properties" />
+
+&lt;/beans&gt;</programlisting>
+
+      <calloutlist>
+        <callout arearefs="datasource3.properties">
+          <para>The <classname>pooling-datasource</classname> with the
+          <classname>properties-location</classname> specified. The
+          <classname>URL</classname>, <classname>user</classname> and
+          <classname>password</classname> properties will be read from the
+          provided properties file.</para>
+        </callout>
+      </calloutlist>
+
+    <para>You can even remove the <classname>properties-location</classname>
+    attribute as long as you use the default location and name which is a file
+    named <filename>orcl.properties</filename> at the root of the
+    classpath.</para>
+
+      <programlisting language="xml">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data/orcl"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/data/orcl
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;
+
+    <emphasis role="bold">&lt;orcl:pooling-datasource id="dataSource"/&gt;</emphasis> <co id="datasource4.properties" />
+
+&lt;/beans&gt;</programlisting>
+
+      <calloutlist>
+        <callout arearefs="datasource4.properties">
+          <para>The <classname>pooling-datasource</classname> without
+          properties or the <classname>properties-location</classname>
+          specified. We are relying on the default properties file name and
+          location.</para>
+        </callout>
+      </calloutlist>
+  </section>
+
+  <section id="orcl.datasource.4">
+    <title>Additional connection and cache properties</title>
+
+    <para>It's sometimes necessary to provide additional connection properties
+    to control how the database access is configured. There are several ways
+    you can provide these properties and they are outlined below.</para>
+
+    <section id="orcl.datasource.4.1">
+      <title>Using the property file for additional connection
+      properties</title>
+
+      <para>We can provide additional connection properties by ust adding them
+      to the properties file we used in the example above.</para>
+
+      <programlisting>url=jdbc:oracle:thin:@//maui:1521/xe
+username=spring
+password=spring
+processEscapes=false</programlisting>
+
+      <para>Any properties specified in addition to the standard URL/url,
+      user/username and password will be used for configuring the
+      <classname>OracleDataSource</classname>.</para>
+
+      <para>We can also use a prefix for the connection properties. This can
+      be useful if the properties file contain other properties like
+      connection cache properties. We will see how these additional properties
+      are used later on.</para>
+
+      <programlisting>conn.url=jdbc:oracle:thin:@//maui:1521/xe
+conn.username=spring
+conn.password=spring
+conn.processEscapes=false</programlisting>
+
+      <para>The prefix must be specified in the
+      <classname>pooling-data-source</classname> element configuration. It is
+      specified using the <classname>connection-properties-prefix</classname>
+      attribute.</para>
+
+        <programlisting language="xml">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data/orcl"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/data/orcl
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;
+
+    <emphasis role="bold">&lt;orcl:pooling-datasource id="dataSource" 
+        connection-properties-prefix="conn" <co id="datasource.4.1.prefix" />
+        properties-location="classpath:orcl.properties"/&gt;</emphasis>
+
+&lt;/beans&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="datasource.4.1.prefix">
+            <para>The <classname>connection-properties-prefix</classname> is
+            specified here.</para>
+          </callout>
+        </calloutlist>
+    </section>
+
+    <section id="orcl.datasource.4.2">
+      <title>Using the property file for additional cache properties</title>
+
+      <para>We can also specify connection cache properties in the properties
+      file. We must use a prefix for these connection cache properties to
+      distinguish them from the regular connection properties. In this example
+      we are using "cache" as the prefix.</para>
+
+      <programlisting>conn.url=jdbc:oracle:thin:@//maui:1521/xe
+conn.username=spring
+conn.password=spring
+conn.processEscapes=false
+cache.InitialLimit=10</programlisting>
+
+      <para>The connection cache prefix must be specified using the
+      <classname>connection-cache-properties-prefix</classname>
+      attribute.</para>
+
+        <programlisting language="xml">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data/orcl"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/data/orcl
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;
+
+    <emphasis role="bold">&lt;orcl:pooling-datasource id="dataSource" 
+        connection-properties-prefix="conn"
+        connection-cache-properties-prefix="cache" <co id="datasource.4.2.prefix" />
+        properties-location="classpath:orcl.properties"/&gt;</emphasis>
+
+&lt;/beans&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="datasource.4.2.prefix">
+            <para>The
+            <classname>connection-cache-properties-prefix</classname> is
+            specified here.</para>
+          </callout>
+        </calloutlist>
+    </section>
+
+    <section id="orcl.datasource.4.3">
+      <title>Using "connection-properties" element for additional connection
+      properties</title>
+
+      <para>The connection properties can be specified using the
+      <classname>connection-properties</classname> element.</para>
+
+      <note>
+        <para>If you specify a <classname>connection-properties</classname>
+        element then any connection properties specified in a property file
+        other than the basic url, username and password will not be
+        used.</para>
+      </note>
+
+        <programlisting language="xml">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data/orcl"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/data/orcl
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;
+
+    <emphasis role="bold">&lt;orcl:pooling-datasource id="dataSource" 
+        properties-location="classpath:orcl.properties"&gt;
+        &lt;orcl:connection-properties&gt;
+            processEscapes=false <co id="datasource.4.3.prop" />
+        &lt;/orcl:connection-properties&gt;
+    &lt;/orcl:pooling-datasource&gt;</emphasis>
+
+&lt;/beans&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="datasource.4.3.prop">
+            <para>The connection properties are specified here.</para>
+          </callout>
+        </calloutlist>
+    </section>
+
+    <section id="orcl.datasource.4.4">
+      <title>Using "connection-cache-properties" element for additional cache
+      properties</title>
+
+      <para>The connection cache properties can be specified using the
+      <classname>connection-cache-properties</classname> element.</para>
+
+      <note>
+        <para>If you specify a
+        <classname>connection-cache-properties</classname> element then any
+        connection cache properties specified in a property file will not be
+        used.</para>
+      </note>
+
+        <programlisting language="xml">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data/orcl"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/data/orcl
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;
+
+    <emphasis role="bold">&lt;orcl:pooling-datasource id="dataSource" 
+        properties-location="classpath:orcl.properties"&gt;
+        &lt;orcl:connection-properties&gt;
+            processEscapes=false
+        &lt;/orcl:connection-properties&gt;
+        &lt;orcl:connection-cache-properties&gt;
+            InitialLimit=10 <co id="datasrce.4.4.prop" />
+        &lt;/orcl:connection-cache-properties&gt;
+    &lt;/orcl:pooling-datasource&gt;</emphasis>
+
+&lt;/beans&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="datasrce.4.4.prop">
+            <para>The connection cache properties are specified here.</para>
+          </callout>
+        </calloutlist>
+    </section>
+
+    <section id="orcl.datasource.4.5">
+      <title>Using "username-connection-proxy" element for proxy
+      connections</title>
+
+      <para>The Oracle JDBC driver provides proxy authentication. This means
+      that you can configure a connection pool using a proxy user account with
+      limited rights. Then during the connection process you would specify the
+      actual username for the end user. This username must be configured to
+      allow a proxy connection through the user proxy ("grant connect through
+      proxyuser"). See <xref linkend="connection" /> for more details on this
+      usage.</para>
+
+      <para>Connection proxy authentication is configured using the
+      <classname>username-connection-proxy</classname> element. You also need
+      to provide a user name provider that implements the
+      <classname>ConnectionUsernameProvider</classname> interface. This
+      interface has a single method named <classname>getUserName</classname>
+      that should return the username for the current end user to be connected
+      via the proxy user.</para>
+
+        <programlisting language="xml">&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:orcl="http://www.springframework.org/schema/data/orcl"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/data/orcl
+       http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;
+
+    <emphasis role="bold">&lt;orcl:pooling-datasource id="dataSource" 
+        properties-location="classpath:orcl.properties"&gt;
+        &lt;orcl:username-connection-proxy connection-context-provider="usernameProvider"/&gt; <co id="datasource.4.5.prop" />
+    &lt;/orcl:pooling-datasource&gt;
+
+    &lt;bean id="usernameProvider" class="org.springframework.data.jdbc.test.CurrentUsernameProvider"/&gt;</emphasis>
+
+&lt;/beans&gt;</programlisting>
+
+        <calloutlist>
+          <callout arearefs="datasource.4.5.prop">
+            <para>The connection proxy username provider is specified
+            here.</para>
+          </callout>
+        </calloutlist>
+    </section>
+  </section>
+
+  <section id="orcl.datasource.options">
+    <title>Summary of configuration options for the
+    "pooling-data-source"</title>
+
+    <para>The <classname>pooling-data-source</classname> element has the
+    following attributes:</para>
+
+    <para><table id="pooling-data-source-settings">
+        <title><literal>&lt;pooling-data-source&gt;</literal> attribute
+        settings</title>
+
+        <tgroup cols="4">
+          <colspec colnum="1" colwidth="2*" />
+
+          <colspec colnum="2" colwidth="0.5*" />
+
+          <colspec colnum="3" colwidth="0.5*" />
+
+          <colspec colnum="4" colwidth="1.5*" />
+
+          <thead>
+            <row>
+              <entry>Attribute</entry>
+
+              <entry>Required</entry>
+
+              <entry>Default</entry>
+
+              <entry>Description</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry><literal>url</literal></entry>
+
+              <entry>Yes</entry>
+
+              <entry></entry>
+
+              <entry>The url to be used for connecting to the database. Can be
+              provided in a property file. Alternate property name is
+              <literal>URL</literal></entry>
+            </row>
+
+            <row>
+              <entry><literal>username</literal></entry>
+
+              <entry>No</entry>
+
+              <entry></entry>
+
+              <entry>The user name used to connect. Can be provided in a
+              property file. Alternate property name is
+              <literal>user</literal></entry>
+            </row>
+
+            <row>
+              <entry><literal>password</literal></entry>
+
+              <entry>No</entry>
+
+              <entry></entry>
+
+              <entry>The password used to connect. Can be provided in a
+              property file.</entry>
+            </row>
+
+            <row>
+              <entry><literal>connection-caching-enabled</literal></entry>
+
+              <entry>No</entry>
+
+              <entry><literal>true</literal></entry>
+
+              <entry>Is connection caching enabled?</entry>
+            </row>
+
+            <row>
+              <entry><literal>fast-connection-failover-enabled</literal></entry>
+
+              <entry>No</entry>
+
+              <entry><literal>false</literal></entry>
+
+              <entry>Is the fast connection failover feature enabled?</entry>
+            </row>
+
+            <row>
+              <entry><literal>ONS-configuration</literal></entry>
+
+              <entry>No</entry>
+
+              <entry></entry>
+
+              <entry>The ONS configuration string.</entry>
+            </row>
+
+            <row>
+              <entry><literal>properties-location</literal></entry>
+
+              <entry>No</entry>
+
+              <entry></entry>
+
+              <entry>The location of a properties file containing key-value
+              pairs for the connection and connection cache environment using
+              a specific prefix to separate connection cache properties from
+              connection properties (in standard Properties format, namely
+              'key=value' pairs). If no location is specified a properties
+              file located at <literal>classpath:orcl.properties</literal>
+              will be used if found.</entry>
+            </row>
+
+            <row>
+              <entry><literal>connection-properties-prefix</literal></entry>
+
+              <entry>No</entry>
+
+              <entry></entry>
+
+              <entry>The prefix that is used for connection properties
+              provided in the property file.</entry>
+            </row>
+
+            <row>
+              <entry><literal>connection-cache-properties-prefix</literal></entry>
+
+              <entry>No</entry>
+
+              <entry></entry>
+
+              <entry>The prefix that is used for connection cache properties
+              provided in the property file.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></para>
+
+    <para>The <classname>pooling-data-source</classname> element has the
+    following child elements:</para>
+
+    <para><table id="pooling-data-source-elements">
+        <title><literal>&lt;pooling-data-source&gt;</literal> child
+        elements</title>
+
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="2*" />
+
+          <colspec colnum="2" colwidth="3*" />
+
+          <thead>
+            <row>
+              <entry>Element</entry>
+
+              <entry>Description</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry><literal>connection-properties</literal></entry>
+
+              <entry>The newline-separated, key-value pairs for the connection
+              properties (in standard Properties format, namely 'key=value'
+              pairs)</entry>
+            </row>
+
+            <row>
+              <entry><literal>connection-cache-properties</literal></entry>
+
+              <entry>The newline-separated, key-value pairs for the
+              connection-cache-properties (in standard Properties format,
+              namely 'key=value' pairs)</entry>
+            </row>
+
+            <row>
+              <entry><literal>username-connection-proxy</literal></entry>
+
+              <entry>The configuration of a proxy authentication using a
+              connection context provider</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></para>
+  </section>
+</chapter>

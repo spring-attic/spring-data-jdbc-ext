@@ -1,0 +1,3 @@
+rootProject.name = 'spring-data-jdbc-ext'
+include "spring-data-jdbc-core",
+        "spring-data-oracle"

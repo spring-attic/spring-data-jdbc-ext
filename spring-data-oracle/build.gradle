@@ -1,0 +1,25 @@
+test {
+  systemProperty 'javax.xml.parsers.DocumentBuilderFactory', 'com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl'
+  jvmArgs '-Xms128m', '-Xmx512m', '-XX:MaxPermSize=128m'
+}
+
+dependencies {
+
+  compile project(":spring-data-jdbc-core")
+
+  compile("org.springframework:spring-jms:$springVersion")
+  compile("org.springframework:spring-oxm:$springVersion")
+  compile("org.springframework.retry:spring-retry:$springRetryVersion")
+
+  compile("javax.jms:jms-api:1.1-rev-1")
+
+  // Testing
+  testCompile "org.easymock:easymock:2.4"
+  testRuntime "org.aspectj:aspectjrt:$aspectjVersion"
+  testRuntime "org.aspectj:aspectjtools:$aspectjVersion"
+  testRuntime "cglib:cglib:2.2"
+
+  // proprietary jars
+  compile fileTree(dir: 'lib', include: '*.jar')
+
+}

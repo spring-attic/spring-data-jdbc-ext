@@ -1,0 +1,6 @@
+dependencies {
+
+  // Querydsl
+  compile "com.mysema.querydsl:querydsl-sql:$querydslVersion"
+
+}

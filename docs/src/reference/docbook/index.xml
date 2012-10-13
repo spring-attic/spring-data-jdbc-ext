@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+        "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<book xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <bookinfo>
+        <title>Spring Data JDBC Extensions Reference Documentation</title>
+        <titleabbrev>Spring Data JDBC Extensions ${version}</titleabbrev>
+        <releaseinfo>${version}</releaseinfo>
+        <productname>Spring Data JDBC Extensions</productname>
+
+        <authorgroup>
+            <author>
+                <firstname>Thomas</firstname>
+                <surname>Risberg</surname>
+            </author>
+        </authorgroup>
+
+	    <copyright>
+	      <year>2008-2012</year>
+	      <holder>The original authors</holder>
+	    </copyright>
+
+        <legalnotice>
+            <para>
+                Copies of this document may be made for your own use and for distribution
+                to others, provided that you do not charge any fee for such copies and
+                further provided that each copy contains this Copyright Notice, whether
+                distributed in print or electronically.
+            </para>
+        </legalnotice>
+    </bookinfo>
+
+    <toc/>
+
+    <xi:include href="preface.xml"/>
+
+    <part>
+        <title>Core JDBC Extensions</title>
+        <partintro>
+            <para>
+                This part of the reference documentation details the core extended JDBC support that can be used for any supported SQL database.
+            </para>
+        </partintro>
+        <xi:include href="core-overview.xml"/>
+        <xi:include href="core-support.xml"/>
+        <xi:include href="core-querydsl.xml"/>
+    </part>
+    <part>
+        <title>JDBC Extensions for the Oracle Database</title>
+        <partintro>
+            <para>
+                This part of the reference documentation details the extended JDBC support provided for the Oracle database.
+            </para>
+        </partintro>
+        <xi:include href="oracle-overview.xml"/>
+        <xi:include href="oracle-datasource.xml"/>
+        <xi:include href="oracle-failover.xml"/>
+        <xi:include href="oracle-streamsaq.xml"/>
+        <xi:include href="oracle-xmltypes.xml"/>
+        <xi:include href="oracle-datatypes.xml"/>
+        <xi:include href="oracle-connection.xml"/>
+    </part>
+</book>

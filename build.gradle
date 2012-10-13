@@ -1,0 +1,216 @@
+buildscript {
+    repositories {
+        maven { url 'http://repo.springsource.org/plugins-release' }
+    }
+    dependencies {
+        classpath 'org.springframework.build.gradle:docbook-reference-plugin:0.1.5'
+    }
+}
+
+allprojects {
+  apply plugin: "idea"
+  apply plugin: "eclipse"
+  apply plugin: "maven"
+
+  group = "org.springframework.data"
+  version = "$sdJdbcVersion"
+
+  configurations.all {
+    exclude group: "commons-logging"
+    exclude module: "slf4j-log4j12"
+  }
+
+  repositories {
+    mavenCentral()
+    //maven { url "http://repo.springsource.org/libs-snapshot" }
+    maven { url "http://repo.springsource.org/libs-milestone" }
+    maven { url "http://repo.springsource.org/libs-release" }
+  }
+
+}
+
+configure(subprojects) { subproject ->
+  apply plugin: "java"
+  apply plugin: "groovy"
+
+  configurations {
+    compile.extendsFrom providedCompile
+  }
+
+  [compileJava, compileTestJava]*.options*.debugOptions*.debugLevel = "source,lines,vars"
+  [compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:-serial", "-Xlint:-unchecked"]
+
+  project.sourceCompatibility = 1.5
+  project.targetCompatibility = 1.5
+
+  task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = "sources"
+    from sourceSets.main.allJava
+  }
+
+  javadoc.options.links =
+    ["http://static.springframework.org/spring/docs/3.0.x/javadoc-api",
+     "http://download.oracle.com/javase/6/docs/api"]
+
+  task javadocJar(type: Jar) {
+    classifier = "javadoc"
+    from javadoc
+  }
+
+  artifacts {
+    archives sourcesJar
+    archives javadocJar
+  }
+
+  dependencies {
+
+    // Logging
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+    runtime "log4j:log4j:$log4jVersion"
+    runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
+
+    // Spring
+    compile "org.springframework:spring-beans:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-jdbc:$springVersion"
+    compile "org.springframework:spring-tx:$springVersion"
+    compile "org.springframework.retry:spring-retry:$springRetryVersion"
+
+    // Testing
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.mockito:mockito-all:1.9.0"
+    testCompile "org.springframework:spring-test:$springVersion"
+    testRuntime "org.springframework:spring-context-support:$springVersion"
+    testRuntime "commons-dbcp:commons-dbcp:1.4"
+    testRuntime "commons-pool:commons-pool:1.5.5"
+    testRuntime "org.hsqldb:hsqldb:2.2.8"
+
+  }
+
+}
+
+configure(rootProject) {
+    description = 'Spring Data JDBC Extensions'
+
+    apply plugin: 'docbook-reference'
+
+    reference {
+        sourceDir = file('docs/src/reference/docbook')
+    }
+
+    // don't publish the default jar for the root project
+    configurations.archives.artifacts.clear()
+
+    task api(type: Javadoc) {
+        group = 'Documentation'
+        description = 'Generates aggregated Javadoc API documentation.'
+        title = "${rootProject.description} ${version} API"
+        options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+        options.author = true
+        options.header = rootProject.description
+        options.overview = 'docs/src/api/overview.html'
+        options.splitIndex = true
+        options.links =
+          ["http://static.springframework.org/spring/docs/3.0.x/javadoc-api",
+           "http://download.oracle.com/javase/6/docs/api"]
+        source subprojects.collect { project ->
+            project.sourceSets.main.allJava
+        }
+        destinationDir = new File(buildDir, "api")
+        classpath = files(subprojects.collect { project ->
+            project.sourceSets.main.compileClasspath
+        })
+        maxMemory = '1024m'
+    }
+
+    task docsZip(type: Zip) {
+        group = 'Distribution'
+        classifier = 'docs'
+        description = "Builds -${classifier} archive containing api and reference for deployment"
+
+        from (api) {
+            into 'api'
+        }
+
+        from (reference) {
+            into 'reference'
+        }
+    }
+
+    task schemaZip(type: Zip) {
+        group = 'Distribution'
+        classifier = 'schema'
+        description = "Builds -${classifier} archive containing all " +
+            "XSDs for deployment at static.springframework.org/schema."
+
+        subprojects.each { subproject ->
+            def Properties schemas = new Properties();
+
+            subproject.sourceSets.main.resources.find {
+                it.path.endsWith('META-INF/spring.schemas')
+            }?.withInputStream { schemas.load(it) }
+
+            for (def key : schemas.keySet()) {
+                def shortName = key.replaceAll(/http.*schema.(.*).spring-.*/, '$1')
+                assert shortName != key
+                File xsdFile = subproject.sourceSets.main.resources.find {
+                    it.path.endsWith(schemas.get(key))
+                }
+                assert xsdFile != null
+                into (shortName) {
+                    from xsdFile.path
+                }
+            }
+        }
+    }
+
+    task distZip(type: Zip, dependsOn: [docsZip, schemaZip]) {
+        group = 'Distribution'
+        classifier = 'dist'
+        description = "Builds -${classifier} archive, containing all jars and docs, " +
+                      "suitable for community download page."
+
+        ext.baseDir = "${project.name}-${project.version}";
+
+        from('docs/src/info') {
+            include 'changelog.txt'
+            include 'readme.txt'
+            include 'license.txt'
+            include 'notice.txt'
+            into "${baseDir}"
+            expand(copyright: new Date().format('yyyy'), version: project.version)
+        }
+
+        from(zipTree(docsZip.archivePath)) {
+            into "${baseDir}/docs"
+        }
+
+        from(zipTree(schemaZip.archivePath)) {
+            into "${baseDir}/schema"
+        }
+
+        subprojects.each { subproject ->
+            into ("${baseDir}/libs") {
+                from subproject.jar
+                if (subproject.tasks.findByPath('sourcesJar')) {
+                    from subproject.sourcesJar
+                }
+                if (subproject.tasks.findByPath('javadocJar')) {
+                    from subproject.javadocJar
+                }
+            }
+        }
+    }
+
+    artifacts {
+        archives docsZip
+        //archives schemaZip
+        //archives distZip
+    }
+
+}
+
+
+task wrapper(type: Wrapper) { gradleVersion = "1.1" }
