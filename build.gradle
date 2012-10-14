@@ -10,7 +10,6 @@ buildscript {
 allprojects {
   apply plugin: "idea"
   apply plugin: "eclipse"
-  apply plugin: "maven"
 
   group = "org.springframework.data"
 
@@ -31,6 +30,7 @@ allprojects {
 configure(subprojects) { subproject ->
   apply plugin: "java"
   apply plugin: "groovy"
+  apply from: "${rootProject.projectDir}/maven.gradle"
 
   configurations {
     compile.extendsFrom providedCompile
