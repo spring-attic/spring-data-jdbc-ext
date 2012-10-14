@@ -13,7 +13,6 @@ allprojects {
   apply plugin: "maven"
 
   group = "org.springframework.data"
-  version = "$sdJdbcVersion"
 
   configurations.all {
     exclude group: "commons-logging"
