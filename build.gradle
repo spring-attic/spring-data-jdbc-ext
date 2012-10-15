@@ -129,6 +129,10 @@ configure(rootProject) {
         classifier = 'docs'
         description = "Builds -${classifier} archive containing api and reference for deployment"
 
+        from('docs/src/info') {
+            include 'changelog.txt'
+        }
+
         from (api) {
             into 'api'
         }
