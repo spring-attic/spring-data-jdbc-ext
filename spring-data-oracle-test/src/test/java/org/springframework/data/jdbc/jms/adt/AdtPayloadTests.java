@@ -35,8 +35,8 @@ public class AdtPayloadTests {
     public void sendMessage() {
         Product product = new Product();
         product.setId(22L);
-        product.setDescription("Spring Book");
-        product.setPrice(new BigDecimal("42.95"));
+        product.setDescription("Spring Data");
+        product.setPrice(new BigDecimal("29.99"));
         jmsTemplate.convertAndSend("jmsadmin.jms_product_queue", product);
     }
 

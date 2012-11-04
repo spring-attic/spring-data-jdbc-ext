@@ -19,36 +19,30 @@ repositories {
 
 dependencies {
   // Logging
-  compile "org.slf4j:slf4j-api:$slf4jVersion"
-  compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
-  runtime "log4j:log4j:$log4jVersion"
-  runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
+  testCompile "org.slf4j:slf4j-api:$slf4jVersion"
+  testCompile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+  testRuntime "log4j:log4j:$log4jVersion"
+  testRuntime "org.slf4j:slf4j-log4j12:$slf4jVersion"
 
   // Spring
-  compile "org.springframework:spring-beans:$springVersion"
-  compile "org.springframework:spring-context:$springVersion"
-  compile "org.springframework:spring-core:$springVersion"
-  compile "org.springframework:spring-jdbc:$springVersion"
-  compile "org.springframework:spring-tx:$springVersion"
-  compile "org.springframework:spring-jms:$springVersion" 
-  compile "org.springframework:spring-oxm:$springVersion" 
-  compile "org.springframework.retry:spring-retry:$springRetryVersion"
+  testCompile "org.springframework:spring-jms:$springVersion" 
+  testCompile "org.springframework:spring-oxm:$springVersion" 
 
   // SpringData
-  compile "org.springframework.data:spring-data-oracle:$sdJdbcVersion"
+  testCompile "org.springframework.data:spring-data-oracle:$sdJdbcVersion"
 
   // Oracle proprietary jars - see 'spring-data-oracle/README.txt' for details on how to add these to your system
-  compile("com.oracle.jdbc:oracle.jdbc:10.2.0.2")
-  compile("com.oracle.aq:oracle.aq:10.1.0.1")
-  compile("com.oracle.xdb:oracle.xdb:10.2.0.2")
-  compile("com.oracle.xml:oracle.xml:10.2.0.2")
+  testCompile "com.oracle.jdbc:oracle.jdbc:10.2.0.2" 
+  testCompile "com.oracle.aq:oracle.aq:10.1.0.1" 
+  testCompile "com.oracle.xdb:oracle.xdb:10.2.0.2" 
+  testCompile "com.oracle.xml:oracle.xml:10.2.0.2" 
 
   // Testing
   testCompile "junit:junit:$junitVersion"
   testCompile "org.springframework:spring-test:$springVersion"
+  testCompile "javax.jms:jms-api:1.1-rev-1"
   testRuntime "org.springframework:spring-context-support:$springVersion"
   testRuntime "javax.transaction:transaction-api:1.1-rev-1"
-  testRuntime "javax.jms:jms-api:1.1-rev-1"
   testRuntime "org.aspectj:aspectjrt:$aspectjVersion"
   testRuntime "org.aspectj:aspectjtools:$aspectjVersion"
   testRuntime "cglib:cglib:2.2"
