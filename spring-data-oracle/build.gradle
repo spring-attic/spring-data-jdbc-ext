@@ -12,17 +12,16 @@ dependencies {
 
   compile project(":spring-data-jdbc-core")
 
-  compile("org.springframework:spring-jms:$springVersion")
-  compile("org.springframework:spring-oxm:$springVersion")
-  compile("org.springframework.retry:spring-retry:$springRetryVersion")
+  compile "org.springframework:spring-jms:$springVersion", optional
+  compile "org.springframework:spring-oxm:$springVersion", optional
 
-  compile("javax.jms:jms-api:1.1-rev-1")
+  compile "javax.jms:jms-api:1.1-rev-1", provided
 
   // Oracle proprietary jars - see 'spring-data-oracle/README.txt' for details on how to add these to your system
-  compile("com.oracle.jdbc:oracle.jdbc:10.2.0.2")
-  compile("com.oracle.aq:oracle.aq:10.1.0.1")
-  compile("com.oracle.xdb:oracle.xdb:10.2.0.2")
-  compile("com.oracle.xml:oracle.xml:10.2.0.2")
+  compile "com.oracle.jdbc:oracle.jdbc:10.2.0.2", provided
+  compile "com.oracle.aq:oracle.aq:10.1.0.1", provided
+  compile "com.oracle.xdb:oracle.xdb:10.2.0.2", provided
+  compile "com.oracle.xml:oracle.xml:10.2.0.2", provided
 
   // Testing
   testCompile "org.easymock:easymock:2.4"
