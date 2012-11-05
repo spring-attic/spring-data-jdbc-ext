@@ -99,8 +99,8 @@ public void setDataSource(DataSource dataSource) {
 
     <itemizedlist>
       <listitem>
-        <para>use the method that takes a Querydsl class derived from
-        <classname>ExpressionBase</classname> like an extension of the handy
+        <para>use the method that takes a Querydsl class implementing
+        <classname>Expression</classname> like an extension of the handy
         <classname>MappingProjection</classname>, a
         <classname>QBean</classname> implementation or a Querydsl query type
         combined with a Querydsl bean type to specify the mapping.</para>

@@ -46,20 +46,4 @@ public class QueryDslMappingProjectionCustomerDao extends QueryDslCustomerDao {
 		return template.query(sqlQuery, 
 				new MappingCustomerProjection(qCustomer.all()));
 	}
-
-	public class MappingCustomerProjection extends MappingProjection<Customer> {
-		
-		public MappingCustomerProjection(Expression<?>... args) {
-	        super(Customer.class, args);
-		}
-		
-		@Override
-		protected Customer map(Tuple tuple) {
-			Customer customer = new Customer();
-			customer.setId(tuple.get(qCustomer.id));
-			customer.setFirstName(tuple.get(qCustomer.firstName)); 
-			customer.setLastName(tuple.get(qCustomer.lastName) + "!");
-			return customer;
-		}
-	}
 }

@@ -7,3 +7,5 @@ src/ant/.ant-targets-upload-dist.xml
 /.gradle/
 /build/
 /out/
+/spring-data-jdbc-ext.ipr
+/spring-data-jdbc-ext.iws

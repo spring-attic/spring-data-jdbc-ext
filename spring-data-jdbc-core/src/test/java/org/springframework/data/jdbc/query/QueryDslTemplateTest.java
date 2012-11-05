@@ -5,6 +5,7 @@ import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.QBean;
+import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,85 @@ public class QueryDslTemplateTest {
 	public void setDataSource(DataSource dataSource) {
 	this.template = new QueryDslJdbcTemplate(dataSource);
 	}
-	
-	@Test(expected = DataAccessException.class)
+
+	@Test
+	public void testQueryWithStringPath() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+				.from(qCustomer);
+		List<String> results = template.query(sqlQuery, qCustomer.lastName);
+		Assert.assertEquals(2, results.size());
+	}
+
+	@Test
+	public void testQueryWithQBean() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+				.from(qCustomer)
+				.where(qCustomer.firstName.isNotNull());
+		List<Customer> results = template.query(sqlQuery,
+				new QBean<Customer>(Customer.class, qCustomer.all()));
+		Assert.assertEquals(2, results.size());
+	}
+
+	@Test
+	public void testQueryWithMappingProjection() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+				.from(qCustomer)
+				.where(qCustomer.firstName.isNotNull());
+		List<Customer> results = template.query(sqlQuery,
+				new MappingCustomerProjection(qCustomer.all()));
+		Assert.assertEquals(2, results.size());
+	}
+	@Test
+
+	public void testQueryWithRowMapper() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+				.from(qCustomer)
+				.where(qCustomer.firstName.isNotNull());
+		List<Customer> results = template.query(sqlQuery,
+				BeanPropertyRowMapper.newInstance(Customer.class),
+				qCustomer.all());
+
+		Assert.assertEquals(2, results.size());
+	}
+
+	@Test
 	public void testCount() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+			.from(qCustomer)
+			.where(qCustomer.firstName.isNotNull());
+		long results = template.count(sqlQuery);
+		Assert.assertEquals(2, results);
+	}
+
+	@Test
+	public void testCountDistinct() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+			.from(qCustomer)
+			.where(qCustomer.firstName.isNotNull());
+		long results = template.countDistinct(sqlQuery);
+		Assert.assertEquals(2, results);
+	}
+
+	@Test
+	public void testExist() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+			.from(qCustomer)
+			.where(qCustomer.firstName.isNotNull());
+		boolean results = template.exists(sqlQuery);
+		Assert.assertEquals(true, results);
+	}
+
+	@Test
+	public void testNotExist() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+			.from(qCustomer)
+			.where(qCustomer.firstName.isNotNull());
+		boolean results = template.notExists(sqlQuery);
+		Assert.assertEquals(false, results);
+	}
+
+	@Test(expected = DataAccessException.class)
+	public void testBadCount() {
 		SQLQuery sqlQuery = template.newSqlQuery()
 			.from(qBadCustomer)
 			.where(qBadCustomer.firstName.isNotNull());
@@ -45,7 +122,7 @@ public class QueryDslTemplateTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void testCountDistinct() {
+	public void testBadCountDistinct() {
 		SQLQuery sqlQuery = template.newSqlQuery()
 			.from(qBadCustomer)
 			.where(qBadCustomer.firstName.isNotNull());
@@ -53,7 +130,7 @@ public class QueryDslTemplateTest {
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void testExist() {
+	public void testBadExist() {
 		SQLQuery sqlQuery = template.newSqlQuery()
 			.from(qBadCustomer)
 			.where(qBadCustomer.firstName.isNotNull());
@@ -61,7 +138,7 @@ public class QueryDslTemplateTest {
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void testNotExist() {
+	public void testBadNotExist() {
 		SQLQuery sqlQuery = template.newSqlQuery()
 			.from(qBadCustomer)
 			.where(qBadCustomer.firstName.isNotNull());
@@ -69,7 +146,7 @@ public class QueryDslTemplateTest {
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void testQueryForObjectWithRowMapper() {
+	public void testBadQueryForObjectWithRowMapper() {
 		SQLQuery sqlQuery = template.newSqlQuery()
 			.from(qBadCustomer)
 			.where(qBadCustomer.firstName.isNotNull());
@@ -79,7 +156,7 @@ public class QueryDslTemplateTest {
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void testQueryForObjectWithQBean() {
+	public void testBadQueryForObjectWithQBean() {
 		SQLQuery sqlQuery = template.newSqlQuery()
 			.from(qBadCustomer)
 			.where(qBadCustomer.firstName.isNotNull());
@@ -88,7 +165,7 @@ public class QueryDslTemplateTest {
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void testInsert() {
+	public void testBadInsert() {
 		long results = template.insert(qBadCustomer,
 				new SqlInsertCallback() {
 					public long doInSqlInsertClause(SQLInsertClause insert) {
@@ -99,7 +176,7 @@ public class QueryDslTemplateTest {
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void testInsertWithKey() {
+	public void testBadInsertWithKey() {
 		Long results = template.insertWithKey(qBadCustomer,
 				new SqlInsertWithKeyCallback<Long>() {
 					public Long doInSqlInsertWithKeyClause(SQLInsertClause insert) throws SQLException {
@@ -110,7 +187,7 @@ public class QueryDslTemplateTest {
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void testUpdate() {
+	public void testBadUpdate() {
 		long results = template.update(qBadCustomer,
 				new SqlUpdateCallback() {
 					public long doInSqlUpdateClause(SQLUpdateClause update) {
@@ -121,7 +198,7 @@ public class QueryDslTemplateTest {
 	}
 
 	@Test(expected = DataAccessException.class)
-	public void testDelete() {
+	public void testBadDelete() {
 		long results = template.delete(qBadCustomer,
 				new SqlDeleteCallback() {
 					public long doInSqlDeleteClause(SQLDeleteClause delete) {
@@ -129,12 +206,5 @@ public class QueryDslTemplateTest {
 						return delete.execute();
 					}
 				});
-	}
-
-	@Test
-	public void testQueryWithStringPath() {
-		SQLQuery sqlQuery = template.newSqlQuery()
-					.from(qCustomer);
-		List<String> results = template.query(sqlQuery, qCustomer.lastName);
 	}
 }
