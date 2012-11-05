@@ -53,7 +53,6 @@ import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionBase;
 
 /**
  * Template class with a basic set of JDBC operations, allowing the use
@@ -64,6 +63,9 @@ import com.mysema.query.types.ExpressionBase;
  * <p>The underlying {@link org.springframework.jdbc.core.JdbcTemplate} is
  * exposed to allow for convenient access to the traditional
  * {@link org.springframework.jdbc.core.JdbcTemplate} methods.
+ *
+ * Thanks to Alex Soto (@alexsotob) for getting this started and implementing the
+ * initial prototype version.
  *
  * @author Thomas Risberg
  * @since 1.0
@@ -203,7 +205,7 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		return results.get(0);
 	}
 	
-	public <T> T queryForObject(final SQLQuery sqlQuery, final ExpressionBase<T> expression) {
+	public <T> T queryForObject(final SQLQuery sqlQuery, final Expression<T> expression) {
 		List<T> results = query(sqlQuery, expression);
 		if (results.size() == 0) {
 			return null;
@@ -232,7 +234,7 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		return query(sqlQuery, new RowMapperResultSetExtractor<T>(rowMapper), projection);
 	}
 	
-	public <T> List<T> query(final SQLQuery sqlQuery, final ExpressionBase<T> expression) {
+	public <T> List<T> query(final SQLQuery sqlQuery, final Expression<T> expression) {
 		List<T> results = jdbcTemplate.execute(new ConnectionCallback<List<T>>() {
 			public List<T> doInConnection(Connection con) throws SQLException,
 					DataAccessException {

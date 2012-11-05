@@ -5,12 +5,9 @@ import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.QBean;
-import com.mysema.query.types.path.StringPath;
-import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jdbc.query.domain.Customer;
 import org.springframework.data.jdbc.query.generated.QBadCustomer;
@@ -19,11 +16,9 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @ContextConfiguration(locations="classpath:query-dsl-context.xml")
@@ -134,5 +129,12 @@ public class QueryDslTemplateTest {
 						return delete.execute();
 					}
 				});
+	}
+
+	@Test
+	public void testQueryWithStringPath() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+					.from(qCustomer);
+		List<String> results = template.query(sqlQuery, qCustomer.lastName);
 	}
 }

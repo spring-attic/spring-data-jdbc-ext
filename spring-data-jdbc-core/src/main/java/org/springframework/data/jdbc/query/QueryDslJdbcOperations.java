@@ -25,7 +25,6 @@ import org.springframework.jdbc.core.RowMapper;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionBase;
 
 /**
  * Interface specifying a basic set of JDBC operations allowing the use
@@ -108,12 +107,12 @@ public interface QueryDslJdbcOperations {
 
 	/**
 	 * Query for a single object using the {@link SQLQuery}. The results are mapped using the
-	 * {@link ExpressionBase} which could be a QBean or a MappingProjection.  
+	 * {@link Expression} which could be a QBean or a MappingProjection.
 	 * @param sqlQuery the SQLQuery to use
 	 * @param expression the implementation to be used for the projection/mapping
 	 * @return the mapped object
 	 */
-	<T> T queryForObject(final SQLQuery sqlQuery, final ExpressionBase<T> expression);
+	<T> T queryForObject(final SQLQuery sqlQuery, final Expression<T> expression);
 
 	/**
 	 * Query for a list of objects using the {@link SQLQuery}. The results are mapped using the
@@ -139,12 +138,12 @@ public interface QueryDslJdbcOperations {
 
 	/**
 	 * Query for a list of objects using the {@link SQLQuery}. The results are mapped using the
-	 * {@link ExpressionBase} which could be a QBean or a MappingProjection.  
+	 * {@link Expression} which could be a QBean or a MappingProjection.
 	 * @param sqlQuery the SQLQuery to use
 	 * @param expression the implementation to be used for the projection/mapping
 	 * @return the mapped object
 	 */
-	<T> List<T> query(final SQLQuery sqlQuery, final ExpressionBase<T> expression);
+	<T> List<T> query(final SQLQuery sqlQuery, final Expression<T> expression);
 
 	/**
 	 * Execute a database insert using the provided {@link SqlInsertCallback}. 
