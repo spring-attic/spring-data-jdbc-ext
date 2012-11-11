@@ -1,3 +1,5 @@
+description = 'Spring Data JDBC Extensions Oracle'
+
 test {
   systemProperty 'javax.xml.parsers.DocumentBuilderFactory', 'com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl'
   jvmArgs '-Xms128m', '-Xmx512m', '-XX:MaxPermSize=128m'

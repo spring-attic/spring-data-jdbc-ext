@@ -1,3 +1,5 @@
+description = 'Spring Data JDBC Extensions Core'
+
 dependencies {
 
   // Querydsl
