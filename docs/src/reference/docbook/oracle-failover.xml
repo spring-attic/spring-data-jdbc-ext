@@ -54,7 +54,8 @@ password=spring</programlisting>
        http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;
 
     <emphasis role="bold">&lt;orcl:pooling-datasource id="racDataSource"
-        url="jdbc:oracle:thin:@(description=(address_list=(address=(host=rac1)(protocol=tcp)(port=1521))(address=(..." <co id="rac.1.url" />
+        url="jdbc:oracle:thin:@(description=(address_list=(address=(host=rac1)(protocol=tcp)(port=1521))
+                                                          (address=(host=rac2)(protocol=tcp)(port=1521))))" <co id="rac.1.url" />
         properties-location="classpath:orcl.properties"
         fast-connection-failover-enabled="true" <co id="rac.1.fcf" />
         ONS-configuration="rac1:6200,rac2:6200"/&gt;</emphasis> <co id="rac.1.ons" />

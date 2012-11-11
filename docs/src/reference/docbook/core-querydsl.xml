@@ -152,8 +152,10 @@ private static class MappingProductProjection extends MappingProjection&lt;Produ
     <programlisting language="java">public void insertProduct(final Product product) throws DataAccessException {
     template.insert(qProduct, new SqlInsertCallback() {
         public long doInSqlInsertClause(SQLInsertClause sqlInsertClause) {
-            return sqlInsertClause.columns(qProduct.productid, qProduct.name, qProduct.descn, qProduct.category)
-                    .values(product.getProductId(), product.getName(), product.getDescription(), product.getCategoryId())
+            return sqlInsertClause.columns(qProduct.productid, qProduct.name, 
+                        qProduct.descn, qProduct.category)
+                    .values(product.getProductId(), product.getName(), 
+                        product.getDescription(), product.getCategoryId())
                     .execute();
         }
     });

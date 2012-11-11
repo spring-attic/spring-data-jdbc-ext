@@ -1,6 +1,20 @@
 Spring Data JDBC Extensions Support Changelog
 =============================================
 
+
+Changes in version 1.0.0.RELEASE (November 12, 2012)
+----------------------------------------------------
+
+General
+
+* Making some dependencies provided/optional
+* Upgrading Querydsl to 2.8.2
+
+Core
+
+* Changing QuerydslJdbcTemplate expression parameter from ExpressionBase<T> to Expression<T>
+
+
 Changes in version 1.0.0.RC4 (October 15, 2012)
 -----------------------------------------------
 
@@ -26,9 +40,11 @@ Core
 Changes in version 1.0.0.RC2 (June 1, 2012)
 -------------------------------------------
 
-General
-* Switched Oracle dependencies to use scope provided
+Core
 * DATAJDBC-25 Adding throws clause for SQLException to doInSqlInsertWithKeyClause
+
+Oracle
+* Switched Oracle dependencies to use scope provided
 
 
 Changes in version 1.0.0.RC1 (Oct 18, 2011)
