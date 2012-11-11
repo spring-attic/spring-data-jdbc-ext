@@ -305,7 +305,8 @@
     <bean id="dbcpNativeJdbcExtractor" 
         class="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor"/>
 
-    <bean id="dbcpDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="dbcpDataSource" class="org.apache.commons.dbcp.BasicDataSource" 
+            destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}" />
         <property name="url" value="${jdbc.url}" />
         <property name="username" value="${jdbc.username}" />
@@ -333,7 +334,8 @@
         connection-factory-type="QUEUE_CONNECTION" ]]><co id="streamsaq.config.factoryType" /><![CDATA[
         data-source="dataSource" />
 
-    <bean id="dbcpDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="dbcpDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+            destroy-method="close">
         <property name="driverClassName" value="${jdbc.driverClassName}" />
         <property name="url" value="${jdbc.url}" />
         <property name="username" value="${jdbc.username}" />
@@ -406,17 +408,17 @@
         </table></para>
 
       <para>
-          <programlisting language="xml"><![CDATA[    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <property name="connectionFactory" ref="connectionFactory"/> ]]><co id="streamsaq.config.xmltype.enq.connfact" /><![CDATA[
-        <property name="messageConverter">
-            <bean id="messageConverter"> ]]><co id="streamsaq.config.xmltype.enq.converter" /><![CDATA[
-                    class="org.springframework.data.jdbc.jms.support.converter.oracle.XmlMessageConverter">
-                <constructor-arg>
-                    <bean class="org.springframework.data.jdbc.support.oracle.StringXmlTypeHandler"/> ]]><co id="streamsaq.config.xmltype.enq.handler" /><![CDATA[
-                </constructor-arg>
-            </bean>
-        </property>
-    </bean>
+          <programlisting language="xml"><![CDATA[<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+    <property name="connectionFactory" ref="connectionFactory"/> ]]><co id="streamsaq.config.xmltype.enq.connfact" /><![CDATA[
+    <property name="messageConverter">
+        <bean id="messageConverter"]]><co id="streamsaq.config.xmltype.enq.converter" /><![CDATA[
+           class="org.springframework.data.jdbc.jms.support.converter.oracle.XmlMessageConverter">
+            <constructor-arg>
+                <bean class="org.springframework.data.jdbc.support.oracle.StringXmlTypeHandler"/> ]]><co id="streamsaq.config.xmltype.enq.handler" /><![CDATA[
+            </constructor-arg>
+        </bean>
+    </property>
+</bean>
 ]]></programlisting>
 
           <calloutlist>
@@ -459,23 +461,23 @@
       <classname>XmlMessageListenerContainer</classname> that can dequeue the
       messages and convert the <classname>XMLType</classname> payload.</para>
 
-        <programlisting language="xml"><![CDATA[    <bean id="messageDelegate" class="org.springframework.data.jdbc.test.xml.MessageDelegate" />
+        <programlisting language="xml"><![CDATA[<bean id="messageDelegate" class="org.springframework.data.jdbc.test.xml.MessageDelegate" />
 
-    <jms:listener-container connection-factory="connectionFactory" ]]><co id="streamsaq.config.xmltype.connfact" /><![CDATA[
-        transaction-manager="transactionManager"
-        message-converter="messageConverter" 
-        container-class="org.springframework.data.jdbc.jms.listener.oracle.XmlMessageListenerContainer"> ]]><co id="streamsaq.config.xmltype.class" /><![CDATA[
-        <jms:listener destination="jmsadmin.jms_xml_queue" 
-            ref="messageDelegate" method="handleMessage">
-        </jms:listener>
-    </jms:listener-container>
+<jms:listener-container connection-factory="connectionFactory" ]]><co id="streamsaq.config.xmltype.connfact" /><![CDATA[
+    transaction-manager="transactionManager"
+    message-converter="messageConverter" 
+    container-class="org.springframework.data.jdbc.jms.listener.oracle.XmlMessageListenerContainer"> ]]><co id="streamsaq.config.xmltype.class" /><![CDATA[
+    <jms:listener destination="jmsadmin.jms_xml_queue" 
+        ref="messageDelegate" method="handleMessage">
+    </jms:listener>
+</jms:listener-container>
 
-    <bean id="messageConverter" ]]><co id="streamsaq.config.xmltype.converter" /><![CDATA[
-            class="org.springframework.data.jdbc.jms.support.converter.oracle.XmlMessageConverter">
-        <constructor-arg>
-            <bean class="org.springframework.data.jdbc.support.oracle.DocumentXmlTypeHandler"/> ]]><co id="streamsaq.config.xmltype.handler" /><![CDATA[
-        </constructor-arg>
-    </bean>
+<bean id="messageConverter" ]]><co id="streamsaq.config.xmltype.converter" /><![CDATA[
+   class="org.springframework.data.jdbc.jms.support.converter.oracle.XmlMessageConverter">
+    <constructor-arg>
+        <bean class="org.springframework.data.jdbc.support.oracle.DocumentXmlTypeHandler"/> ]]><co id="streamsaq.config.xmltype.handler" /><![CDATA[
+    </constructor-arg>
+</bean>
 ]]></programlisting>
 
         <calloutlist>
@@ -485,8 +487,7 @@
 
           <callout arearefs="streamsaq.config.xmltype.class">
             <para>Configuring the class to use for the container - this is a
-            custom class
-            <classname>org.springframework.data.jdbc.jms.listener.oracle.XmlMessageListenerContainer</classname>
+            custom class <classname>XmlMessageListenerContainer</classname>
             that dequeues the Oracle XMLType messages.</para>
           </callout>
 
@@ -509,7 +510,8 @@
     @Autowired
     private DomainService domainService;
 
-    public void handleMessage(Document xmlDoc) throws MessageConversionException, JMSException {
+    public void handleMessage(Document xmlDoc) 
+            throws MessageConversionException, JMSException {
         domainService.processXmlMessage(xmlDoc);
     }
 
@@ -572,20 +574,20 @@
       constructing and instance of the required class.</para>
 
       <para>
-          <programlisting language="xml"><![CDATA[    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
-        <property name="connectionFactory" ref="connectionFactory"/> ]]><co id="streamsaq.config.adt.enq.connfact" /><![CDATA[
-        <property name="messageConverter">
-            <bean id="messageConverter" ]]><co id="streamsaq.config.adt.enq.converter" /><![CDATA[
-                    class="org.springframework.data.jdbc.jms.support.converter.oracle.MappingAdtMessageConverter">
-                <constructor-arg>
-                    <bean class="org.springframework.data.jdbc.jms.support.oracle.StructDatumMapper"> ]]><co id="streamsaq.config.adt.enq.mapper" /><![CDATA[
-                        <constructor-arg index="0" value="JMSADMIN.PRODUCT_TYPE"/>
-                        <constructor-arg index="1" value="org.springframework.data.jdbc.test.domain.Product"/>
-                    </bean>
-                </constructor-arg>
-            </bean>
-        </property>
+          <programlisting language="xml"><![CDATA[<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+  <property name="connectionFactory" ref="connectionFactory"/> ]]><co id="streamsaq.config.adt.enq.connfact" /><![CDATA[
+  <property name="messageConverter">
+    <bean id="messageConverter"
+       class="org.springframework.data.jdbc.jms.support.converter.oracle.MappingAdtMessageConverter">]]><co id="streamsaq.config.adt.enq.converter" /><![CDATA[
+       <constructor-arg>
+         <bean class="org.springframework.data.jdbc.jms.support.oracle.StructDatumMapper"> ]]><co id="streamsaq.config.adt.enq.mapper" /><![CDATA[
+           <constructor-arg index="0" value="JMSADMIN.PRODUCT_TYPE"/>
+           <constructor-arg index="1" value="org.springframework.data.jdbc.test.domain.Product"/>
+         </bean>
+       </constructor-arg>
     </bean>
+  </property>
+</bean>
 ]]></programlisting>
 
           <calloutlist>
@@ -629,26 +631,26 @@
       <classname>AdtMessageListenerContainer</classname> that can dequeue the
       messages and convert the ADT payload.</para>
 
-        <programlisting language="xml"><![CDATA[    <bean id="messageDelegate" class="org.springframework.data.jdbc.test.adt.MessageDelegate" />
+        <programlisting language="xml"><![CDATA[<bean id="messageDelegate" class="org.springframework.data.jdbc.test.adt.MessageDelegate" />
 
-    <jms:listener-container connection-factory="connectionFactory" ]]><co id="streamsaq.config.adt.connfact" /><![CDATA[
-        transaction-manager="transactionManager"
-        message-converter="messageConverter" 
-        container-class="org.springframework.data.jdbc.jms.listener.oracle.AdtMessageListenerContainer"> ]]><co id="streamsaq.config.adt.class" /><![CDATA[
-        <jms:listener destination="jmsadmin.jms_product_queue" 
-            ref="messageDelegate" method="handleMessage">
-        </jms:listener>
-    </jms:listener-container>
+<jms:listener-container connection-factory="connectionFactory" ]]><co id="streamsaq.config.adt.connfact" /><![CDATA[
+    transaction-manager="transactionManager"
+    message-converter="messageConverter" 
+    container-class="org.springframework.data.jdbc.jms.listener.oracle.AdtMessageListenerContainer"> ]]><co id="streamsaq.config.adt.class" /><![CDATA[
+  <jms:listener destination="jmsadmin.jms_product_queue" 
+      ref="messageDelegate" method="handleMessage">
+  </jms:listener>
+</jms:listener-container>
 
-    <bean id="messageConverter" ]]><co id="streamsaq.config.adt.converter" /><![CDATA[
-            class="org.springframework.data.jdbc.jms.support.converter.oracle.MappingAdtMessageConverter">
-        <constructor-arg>
-            <bean class="org.springframework.data.jdbc.jms.support.oracle.StructDatumMapper"> ]]><co id="streamsaq.config.adt.mapper" /><![CDATA[
-                <constructor-arg index="0" value="JMSADMIN.PRODUCT_TYPE"/>
-                <constructor-arg index="1" value="org.springframework.data.jdbc.test.domain.Product"/>
-            </bean>
-        </constructor-arg>
+<bean id="messageConverter" 
+   class="org.springframework.data.jdbc.jms.support.converter.oracle.MappingAdtMessageConverter">]]><co id="streamsaq.config.adt.converter" /><![CDATA[
+  <constructor-arg>
+    <bean class="org.springframework.data.jdbc.jms.support.oracle.StructDatumMapper"> ]]><co id="streamsaq.config.adt.mapper" /><![CDATA[
+      <constructor-arg index="0" value="JMSADMIN.PRODUCT_TYPE"/>
+      <constructor-arg index="1" value="org.springframework.data.jdbc.test.domain.Product"/>
     </bean>
+  </constructor-arg>
+</bean>
 ]]></programlisting>
 
         <calloutlist>
@@ -659,7 +661,7 @@
           <callout arearefs="streamsaq.config.adt.connfact">
             <para>Configuring the class to use for the container - this is a
             custom class
-            <classname>org.springframework.data.jdbc.jms.listener.oracle.AdtMessageListenerContainer</classname>
+            <classname>AdtMessageListenerContainer</classname>
             that dequeues the ADT messages.</para>
           </callout>
 
@@ -684,7 +686,8 @@
     @Autowired
     private DomainService domainService;
 
-    public void handleMessage(Product product) throws MessageConversionException, JMSException {
+    public void handleMessage(Product product) 
+            throws MessageConversionException, JMSException {
         domainService.saveProduct(product);
     }
 

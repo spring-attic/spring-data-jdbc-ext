@@ -622,7 +622,8 @@ END;</programlisting>
 
         public DeleteActorsProc(DataSource dataSource) {
             super(dataSource, "delete_actors");
-            declareParameter(new SqlParameter("in_actor_ids", OracleTypes.ARRAY, "ACTOR_ID_ARRAY"));
+            declareParameter(
+                new SqlParameter("in_actor_ids", OracleTypes.ARRAY, "ACTOR_ID_ARRAY"));
         }
 
         public void execute(Long[] ids) {
@@ -646,8 +647,9 @@ END;</programlisting>
           <programlisting language="java">    this.getActorNamesCall =
             new SimpleJdbcCall(dataSource).withFunctionName("get_actor_names")
                 .withoutProcedureColumnMetaDataAccess()
-                .declareParameters(new SqlOutParameter("return", Types.ARRAY, "ACTOR_NAME_ARRAY", <co id="datatypes.array.out.call.1" />
-                        new SqlReturnArray())); <co id="datatypes.array.out.call.2" />
+                .declareParameters(
+                     new SqlOutParameter("return", Types.ARRAY, "ACTOR_NAME_ARRAY", <co id="datatypes.array.out.call.1" />
+                         new SqlReturnArray())); <co id="datatypes.array.out.call.2" />
 </programlisting>
 
           <calloutlist>

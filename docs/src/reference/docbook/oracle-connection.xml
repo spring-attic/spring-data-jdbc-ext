@@ -34,7 +34,8 @@
     <programlisting language="java">public class CurrentUsernameProvider implements ConnectionUsernameProvider {
 
     public String getUserName() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
+        Object principal = 
+            SecurityContextHolder.getContext().getAuthentication().getPrincipal(); 
         if (principal instanceof UserDetails) { 
             return ((UserDetails)principal).getUsername(); 
         } else { 
@@ -70,7 +71,8 @@
         &lt;orcl:username-connection-proxy connection-context-provider="usernameProvider"/&gt; <co id="datasource.4.4.prop" />
     &lt;/orcl:pooling-datasource&gt;
 
-    &lt;bean id="usernameProvider" class="org.springframework.data.jdbc.test.CurrentUsernameProvider"/&gt;</emphasis>
+    &lt;bean id="usernameProvider" 
+      class="org.springframework.data.jdbc.test.CurrentUsernameProvider"/&gt;</emphasis>
 
 &lt;/beans&gt;</programlisting>
 
