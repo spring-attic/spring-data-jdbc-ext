@@ -54,24 +54,22 @@ password=spring</programlisting>
        http://www.springframework.org/schema/data/orcl/spring-data-orcl-1.0.xsd"&gt;
 
     <emphasis role="bold">&lt;orcl:pooling-datasource id="racDataSource"
-        url="jdbc:oracle:thin:@(description=(address_list=(address=(host=rac1)(protocol=tcp)(port=1521))
-                                                          (address=(host=rac2)(protocol=tcp)(port=1521))))" <co id="rac.1.url" />
+        url="jdbc:oracle:thin:@(description=(address_list=
+            (address=(host=rac1)(protocol=tcp)(port=1521))
+            (address=(host=rac2)(protocol=tcp)(port=1521)))
+            (connect_data=(service_name=racdb1)))"
         properties-location="classpath:orcl.properties"
         fast-connection-failover-enabled="true" <co id="rac.1.fcf" />
         ONS-configuration="rac1:6200,rac2:6200"/&gt;</emphasis> <co id="rac.1.ons" />
 
-    &lt;bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"&gt;
+    &lt;bean id="transactionManager" 
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"&gt;
         &lt;property name="dataSource" ref="racDataSource"/&gt;
     &lt;/bean&gt;
 
 &lt;/beans&gt;</programlisting>
 
       <calloutlist>
-        <callout arearefs="rac.1.url">
-          <para>The long url is specified as: <programlisting>url="jdbc:oracle:thin:@(description=(address_list=(address=(host=rac1)(protocol=tcp)(port=1521))
-(address=(host=rac2)(protocol=tcp)(port=1521)))(connect_data=(service_name=racdb1)))"</programlisting></para>
-        </callout>
-
         <callout arearefs="rac.1.fcf">
           <para>The fast connection failover is enabled here.</para>
         </callout>
