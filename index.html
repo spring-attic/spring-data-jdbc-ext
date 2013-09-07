@@ -1,0 +1,85 @@
+---
+# The name of your project
+title: Spring Data JDBC Extensions
+
+badges:
+
+  # Specify your project's twitter handle, if any. Delete if none.
+  twitter: SpringData
+
+  # Customize your project's badges. Delete any entries that do not apply.
+  custom:
+    - name: Source (GitHub)
+      url:  https://github.com/spring-projects/spring-data-jdbc-ext
+      icon: github
+
+    - name: Issues (JIRA)
+      url:  http://jira.springsource.org/browse/DATAJDBC
+      icon: tracking
+
+    - name: CI (Bamboo)
+      url:  https://build.springsource.org/browse/SPRINGDATA
+      icon: ci
+
+    - name: Forum
+      url:  http://forum.spring.io/forum/spring-projects/data
+      icon: forum
+
+    - name: StackOverflow
+      url:  http://stackoverflow.com/questions/tagged/spring-data-jdbc-ext
+      icon: stackoverflow
+
+---
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<!-- Specify the parent of this project (or delete if none) to influence the rendering of the breadcrumb -->
+{% capture parent_link %}
+[Spring Parent]({{ site.projects_site_url }}/spring-data)
+{% endcapture %}
+
+
+{% capture billboard_description %}
+
+Spring Data JDBC Extensions is part of the umbrella [Spring Data]({{ site.projects_site_url }}/spring-data) project. The JDBC support in the Spring Framework is extensive and covers the most commonly used features. This extension project provides additional support for working with advanced Oracle database features and also with new usage scenarios like type-safe queries using Querydsl.  
+
+{% endcapture %}
+
+{% capture main_content %}
+
+The bulk of the support is made up of code ported from the SpringSource project "Advanced Pack for Oracle Database" that was available for support subscription customers. We are now making this code available to all Spring users and any new developments will be made in the Spring Data JDBC Extensions project.
+
+There is also support for using the [QueryDSL SQL module](http://www.querydsl.com/static/querydsl/2.1.0/reference/html/ch02s04.html) to provide type-safe query, insert, update and delete functionality.
+
+## Features
+
+####Core
+
+* QueryDSL Support -  Support for using the QueryDSL SQL module with a [QueryDslJdbcTemplate](http://static.springsource.org/spring-data/data-jdbc/docs/1.0.0.RELEASE/reference/html/core.querydsl.html) that combines the functionality of QueryDSL and the familiar JdbcTemplate.  This provides a type-safe API for query, insert, update and delete operations combined with the conveniences of Spring's JdbcTemplate support, e.g. RowMapper, resource management, declarative transaction management, etc.
+
+####Oracle
+
+* RAC "Fast Connection Failover" -  The RAC "Fast Connection Failover" provides the ability to have a Spring application transparently failover when a database node fails.
+* Streams AQ (Advanced Queueing)  - The AQ support provides the option of using a single local transaction manager for both database and message access without resorting to expensive distributed 2-phase commit transaction management.
+* XML Types - Custom classes, examples and documentation on how to use Oracle JDBC extensions for their native XML Type.
+* Advanced Data Types - Custom classes, examples and documentation on how to use Oracle JDBC extensions for their advanced data types like STRUCT and ARRAY.
+* Custom DataSource Connection Preparer - This feature provides an API for customizing the connection environment with Oracle specific session settings etc.
+
+<span id="quick-start"></span>
+## Quick Start
+
+{% include download_widget.md %}
+
+{% endcapture %}
+
+{% capture related_resources %}
+
+### Sample Projects
+
+* [Spring Data book examples](https://github.com/SpringSource/spring-data-book)
+
+{% endcapture %}
+
+
+{% include project_page.html %}
+</html>
