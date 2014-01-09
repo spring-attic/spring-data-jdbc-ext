@@ -17,6 +17,7 @@
 package org.springframework.data.jdbc.support.oracle;
 
 import oracle.sql.STRUCT;
+import oracle.sql.ARRAY;
 import oracle.sql.StructDescriptor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,10 +29,14 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
+import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -212,11 +217,43 @@ public class BeanPropertyStructMapper<T> implements StructMapper<T> {
                         logger.debug("Mapping column '" + column + "' to property '" +
                                 pd.getName() + "' of type " + pd.getPropertyType());
                     }
+                    if (value instanceof oracle.sql.ARRAY) {
+                        ARRAY array = (ARRAY) value;
+                        Object[] values = (Object[]) array.getArray();
+                        if ((values.length > 0) && (values[0] instanceof oracle.sql.STRUCT)) {
+                            if (pd.getPropertyType().isArray()) {
+                                StructMapper<?> tmpMapper = BeanPropertyStructMapper.newInstance(pd.getPropertyType().getComponentType());
+                                Object a = Array.newInstance(pd.getPropertyType().getComponentType(), values.length);
+
+                                for (int i = 0; i < values.length; i++) {
+                                    Array.set(a, i, tmpMapper.fromStruct((STRUCT) values[i]));
+                                }
+                                value = a;
+                            } else if (pd.getPropertyType().isAssignableFrom(List.class)) {
+                                ParameterizedType paramType = (ParameterizedType) this.mappedClass.getDeclaredField(pd.getName()).getGenericType();
+                                StructMapper<?> tmpMapper = BeanPropertyStructMapper.newInstance((Class<?>) paramType.getActualTypeArguments()[0]);
+                                List l = new ArrayList();
+
+                                for (int i = 0; i < values.length; i++) {
+                                    l.add(tmpMapper.fromStruct((STRUCT) values[i]));
+                                }
+                                value = l;
+                            }
+                        } else
+                            value = null;
+                    }
+
                     bw.setPropertyValue(pd.getName(), value);
                 }
                 catch (NotWritablePropertyException ex) {
                     throw new DataRetrievalFailureException(
                             "Unable to map column " + column + " to property " + pd.getName(), ex);
+                } catch (SecurityException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (NoSuchFieldException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
         }
