@@ -3,19 +3,19 @@ buildscript {
         maven { url 'http://repo.springsource.org/plugins-release' }
     }
     dependencies {
-        classpath 'org.springframework.build.gradle:docbook-reference-plugin:0.1.5'
+        classpath 'org.springframework.build.gradle:docbook-reference-plugin:0.2.8'
     }
 }
 
 ext {
-    slf4jVersion = '1.6.6'
-    junitVersion = '4.10'
-    springRetryVersion = '1.0.0.RELEASE'
+    slf4jVersion = '1.7.5'
+    junitVersion = '4.11'
+    springRetryVersion = '1.0.3.RELEASE'
     querydslVersion = '3.3.0'
-    aspectjVersion = '1.6.11.RELEASE'
+    aspectjVersion = '1.7.4.RELEASE'
     springVersion = '3.0.7.RELEASE'
-    log4jVersion = '1.2.16'
-    mockitoVersion = '1.9.0'
+    log4jVersion = '1.2.17'
+    mockitoVersion = '1.9.5'
 }
 
 allprojects {
@@ -48,8 +48,8 @@ configure(subprojects) { subproject ->
   [compileJava, compileTestJava]*.options*.debugOptions*.debugLevel = "source,lines,vars"
   [compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:-serial", "-Xlint:-unchecked"]
 
-  project.sourceCompatibility = 1.5
-  project.targetCompatibility = 1.5
+  project.sourceCompatibility = 1.6
+  project.targetCompatibility = 1.6
 
   task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"
@@ -86,14 +86,14 @@ configure(subprojects) { subproject ->
 
     // Testing
     testCompile "junit:junit:$junitVersion"
-    testCompile "org.mockito:mockito-all:1.9.0"
+    testCompile "org.mockito:mockito-all:$mockitoVersion"
     testCompile "org.springframework:spring-test:$springVersion"
     testRuntime "log4j:log4j:$log4jVersion"
     testRuntime "org.slf4j:slf4j-log4j12:$slf4jVersion"
     testRuntime "org.springframework:spring-context-support:$springVersion"
     testRuntime "commons-dbcp:commons-dbcp:1.4"
-    testRuntime "commons-pool:commons-pool:1.5.5"
-    testRuntime "org.hsqldb:hsqldb:2.2.8"
+    testRuntime "commons-pool:commons-pool:1.6"
+    testRuntime "org.hsqldb:hsqldb:2.3.1"
 
   }
 
@@ -225,4 +225,4 @@ configure(rootProject) {
 }
 
 
-task wrapper(type: Wrapper) { gradleVersion = "1.1" }
+task wrapper(type: Wrapper) { gradleVersion = "1.10" }

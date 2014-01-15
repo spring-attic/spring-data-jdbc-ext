@@ -3,7 +3,7 @@ package org.springframework.data.jdbc.query;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ContextConfiguration(locations="classpath:query-dsl-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CustomerDaoTest {
 
 	@Autowired
