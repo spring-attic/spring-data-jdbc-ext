@@ -46,7 +46,6 @@ import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.SQLDeleteClause;
@@ -120,7 +119,7 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 	}
 
 	public SQLQuery newSqlQuery() {
-		return new SQLQueryImpl(this.dialect);
+		return new SQLQuery(this.dialect);
 	}
 	
 	public long count(final SQLQuery sqlQuery) {
@@ -142,8 +141,9 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 			public Long doInConnection(Connection con) throws SQLException,
 					DataAccessException {
 				SQLQuery liveQuery = sqlQuery.clone(con);
+				liveQuery.distinct();
 				try {
-					return liveQuery.countDistinct();
+					return liveQuery.count();
 				} catch (QueryException qe) {
 					throw translateQueryException(qe, "SQLQuery", liveQuery.toString());
 				}

@@ -4,5 +4,5 @@ dependencies {
 
   // Querydsl
   compile "com.mysema.querydsl:querydsl-sql:$querydslVersion", optional
-
+  testCompile "com.mysema.querydsl:querydsl-sql-codegen:$querydslVersion"
 }
