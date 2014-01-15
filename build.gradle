@@ -7,6 +7,17 @@ buildscript {
     }
 }
 
+ext {
+    slf4jVersion = '1.6.6'
+    junitVersion = '4.10'
+    springRetryVersion = '1.0.0.RELEASE'
+    querydslVersion = '3.3.0'
+    aspectjVersion = '1.6.11.RELEASE'
+    springVersion = '3.0.7.RELEASE'
+    log4jVersion = '1.2.16'
+    mockitoVersion = '1.9.0'
+}
+
 allprojects {
   apply plugin: "idea"
   apply plugin: "eclipse"
@@ -20,9 +31,7 @@ allprojects {
 
   repositories {
     mavenCentral()
-    //maven { url "http://repo.springsource.org/libs-snapshot" }
-    maven { url "http://repo.springsource.org/libs-milestone" }
-    maven { url "http://repo.springsource.org/libs-release" }
+    maven { url "http://repo.spring.io/libs-milestone" }
   }
 
 }
