@@ -114,6 +114,11 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		}
 	}
 
+    public QueryDslJdbcTemplate(JdbcTemplate jdbcTemplate, SQLTemplates dialect) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.dialect = dialect;
+    }
+
 	public JdbcOperations getJdbcOperations() {
 		return this.jdbcTemplate;
 	}
