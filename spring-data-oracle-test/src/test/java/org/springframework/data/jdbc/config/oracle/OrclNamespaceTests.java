@@ -1,8 +1,3 @@
-/*
- * Copyright 2008 SpringSource Inc.
- * All Rights Reserved.
- */
-
 package org.springframework.data.jdbc.config.oracle;
 
 import static org.junit.Assert.assertEquals;

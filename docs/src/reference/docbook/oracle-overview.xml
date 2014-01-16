@@ -116,7 +116,7 @@
         Spring Retry
 
         <remark>The Fast Connection Failover support requires using the Spring
-        Retry project (https://github.com/SpringSource/spring-retry).</remark>
+        Retry project (https://github.com/spring-projects/spring-retry).</remark>
 
          
       </listitem>

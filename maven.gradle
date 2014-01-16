@@ -31,10 +31,10 @@ def customizePom(pom, gradleProject) {
         generatedPom.project {
             name = gradleProject.description
             description = gradleProject.description
-            url = 'http://github.com/SpringSource/spring-data-jdbc-ext'
+            url = 'http://github.com/spring-projects/spring-data-jdbc-ext'
             organization {
-                name = 'SpringSource'
-                url = 'http://www.springsource.org/spring-data/jdbc-extensions'
+                name = 'Spring by Pivotal'
+                url = 'http://spring.io'
             }
             licenses {
                 license {
@@ -44,9 +44,9 @@ def customizePom(pom, gradleProject) {
                 }
             }
             scm {
-                url = 'http://github.com/SpringSource/spring-data-jdbc-ext'
-                connection = 'scm:git:git://github.com/SpringSource/spring-data-jdbc-ext'
-                developerConnection = 'scm:git:git://github.com/SpringSource/spring-data-jdbc-ext'
+                url = 'http://github.com/spring-projects/spring-data-jdbc-ext'
+                connection = 'scm:git:git://github.com/spring-projects/spring-data-jdbc-ext'
+                developerConnection = 'scm:git:git://github.com/spring-projects/spring-data-jdbc-ext'
             }
             developers {
                 developer {
