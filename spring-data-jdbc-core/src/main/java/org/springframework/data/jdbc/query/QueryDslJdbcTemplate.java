@@ -67,6 +67,7 @@ import com.mysema.query.types.Expression;
  * initial prototype version.
  *
  * @author Thomas Risberg
+ * @author Dzmitry Zhemchuhou
  * @since 1.0
  * @see org.springframework.jdbc.core.JdbcTemplate
  */
@@ -114,10 +115,10 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 		}
 	}
 
-    public QueryDslJdbcTemplate(JdbcTemplate jdbcTemplate, SQLTemplates dialect) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.dialect = dialect;
-    }
+	public QueryDslJdbcTemplate(JdbcTemplate jdbcTemplate, SQLTemplates dialect) {
+		this.jdbcTemplate = jdbcTemplate;
+		this.dialect = dialect;
+	}
 
 	public JdbcOperations getJdbcOperations() {
 		return this.jdbcTemplate;

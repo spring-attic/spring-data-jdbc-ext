@@ -15,28 +15,28 @@ import javax.sql.DataSource;
 
 import static org.junit.Assert.assertEquals;
 
-@ContextConfiguration(locations="classpath:query-dsl-context.xml")
+@ContextConfiguration(locations = "classpath:query-dsl-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext
 public class QueryDslTemplateConstructionTest {
 
-    private final QCustomer qCustomer = QCustomer.customer;
+	private final QCustomer qCustomer = QCustomer.customer;
 
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
+	@Autowired
+	public void setDataSource(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
 
-    private JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
-    @Test
-    public void testPrintSchema() {
-        SQLTemplates dialectWithSchema = HSQLDBTemplates.builder().printSchema().build();
-        SQLTemplates dialectWithoutSchema = HSQLDBTemplates.builder().build();
-        QueryDslJdbcTemplate templateWithSchema = new QueryDslJdbcTemplate(jdbcTemplate, dialectWithSchema);
-        QueryDslJdbcTemplate templateWithoutSchema = new QueryDslJdbcTemplate(jdbcTemplate, dialectWithoutSchema);
-        assertEquals("from PUBLIC.CUSTOMER CUSTOMER", templateWithSchema.newSqlQuery().from(qCustomer).toString());
-        assertEquals("from CUSTOMER CUSTOMER", templateWithoutSchema.newSqlQuery().from(qCustomer).toString());
-    }
+	@Test
+	public void testPrintSchema() {
+		SQLTemplates dialectWithSchema = HSQLDBTemplates.builder().printSchema().build();
+		SQLTemplates dialectWithoutSchema = HSQLDBTemplates.builder().build();
+		QueryDslJdbcTemplate templateWithSchema = new QueryDslJdbcTemplate(jdbcTemplate, dialectWithSchema);
+		QueryDslJdbcTemplate templateWithoutSchema = new QueryDslJdbcTemplate(jdbcTemplate, dialectWithoutSchema);
+		assertEquals("from PUBLIC.CUSTOMER CUSTOMER", templateWithSchema.newSqlQuery().from(qCustomer).toString());
+		assertEquals("from CUSTOMER CUSTOMER", templateWithoutSchema.newSqlQuery().from(qCustomer).toString());
+	}
 
 }
