@@ -29,6 +29,7 @@ import org.springframework.beans.factory.xml.AbstractBeanDefinitionParser;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StringUtils;
+import org.springframework.util.SystemPropertyUtils;
 import org.springframework.util.xml.DomUtils;
 import org.w3c.dom.Element;
 
@@ -159,7 +160,8 @@ public class PoolingDataSourceBeanDefinitionParser extends AbstractBeanDefinitio
         // look for property files
         if (StringUtils.hasText(propertyFileLocation)) {
             logger.debug("Using properties location: " + propertyFileLocation);
-            Resource r = rl.getResource(propertyFileLocation);
+			String resolvedLocation = SystemPropertyUtils.resolvePlaceholders(propertyFileLocation);
+            Resource r = rl.getResource(resolvedLocation);
             logger.debug("Loading properties from resource: " + r);
             PropertiesFactoryBean factoryBean = new PropertiesFactoryBean();
             factoryBean.setLocation(r);

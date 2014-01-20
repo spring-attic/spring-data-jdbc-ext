@@ -13,7 +13,7 @@
     <orcl:pooling-datasource id="simpleDataSource"
         url="jdbc:" username="spring" password="test"/>
 
-    <orcl:pooling-datasource id="propertyFileDataSource"
+    <orcl:pooling-datasource id="classpathPropertyFileDataSource"
         url="jdbc:"
         properties-location="classpath:org/springframework/data/jdbc/config/oracle/test-orcl.properties">
         <orcl:connection-properties>
@@ -23,7 +23,17 @@
         </orcl:connection-properties>
     </orcl:pooling-datasource>
 
-    <orcl:pooling-datasource id="connectionPpropertiesDataSource"
+    <orcl:pooling-datasource id="localPropertyFileDataSource"
+        url="jdbc:"
+        properties-location="file:${test.home}/resources/org/springframework/data/jdbc/config/oracle/test-orcl.properties">
+        <orcl:connection-properties>
+            xxx=/test
+            yyy=OK
+            zzz=1024
+        </orcl:connection-properties>
+    </orcl:pooling-datasource>
+
+    <orcl:pooling-datasource id="connectionPropertiesDataSource"
         url="jdbc:"
         connection-caching-enabled="true">
         <orcl:connection-properties>

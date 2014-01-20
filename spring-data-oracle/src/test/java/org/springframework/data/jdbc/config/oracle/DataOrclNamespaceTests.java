@@ -22,12 +22,25 @@ import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 
+import javax.xml.bind.SchemaOutputResolver;
+
 /**
+ * Tests for Oracle namespace
+ *
+ * Note: Tests should be run with working directory set as spring-data-jdbc-ext/spring-data-oracle
+ *
  * @author Thomas Risberg
  */
 public class DataOrclNamespaceTests extends TestCase {
 
     private XmlBeanFactory beanFactory;
+
+	{
+		// set ${test.home} for property file location resolution
+		String pwd = System.getProperty("user.dir");
+		String path = "/src/test/";
+		System.setProperty("test.home", pwd + path);
+	}
 
     protected void setUp() throws Exception {
         this.beanFactory = new XmlBeanFactory(new ClassPathResource("test-data-orcl-namespace.xml", getClass()));
@@ -38,13 +51,18 @@ public class DataOrclNamespaceTests extends TestCase {
         assertEquals("not the correct class", "oracle.jdbc.pool.OracleDataSource", bean.getClass().getName());
     }
 
-    public void testPropertyFileDataSourceDefinition() throws Exception {
-        Object bean = this.beanFactory.getBean("propertyFileDataSource");
+    public void testClasspathPropertyFileDataSourceDefinition() throws Exception {
+        Object bean = this.beanFactory.getBean("classpathPropertyFileDataSource");
+        assertEquals("not the correct class", "oracle.jdbc.pool.OracleDataSource", bean.getClass().getName());
+    }
+
+    public void testLocalPropertyFileDataSourceDefinition() throws Exception {
+        Object bean = this.beanFactory.getBean("localPropertyFileDataSource");
         assertEquals("not the correct class", "oracle.jdbc.pool.OracleDataSource", bean.getClass().getName());
     }
 
     public void testConectionPropertiesDataSourceDefinition() throws Exception {
-        Object bean = this.beanFactory.getBean("connectionPpropertiesDataSource");
+        Object bean = this.beanFactory.getBean("connectionPropertiesDataSource");
         assertEquals("not the correct class", "oracle.jdbc.pool.OracleDataSource", bean.getClass().getName());
         assertTrue("connection properties not found", ((OracleDataSource)bean).getConnectionProperties().size() > 0);
         assertTrue("cache properties not found", ((OracleDataSource)bean).getConnectionCacheProperties().size() > 0);
