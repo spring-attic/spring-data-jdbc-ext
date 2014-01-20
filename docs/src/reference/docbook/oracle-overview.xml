@@ -82,43 +82,33 @@
 
     <itemizedlist>
       <listitem>
-        Java 5 or later
-
-        <remark>The Spring 3.0 dependency requires Java 5 or later. Java 6 or
-        later is recommended.</remark>
+         Java 6 or later 
+        <remark>The minimum Java version is now 1.6.</remark>
       </listitem>
 
       <listitem>
-        JDBC driver for Oracle 10g R2
-
-        <remark>All features are supported using the Oracle JDBC driver
-        10.2.0.2 or later.</remark>
-      </listitem>
-
-      <listitem>
-        Spring Framework 3.0
-
+         Spring Framework 3.0 
         <remark>All Spring Framework features that are needed are provided in
         Spring Framework version 3.0 or later.</remark>
       </listitem>
 
       <listitem>
-         Apache Commons Logging 
+        JDBC driver for Oracle 10g R2
+        <remark>All features are supported using the Oracle JDBC driver
+        10.2.0.2 or later. Using a recent 11gR2 or later driver is recommended.</remark>
+      </listitem>
 
+      <listitem>
+         Apache Commons Logging 
         <remark>Apache Commons Logging is used by the Spring Framework but it
         can be replaced by the jcl-over-slf4j bridge provided by the SLF4J
         project.</remark>
-
-         
       </listitem>
 
       <listitem>
         Spring Retry
-
         <remark>The Fast Connection Failover support requires using the Spring
         Retry project (https://github.com/spring-projects/spring-retry).</remark>
-
-         
       </listitem>
     </itemizedlist>
   </section>

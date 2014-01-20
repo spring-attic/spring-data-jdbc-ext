@@ -50,38 +50,26 @@
     <itemizedlist>
       <listitem>
          Java 6 or later 
-
         <remark>The minimum Java version is now 1.6.</remark>
-
-         
       </listitem>
 
       <listitem>
          Spring Framework 3.0 
-
         <remark>All Spring Framework features that are needed are provided in
         Spring Framework version 3.0 or later.</remark>
-
-         
       </listitem>
 
       <listitem>
          Apache Commons Logging 
-
         <remark>Apache Commons Logging is used by the Spring Framework but it
         can be replaced by the jcl-over-slf4j bridge provided by the SLF4J
         project.</remark>
-
-         
       </listitem>
 
       <listitem>
          Querydsl 
-
         <remark>The Querydsl support requires the use of Querydsl SQL module
         version 3.0.0 or later (library is built using 3.3.0).</remark>
-
-         
       </listitem>
     </itemizedlist>
   </section>
