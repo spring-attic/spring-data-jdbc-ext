@@ -32,11 +32,14 @@ public class QueryDslTemplateConstructionTest {
 	@Test
 	public void testPrintSchema() {
 		SQLTemplates dialectWithSchema = HSQLDBTemplates.builder().printSchema().build();
-		SQLTemplates dialectWithoutSchema = HSQLDBTemplates.builder().build();
+		SQLTemplates dialectWithQuotes = HSQLDBTemplates.builder().quote().build();
+		SQLTemplates dialectPlain = HSQLDBTemplates.builder().build();
 		QueryDslJdbcTemplate templateWithSchema = new QueryDslJdbcTemplate(jdbcTemplate, dialectWithSchema);
-		QueryDslJdbcTemplate templateWithoutSchema = new QueryDslJdbcTemplate(jdbcTemplate, dialectWithoutSchema);
+		QueryDslJdbcTemplate templateWithQuotes = new QueryDslJdbcTemplate(jdbcTemplate, dialectWithQuotes);
+		QueryDslJdbcTemplate templatePlain = new QueryDslJdbcTemplate(jdbcTemplate, dialectPlain);
 		assertEquals("from PUBLIC.CUSTOMER CUSTOMER", templateWithSchema.newSqlQuery().from(qCustomer).toString());
-		assertEquals("from CUSTOMER CUSTOMER", templateWithoutSchema.newSqlQuery().from(qCustomer).toString());
+		assertEquals("from \"CUSTOMER\" \"CUSTOMER\"", templateWithQuotes.newSqlQuery().from(qCustomer).toString());
+		assertEquals("from CUSTOMER CUSTOMER", templatePlain.newSqlQuery().from(qCustomer).toString());
 	}
 
 }
