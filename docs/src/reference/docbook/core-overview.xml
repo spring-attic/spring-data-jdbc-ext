@@ -49,10 +49,9 @@
 
     <itemizedlist>
       <listitem>
-         Java 5 or later 
+         Java 6 or later 
 
-        <remark>The Spring 3.0 dependency requires Java 5 or later. Java 6 or
-        later is recommended.</remark>
+        <remark>The minimum Java version is now 1.6.</remark>
 
          
       </listitem>
@@ -80,7 +79,7 @@
          Querydsl 
 
         <remark>The Querydsl support requires the use of Querydsl SQL module
-        version 2.2.2 or later and this module does require Java 6.</remark>
+        version 3.0.0 or later (library is built using 3.3.0).</remark>
 
          
       </listitem>

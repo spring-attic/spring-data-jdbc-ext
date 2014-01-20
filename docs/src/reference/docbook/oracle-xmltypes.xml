@@ -22,11 +22,10 @@
     <filename>xmlparserv2.jar</filename> since the XMLType depends on this
     parser library.</para>
 
-    <para>There is optional support for Spring's Object/XML Mapping support.
-    If you use this support then you would also need the Spring Web Services
-    project, version 1.0 or 1.5. The jar files needed from this project are
-    <filename>spring-xml.jar</filename>, <filename>spring-oxm.jar</filename>
-    and <filename>spring-oxm-tiger.jar</filename>.</para>
+    <para>There is optional support for Spring's Object/XML Mapping (OXM) support.
+    If you use this support then you would also need a dependency for the Spring 
+    Framework OXM sub-project. The jar files needed is 
+    <filename>spring-oxm.jar</filename>.</para>
 
     <para>All samples in this chapter access a table named "xml_table". Here
     is the DDL to create this table:</para>
@@ -147,7 +146,7 @@
     Spring Web Services project. The marshaller is typically configured and
     then injected into the DAO or Repository. Here is an example configuration
     using the JAXB 2.0 support. In addition to JAXB 2.0, there is also support
-    for JAXB 1.0, Casto, XML Beans, JiBX and XStream.</para>
+    for JAXB 1.0, Castor, XML Beans, JiBX and XStream.</para>
 
     <para><programlisting language="xml"><![CDATA[    <bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="classesToBeBound">

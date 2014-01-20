@@ -2,16 +2,29 @@ Spring Data JDBC Extensions Support Changelog
 =============================================
 
 
+Changes in version 1.1.0.M1 (January 20, 2014)
+----------------------------------------------------
+
+General
+* DATAJDBC-51 Upgrading Querydsl to 3.3.0
+* making Java 1.6 the minimum required version
+* upgrading to recent versions of all dependencies
+
+Core
+* DATAJDBC-40 Changing QuerydslJdbcTemplate to accept SQLDialect as constructor argument
+
+Oracle
+* DATAJDBC-45 Adding resoution of system properties in property file locations
+
+
 Changes in version 1.0.0.RELEASE (November 12, 2012)
 ----------------------------------------------------
 
 General
-
 * Making some dependencies provided/optional
 * Upgrading Querydsl to 2.8.2
 
 Core
-
 * Changing QuerydslJdbcTemplate expression parameter from ExpressionBase<T> to Expression<T>
 
 
