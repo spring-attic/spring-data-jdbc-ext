@@ -40,7 +40,7 @@ import java.sql.SQLException;
  *
  * Make a duplicate of QCustomer.java called QBadCustomer.java and
  * remove underscores from FIRST_NAME and LAST_NAME field name
- * metadata. Copy this class to src/text/java
+ * metadata. Copy this class to src/test/java
  *
  * @author Thomas Risberg
  * @since 1.0.1

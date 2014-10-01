@@ -75,9 +75,10 @@ public class QueryDslCustomerDao implements CustomerDao {
 	public long addBatch(final List<Customer> customers) {
 		long inserted = template.insert(qCustomer, new SqlInsertCallback() {
 			public long doInSqlInsertClause(SQLInsertClause insert) {
-				insert.columns(qCustomer.firstName, qCustomer.lastName);
 				for (Customer customer : customers) {
-					insert.values(customer.getFirstName(), customer.getLastName()).addBatch();
+					insert.columns(qCustomer.firstName, qCustomer.lastName)
+							.values(customer.getFirstName(), customer.getLastName())
+							.addBatch();
 				}
 				return insert.execute();
 			}
