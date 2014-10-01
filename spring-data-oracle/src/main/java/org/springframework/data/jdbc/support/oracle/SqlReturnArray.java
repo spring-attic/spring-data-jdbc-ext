@@ -48,6 +48,9 @@ public class SqlReturnArray implements SqlReturnType {
     public Object getTypeValue(CallableStatement cs, int i, int sqlType, String typeName)
                                         throws SQLException {
         ARRAY array = (ARRAY) cs.getObject(i);
+        if (array == null) {
+            return null;
+        }
         Object values = array.getArray();
         return values;
     }

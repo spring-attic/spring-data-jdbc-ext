@@ -65,15 +65,23 @@ public class SqlReturnStructArray<T> implements SqlReturnType {
     public Object getTypeValue(CallableStatement cs, int i, int sqlType, String typeName)
                                         throws SQLException {
         ARRAY array = (ARRAY) cs.getObject(i);
+        if (array == null) {
+            return null;
+        }
         Object[] structValues = (Object[]) array.getArray();
 		List<T> values = new ArrayList<T>();
 		for (int x = 0; x < structValues.length; x++) {
 			Object struct = structValues[x];
-			if (struct instanceof STRUCT) {
+			if (struct != null && struct instanceof STRUCT) {
 				values.add(mapper.fromStruct((STRUCT) struct));
 			}
 			else {
-				throw new InvalidDataAccessApiUsageException("Expected STRUCT but got " + struct.getClass().getName());
+				if (struct == null) {
+					throw new InvalidDataAccessApiUsageException("Expected STRUCT but got 'null'");
+				}
+				else {
+					throw new InvalidDataAccessApiUsageException("Expected STRUCT but got " + struct.getClass().getName());
+				}
 			}
 		}
         return values.toArray();

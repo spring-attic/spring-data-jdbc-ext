@@ -75,6 +75,9 @@ public class SqlReturnStruct implements SqlReturnType {
     public Object getTypeValue(CallableStatement cs, int paramIndex, int sqlType, String typeName)
             throws SQLException {
         STRUCT struct = (STRUCT)cs.getObject(paramIndex);
+        if (struct == null) {
+            return null;
+        }
         Object result = mapper.fromStruct(struct);
         return result;
     }
