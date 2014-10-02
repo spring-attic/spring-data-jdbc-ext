@@ -69,7 +69,7 @@
       <listitem>
          Querydsl 
         <remark>The Querydsl support requires the use of Querydsl SQL module
-        version 3.0.0 or later (library is built using 3.3.0).</remark>
+        version 3.0.0 or later.</remark>
       </listitem>
     </itemizedlist>
   </section>
