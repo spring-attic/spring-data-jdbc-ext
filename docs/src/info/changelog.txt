@@ -2,8 +2,18 @@ Spring Data JDBC Extensions Support Changelog
 =============================================
 
 
+Changes in version 1.1.0.RC1 (October 2, 2014)
+----------------------------------------------
+
+General
+* DATAJDBC-64 Upgrade to Querydsl version 3.5.0
+
+Oracle
+* DATAJDBC-62 Adding null checks for SqlReturnXxx classes
+
+
 Changes in version 1.1.0.M1 (January 20, 2014)
-----------------------------------------------------
+----------------------------------------------
 
 General
 * DATAJDBC-51 Upgrading Querydsl to 3.3.0
