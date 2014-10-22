@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2012 the original author or authors.
+ * Copyright 2008-2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,8 +56,6 @@ public abstract class OneToManyResultSetExtractor<R, C, K> implements ResultSetE
 	protected final RowMapper<R> rootMapper;
 	protected final RowMapper<C> childMapper;
 
-	protected List<R> results;
-
 	/**
 	 * Creates a new {@link OneToManyResultSetExtractor} from the given {@link RowMapper}s.
 	 * 
@@ -86,9 +84,7 @@ public abstract class OneToManyResultSetExtractor<R, C, K> implements ResultSetE
 	}
 
 	public List<R> extractData(ResultSet rs) throws SQLException, DataAccessException {
-		if (results == null) {
-			results = new ArrayList<R>();
-		}
+		List<R> results = new ArrayList<R>();
 		int row = 0;
 		boolean more = rs.next();
 		if (more) {
