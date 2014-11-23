@@ -23,7 +23,7 @@ import org.springframework.data.jdbc.support.ConnectionPreparer;
 import java.sql.Connection;
 
 /**
- * ConnectionInterceptor that delegates to a ConectionPreparer implementation.
+ * ConnectionInterceptor that delegates to a ConnectionPreparer implementation.
  *
  * @author Thomas Risberg
  * @since 1.0
