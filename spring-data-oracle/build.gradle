@@ -7,7 +7,7 @@ test {
 
 repositories {
   mavenLocal()
-  maven { url "http://repo.springsource.org/ext-private-local" }
+  maven { url "http://repo.spring.io/ext-private-local" }
 }
 
 dependencies {
