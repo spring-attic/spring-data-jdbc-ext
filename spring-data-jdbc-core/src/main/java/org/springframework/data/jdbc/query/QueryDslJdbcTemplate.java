@@ -24,6 +24,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.mysema.query.QueryException;
+import com.mysema.query.SearchResults;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -250,6 +251,20 @@ public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 				SQLQuery liveQuery = sqlQuery.clone(con);
 				try {
 					return liveQuery.list(expression);
+				} catch (QueryException qe) {
+					throw translateQueryException(qe, "SQLQuery", liveQuery.toString());
+				}
+			}});
+		return results;
+	}
+
+	public <T> SearchResults<T> queryResults(final SQLQuery sqlQuery, final Expression<T> expression) {
+		SearchResults<T> results = jdbcTemplate.execute(new ConnectionCallback<SearchResults<T>>() {
+			public SearchResults<T> doInConnection(Connection con) throws SQLException,
+					DataAccessException {
+				SQLQuery liveQuery = sqlQuery.clone(con);
+				try {
+					return liveQuery.listResults(expression);
 				} catch (QueryException qe) {
 					throw translateQueryException(qe, "SQLQuery", liveQuery.toString());
 				}
