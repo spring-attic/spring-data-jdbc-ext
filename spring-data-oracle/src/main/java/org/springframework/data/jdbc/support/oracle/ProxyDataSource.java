@@ -23,6 +23,8 @@ import org.springframework.jdbc.datasource.SmartDataSource;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 import java.io.PrintWriter;
 
 import javax.sql.DataSource;
@@ -92,4 +94,11 @@ public class ProxyDataSource implements SmartDataSource {
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         return ((DataSource)oracleDataSurce).isWrapperFor(iface);
     }
+
+
+	@Override
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

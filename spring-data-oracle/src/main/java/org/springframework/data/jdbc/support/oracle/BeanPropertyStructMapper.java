@@ -30,6 +30,7 @@ import org.springframework.util.StringUtils;
 import java.beans.PropertyDescriptor;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Struct;
 import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
@@ -154,7 +155,7 @@ public class BeanPropertyStructMapper<T> implements StructMapper<T> {
 	}
 
 
-    public STRUCT toStruct(T source, Connection conn, String typeName) throws SQLException {
+    public Struct toStruct(T source, Connection conn, String typeName) throws SQLException {
         StructDescriptor descriptor = new StructDescriptor(typeName, conn);
         ResultSetMetaData rsmd = descriptor.getMetaData();
         int columns = rsmd.getColumnCount();
@@ -193,13 +194,13 @@ public class BeanPropertyStructMapper<T> implements StructMapper<T> {
 	 * <p>Utilizes public setters and result set metadata.
 	 * @see java.sql.ResultSetMetaData
 	 */
-	public T fromStruct(STRUCT struct) throws SQLException {
+	public T fromStruct(Struct struct) throws SQLException {
         Assert.state(this.mappedClass != null, "Mapped class was not specified");
         T mappedObject = BeanUtils.instantiateClass(this.mappedClass);
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(mappedObject);
         initBeanWrapper(bw);
-
-        ResultSetMetaData rsmd = struct.getDescriptor().getMetaData();
+        
+        ResultSetMetaData rsmd = ((STRUCT) struct).getDescriptor().getMetaData();
         Object[] attr = struct.getAttributes();
         int columnCount = rsmd.getColumnCount();
         for (int index = 1; index <= columnCount; index++) {

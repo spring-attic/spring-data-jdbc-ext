@@ -16,14 +16,14 @@
 
 package org.springframework.data.jdbc.support.oracle;
 
-import oracle.sql.ARRAY;
-import oracle.sql.ArrayDescriptor;
-import oracle.sql.STRUCT;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.core.support.AbstractSqlTypeValue;
 
+import oracle.jdbc.driver.OracleConnection;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Struct;
 
 /**
  * Implementation of the SqlTypeValue interface, for convenient
@@ -103,12 +103,11 @@ public class SqlStructArrayValue<T> extends AbstractSqlTypeValue {
 			throw new InvalidDataAccessApiUsageException(
 					"The typeName for the array is null in this context. Consider setting the arrayTypeName.");
 		}
-        ArrayDescriptor arrayDescriptor = new ArrayDescriptor(typeName != null ? typeName : arrayTypeName, conn);
-		STRUCT[] structValues = new STRUCT[values.length];
+		Struct[] structValues = new Struct[values.length];
 		for (int i = 0; i < values.length; i++) {
 			structValues[i] = mapper.toStruct(values[i], conn, structTypeName);
 		}
-        ARRAY array = new ARRAY(arrayDescriptor, conn, structValues);
-        return array;
+		OracleConnection oracleConn = (OracleConnection) conn;
+		return oracleConn.createOracleArray(typeName != null ? typeName : arrayTypeName, structValues);
     }
 }
