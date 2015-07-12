@@ -53,7 +53,11 @@
     managed using JDBC <classname>Struct</classname> objects. When working
     with Oracle it's easier to work with Oracle's extension to
     <classname>Struct</classname> which is
-    <classname>oracle.sql.STRUCT</classname>.</para>
+    <classname>oracle.sql.STRUCT</classname>. With the release of the Oracle JDBC
+    driver version 12.1 the <classname>oracle.sql.STRUCT</classname> has been
+    deprecated in favor of the standard <classname>java.sql.Struct</classname>.
+    Although not all features are available using this standard interface, we have
+    adjusted the framework to use the standard interface when possible.</para>
 
     <para>For the <literal>STRUCT</literal> examples we will use the following
     type declaration.</para>
@@ -217,7 +221,7 @@ public class SqlActor extends Actor implements SQLData {
       the <classname>SimpleJdbcCall</classname> and in the
       <classname>declareParameters</classname> method call we pass in an
       <classname>SqlParameter</classname> that defines the parameter with the
-      type as OracleTypes.STRUCT and a type name of ACTOR_TYPE to match what
+      type as Types.STRUCT and a type name of ACTOR_TYPE to match what
       it is defined in the database. Note that the type name is defined here
       as all caps since that is how it is stored in the database metadata. Any
       type names declared here are case sensitive and must match what is
@@ -226,13 +230,13 @@ public class SqlActor extends Actor implements SQLData {
         <programlisting language="java">    this.addSqlActorCall =
             new SimpleJdbcCall(dataSource).withProcedureName("add_actor")
                 .declareParameters(
-                    new SqlParameter("in_actor", OracleTypes.STRUCT, "ACTOR_TYPE")); <co id="datatypes.sqldata.in.call.1" />
+                    new SqlParameter("in_actor", Types.STRUCT, "ACTOR_TYPE")); <co id="datatypes.sqldata.in.call.1" />
 </programlisting>
 
         <calloutlist>
           <callout arearefs="datatypes.sqldata.in.call.1">
             <para>We define the <classname>SqlParameter</classname> with
-            parameter name, the Oracle type and the type name as it is
+            parameter name, the type and the type name as it is
             declared in the database.</para>
           </callout>
         </calloutlist>
@@ -273,7 +277,7 @@ public class SqlActor extends Actor implements SQLData {
 
         public AddSqlActorProc(DataSource dataSource) {
             super(dataSource, "add_actor");
-            declareParameter(new SqlParameter("in_actor", OracleTypes.STRUCT, "ACTOR_TYPE"));
+            declareParameter(new SqlParameter("in_actor", Types.STRUCT, "ACTOR_TYPE"));
         }
 
         public void execute(Actor actor) {
@@ -306,14 +310,14 @@ public class SqlActor extends Actor implements SQLData {
         <programlisting language="java">        this.getSqlActorCall =
                 new SimpleJdbcCall(dataSource).withProcedureName("get_actor")
                     .declareParameters(
-                        new SqlOutParameter("out_actor", OracleTypes.STRUCT, "ACTOR_TYPE", <co id="datatypes.sqldata.out.call.1" />
+                        new SqlOutParameter("out_actor", Types.STRUCT, "ACTOR_TYPE", <co id="datatypes.sqldata.out.call.1" />
                             new SqlReturnSqlData(SqlActor.class)) <co id="datatypes.sqldata.out.call.2" />
                     );
 </programlisting>
 
         <calloutlist>
           <callout arearefs="datatypes.sqldata.out.call.1">
-            <para>We define the parameter name and the Oracle type and the
+            <para>We define the parameter name and the type and the
             type name as it is declared in the database.</para>
           </callout>
 
@@ -351,7 +355,7 @@ public class SqlActor extends Actor implements SQLData {
             super(dataSource, "get_actor");
             declareParameter(new SqlParameter("in_actor_id", Types.NUMERIC));
             declareParameter(
-                new SqlOutParameter("out_actor", OracleTypes.STRUCT, "ACTOR_TYPE",
+                new SqlOutParameter("out_actor", Types.STRUCT, "ACTOR_TYPE",
                     new SqlReturnSqlData(SqlActor.class))
             );
         }
@@ -385,13 +389,13 @@ public class SqlActor extends Actor implements SQLData {
         <programlisting language="java">    this.addActorCall =
             new SimpleJdbcCall(dataSource).withProcedureName("add_actor")
                 .declareParameters(
-                    new SqlParameter("in_actor", OracleTypes.STRUCT, "ACTOR_TYPE")); <co id="datatypes.struct.in.call.1" />
+                    new SqlParameter("in_actor", Types.STRUCT, "ACTOR_TYPE")); <co id="datatypes.struct.in.call.1" />
 </programlisting>
 
         <calloutlist>
           <callout arearefs="datatypes.struct.in.call.1">
             <para>We define the <classname>SqlParameter</classname> with
-            parameter name, the Oracle type and the type name as it is
+            parameter name, the type and the type name as it is
             declared in the database.</para>
           </callout>
         </calloutlist>
@@ -432,7 +436,7 @@ public class SqlActor extends Actor implements SQLData {
 
         public AddActorProc(DataSource dataSource) {
             super(dataSource, "add_actor");
-            declareParameter(new SqlParameter("in_actor", OracleTypes.STRUCT, "ACTOR_TYPE"));
+            declareParameter(new SqlParameter("in_actor", Types.STRUCT, "ACTOR_TYPE"));
         }
 
         public void execute(Actor actor) {
@@ -458,7 +462,7 @@ public class SqlActor extends Actor implements SQLData {
         <programlisting language="java">    this.getActorCall =
             new SimpleJdbcCall(dataSource).withProcedureName("get_actor")
                 .declareParameters(
-                    new SqlOutParameter("out_actor", OracleTypes.STRUCT, "ACTOR_TYPE", <co id="datatypes.struct.out.call.1" />
+                    new SqlOutParameter("out_actor", Types.STRUCT, "ACTOR_TYPE", <co id="datatypes.struct.out.call.1" />
                             new SqlReturnStruct(Actor.class)) <co id="datatypes.struct.out.call.2" />
             );
 </programlisting>
@@ -466,7 +470,7 @@ public class SqlActor extends Actor implements SQLData {
         <calloutlist>
           <callout arearefs="datatypes.struct.out.call.1">
             <para>We define the <classname>SqlParameter</classname> with
-            parameter name, the Oracle type and the type name as it is
+            parameter name, the type and the type name as it is
             declared in the database.</para>
           </callout>
 
@@ -507,7 +511,7 @@ public class SqlActor extends Actor implements SQLData {
             super(dataSource, "get_actor");
             declareParameter(new SqlParameter("in_actor_id", Types.NUMERIC));
             declareParameter(
-                new SqlOutParameter("out_actor", OracleTypes.STRUCT, "ACTOR_TYPE",
+                new SqlOutParameter("out_actor", Types.STRUCT, "ACTOR_TYPE",
                         new SqlReturnStruct(Actor.class))
             );
         }
@@ -531,7 +535,11 @@ public class SqlActor extends Actor implements SQLData {
     <classname>Array</classname> objects. When working with Oracle it's
     sometimes easier to work with Oracle's extension to
     <classname>Array</classname> which is
-    <classname>oracle.sql.ARRAY</classname>.</para>
+    <classname>oracle.sql.ARRAY</classname>. With the release of the Oracle JDBC
+    driver version 12.1 the <classname>oracle.sql.ARRAY</classname> has been
+    deprecated in favor of the standard <classname>java.sql.Array</classname>.
+    Although not all features are available using this standard interface, we have
+    adjusted the framework to use the standard interface when possible.</para>
 
     <para>For the <literal>ARRAY</literal> examples we will use the following
     type declarations.</para>
@@ -559,7 +567,7 @@ CREATE OR REPLACE TYPE actor_id_array
       collection type and for the type contained in the collection so it looks
       like there are additional parameters. Because of this it is best to turn
       off the metadata processing by calling
-      the<classname>withoutProcedureColumnMetaDataAccess</classname>
+      the <classname>withoutProcedureColumnMetaDataAccess</classname>
       method.</para>
 
       <para>This example calls a procedure that deletes actors based on the
@@ -575,7 +583,7 @@ END;</programlisting>
 
       <para>The declaration of the ARRAY parameter follows the same pattern as
       we used previously for the STRUCT parameters. We are simply providing
-      the <classname>OracleTypes.ARRAY</classname> SQL type along with the
+      the <classname>Types.ARRAY</classname> SQL type along with the
       type name as it is specified in the database metadata.</para>
 
       <para>
@@ -583,13 +591,13 @@ END;</programlisting>
             new SimpleJdbcCall(dataSource).withProcedureName("delete_actors")
                 .withoutProcedureColumnMetaDataAccess()
                 .declareParameters(
-                    new SqlParameter("in_actor_ids", OracleTypes.ARRAY, "ACTOR_ID_ARRAY")); <co id="datatypes.array.in.call.1" />
+                    new SqlParameter("in_actor_ids", Types.ARRAY, "ACTOR_ID_ARRAY")); <co id="datatypes.array.in.call.1" />
 </programlisting>
 
           <calloutlist>
             <callout arearefs="datatypes.array.in.call.1">
               <para>We define the <classname>SqlParameter</classname> with
-              parameter name, the Oracle type and the type name as it is
+              parameter name, the type and the type name as it is
               declared in the database.</para>
             </callout>
           </calloutlist>
@@ -623,7 +631,7 @@ END;</programlisting>
         public DeleteActorsProc(DataSource dataSource) {
             super(dataSource, "delete_actors");
             declareParameter(
-                new SqlParameter("in_actor_ids", OracleTypes.ARRAY, "ACTOR_ID_ARRAY"));
+                new SqlParameter("in_actor_ids", Types.ARRAY, "ACTOR_ID_ARRAY"));
         }
 
         public void execute(Long[] ids) {
@@ -655,7 +663,7 @@ END;</programlisting>
           <calloutlist>
             <callout arearefs="datatypes.array.out.call.1">
               <para>We declare an <classname>SqlOutParameter</classname> with
-              parameter name, the Oracle type and the type name as it is
+              parameter name, the type and the type name as it is
               declared in the database.</para>
             </callout>
 

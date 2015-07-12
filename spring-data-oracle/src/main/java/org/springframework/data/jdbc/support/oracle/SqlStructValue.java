@@ -31,7 +31,7 @@ import java.sql.Struct;
  *
  * <p>A usage example from a StoredProcedure:
  *
- * <pre class="code">proc.declareParameter(new SqlParameter("actor", OracleTypes.STRUCT, "ACTOR_TYPE"));
+ * <pre class="code">proc.declareParameter(new SqlParameter("actor", Types.STRUCT, "ACTOR_TYPE"));
  * ...
  *
  * Map in = new HashMap();

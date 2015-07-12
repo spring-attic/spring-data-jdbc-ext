@@ -1,23 +1,21 @@
 package org.springframework.data.jdbc.test.adt;
 
-import oracle.sql.STRUCT;
-import oracle.sql.StructDescriptor;
 import org.springframework.data.jdbc.support.oracle.StructMapper;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Struct;
 
 public class ActorMapper implements StructMapper<Actor> {
-	public STRUCT toStruct(Actor source, Connection conn, String typeName) throws SQLException {
-		StructDescriptor descriptor = new StructDescriptor(typeName, conn);
+	public Struct toStruct(Actor source, Connection conn, String typeName) throws SQLException {
 		Object[] values = new Object[3];
 		values[0] = source.getId();
 		values[1] = source.getName();
 		values[2] = source.getAge();
-		return new STRUCT(descriptor, conn, values);
+		return conn.createStruct(typeName, values);
 	}
 
-	public Actor fromStruct(STRUCT struct) throws SQLException {
+	public Actor fromStruct(Struct struct) throws SQLException {
 		Actor a = new Actor();
 		Object[] attributes = struct.getAttributes();
 		a.setId(Long.valueOf(((Number) attributes[0]).longValue()));

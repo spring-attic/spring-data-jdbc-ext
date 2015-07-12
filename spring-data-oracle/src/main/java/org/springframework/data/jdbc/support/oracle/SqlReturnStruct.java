@@ -31,7 +31,7 @@ import java.sql.SQLException;
  *
  * <p>A usage example from a StoredProcedure:
  *
- * <pre class="code">proc.declareParameter(new SqlOutParameter("return", OracleTypes.STRUCT, "ACTOR_TYPE",
+ * <pre class="code">proc.declareParameter(new SqlOutParameter("return", Types.STRUCT, "ACTOR_TYPE",
  *         new SqlReturnArray()));
  * </pre>
  *

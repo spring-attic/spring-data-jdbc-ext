@@ -2,6 +2,7 @@ package org.springframework.data.jdbc.test.adt;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Struct;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +13,6 @@ import javax.sql.DataSource;
 
 import oracle.jdbc.OracleTypes;
 
-import oracle.sql.STRUCT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.jdbc.support.oracle.SqlReturnStructArray;
@@ -134,7 +134,7 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
 
         public AddSqlActorProc(DataSource dataSource) {
             super(dataSource, "add_actor");
-            declareParameter(new SqlParameter("in_actor", OracleTypes.STRUCT, "ACTOR_TYPE"));
+            declareParameter(new SqlParameter("in_actor", Types.STRUCT, "ACTOR_TYPE"));
         }
 
         @SuppressWarnings("unchecked")
@@ -151,7 +151,7 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
             super(dataSource, "get_actor");
             declareParameter(new SqlParameter("in_actor_id", Types.NUMERIC));
             declareParameter(
-                new SqlOutParameter("out_actor", OracleTypes.STRUCT, "ACTOR_TYPE",
+                new SqlOutParameter("out_actor", Types.STRUCT, "ACTOR_TYPE",
                     new SqlReturnSqlData(SqlActor.class))
             );
         }
@@ -169,7 +169,7 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
 
         public AddActorProc(DataSource dataSource) {
             super(dataSource, "add_actor");
-            declareParameter(new SqlParameter("in_actor", OracleTypes.STRUCT, "ACTOR_TYPE"));
+            declareParameter(new SqlParameter("in_actor", Types.STRUCT, "ACTOR_TYPE"));
         }
 
         @SuppressWarnings("unchecked")
@@ -186,7 +186,7 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
             super(dataSource, "get_actor");
             declareParameter(new SqlParameter("in_actor_id", Types.NUMERIC));
             declareParameter(
-                new SqlOutParameter("out_actor", OracleTypes.STRUCT, "ACTOR_TYPE",
+                new SqlOutParameter("out_actor", Types.STRUCT, "ACTOR_TYPE",
                         new SqlReturnStruct(Actor.class))
             );
         }
@@ -222,7 +222,7 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
 
         public DeleteActorsProc(DataSource dataSource) {
             super(dataSource, "delete_actors");
-            declareParameter(new SqlParameter("in_actor_ids", OracleTypes.ARRAY, "ACTOR_ID_ARRAY"));
+            declareParameter(new SqlParameter("in_actor_ids", Types.ARRAY, "ACTOR_ID_ARRAY"));
         }
 
         @SuppressWarnings("unchecked")
@@ -261,11 +261,11 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
 			declareParameter(new SqlOutParameter("return", Types.ARRAY, "ACTOR_ARRAY_TYPE",
 					new SqlReturnStructArray<Actor>(
 					  new StructMapper<Actor>() {
-						  public STRUCT toStruct(Actor source, Connection conn, String typeName) throws SQLException {
+						  public Struct toStruct(Actor source, Connection conn, String typeName) throws SQLException {
 							  throw new InvalidDataAccessApiUsageException("Not implemented");
 						  }
 
-						  public Actor fromStruct(STRUCT struct) throws SQLException {
+						  public Actor fromStruct(Struct struct) throws SQLException {
 							  Actor a = new Actor();
 							  Object[] attributes = struct.getAttributes();
 							  a.setId(Long.valueOf(((Number) attributes[0]).longValue()));
@@ -290,7 +290,7 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
 
 		public SaveActorArrayProc(DataSource dataSource) {
 			super(dataSource, "save_actors");
-			declareParameter(new SqlParameter("in_actors", OracleTypes.ARRAY, "ACTOR_ARRAY_TYPE"));
+			declareParameter(new SqlParameter("in_actors", Types.ARRAY, "ACTOR_ARRAY_TYPE"));
 		}
 
 		@SuppressWarnings("unchecked")

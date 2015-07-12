@@ -9,8 +9,6 @@ import org.springframework.jdbc.core.SqlParameter;
 
 import javax.sql.DataSource;
 
-import oracle.jdbc.OracleTypes;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,23 +47,23 @@ public class SimpleAdvancedDataTypesDao implements AdvancedDataTypesDao {
 
         this.addSqlActorCall =
                 new SimpleJdbcCall(dataSource).withProcedureName("add_actor")
-                    .declareParameters(new SqlParameter("in_actor", OracleTypes.STRUCT, "ACTOR_TYPE"));
+                    .declareParameters(new SqlParameter("in_actor", Types.STRUCT, "ACTOR_TYPE"));
 
         this.getSqlActorCall =
                 new SimpleJdbcCall(dataSource).withProcedureName("get_actor")
                     .declareParameters(
-                        new SqlOutParameter("out_actor", OracleTypes.STRUCT, "ACTOR_TYPE",
+                        new SqlOutParameter("out_actor", Types.STRUCT, "ACTOR_TYPE",
                             new SqlReturnSqlData(SqlActor.class))
                     );
 
         this.addActorCall =
                 new SimpleJdbcCall(dataSource).withProcedureName("add_actor")
-                    .declareParameters(new SqlParameter("in_actor", OracleTypes.STRUCT, "ACTOR_TYPE"));
+                    .declareParameters(new SqlParameter("in_actor", Types.STRUCT, "ACTOR_TYPE"));
 
         this.getActorCall =
                 new SimpleJdbcCall(dataSource).withProcedureName("get_actor")
                     .declareParameters(
-                        new SqlOutParameter("out_actor", OracleTypes.STRUCT, "ACTOR_TYPE",
+                        new SqlOutParameter("out_actor", Types.STRUCT, "ACTOR_TYPE",
                                 new SqlReturnStruct(Actor.class))
                 );
 
@@ -78,7 +76,7 @@ public class SimpleAdvancedDataTypesDao implements AdvancedDataTypesDao {
         this.deleteActorsCall =
                 new SimpleJdbcCall(dataSource).withProcedureName("delete_actors")
                 	.withoutProcedureColumnMetaDataAccess()
-                    .declareParameters(new SqlParameter("in_actor_ids", OracleTypes.ARRAY, "ACTOR_ID_ARRAY"));
+                    .declareParameters(new SqlParameter("in_actor_ids", Types.ARRAY, "ACTOR_ID_ARRAY"));
 
         this.readActorsCall =
                 new SimpleJdbcCall(dataSource).withProcedureName("read_actors")
