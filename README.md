@@ -21,7 +21,7 @@ All you need to do to include the project in your project is shown on the [proje
 NOTE: Before you build the project you will need to download the necessary Oracle jars and import them into your local Maven repository.
 See spring-data-oracle/README.txt for more details on how to obtain and install these jars.
 
-For building the project you need to use Java SDK version 1.6.
+For building the project you should use Java SDK version 1.7.
 
 Spring Data JDBC Extensions uses Gradle as its build system. To build the project run:
 

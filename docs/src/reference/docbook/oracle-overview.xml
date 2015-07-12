@@ -82,20 +82,22 @@
 
     <itemizedlist>
       <listitem>
-         Java 6 or later 
-        <remark>The minimum Java version is now 1.6.</remark>
+         Java 7 or later 
+        <remark>The minimum Java version is now 1.7.</remark>
       </listitem>
 
       <listitem>
-         Spring Framework 3.0 
+         Spring Framework 4.1 
         <remark>All Spring Framework features that are needed are provided in
-        Spring Framework version 3.0 or later.</remark>
+        Spring Framework version 4.1 or later.</remark>
       </listitem>
 
       <listitem>
-        JDBC driver for Oracle 10g R2
+        JDBC driver for Oracle 12c R1
         <remark>All features are supported using the Oracle JDBC driver
-        10.2.0.2 or later. Using a recent 11gR2 or later driver is recommended.</remark>
+        12.1.0.2 or later.</remark>
+        <remark>You can use a database compatible with this driver. This 
+        includes Oracle Database 12c R1, 11g R2 and 11g R1</remark>
       </listitem>
 
       <listitem>

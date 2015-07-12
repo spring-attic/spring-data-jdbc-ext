@@ -34,10 +34,10 @@ dependencies {
   testCompile "org.springframework.data:spring-data-oracle:$sdJdbcVersion"
 
   // Oracle proprietary jars - see 'spring-data-oracle/README.txt' for details on how to add these to your system
-  testCompile "com.oracle.jdbc:oracle.jdbc:10.2.0.2" 
+  testCompile "com.oracle.jdbc:oracle.jdbc:12.1.0.2"
   testCompile "com.oracle.aq:oracle.aq:10.1.0.1" 
-  testCompile "com.oracle.xdb:oracle.xdb:10.2.0.2" 
-  testCompile "com.oracle.xml:oracle.xml:10.2.0.2" 
+  testCompile "com.oracle.xdb:oracle.xdb:12.1.0.2" 
+  testCompile "com.oracle.xml:oracle.xml:12.1.3.0" 
 
   // Testing
   testCompile "junit:junit:$junitVersion"
@@ -47,5 +47,5 @@ dependencies {
   testRuntime "javax.transaction:transaction-api:1.1-rev-1"
   testRuntime "org.aspectj:aspectjrt:$aspectjVersion"
   testRuntime "org.aspectj:aspectjtools:$aspectjVersion"
-  testRuntime "cglib:cglib:2.2"
+  testRuntime "cglib:cglib-nodep:3.1"
 }

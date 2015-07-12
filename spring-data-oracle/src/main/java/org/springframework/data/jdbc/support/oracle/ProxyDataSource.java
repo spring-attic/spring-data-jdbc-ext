@@ -24,6 +24,8 @@ import org.springframework.jdbc.datasource.SmartDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.io.PrintWriter;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -79,6 +81,10 @@ public class ProxyDataSource implements SmartDataSource {
 
     public int getLoginTimeout() throws SQLException {
         return oracleDataSurce.getLoginTimeout();
+    }
+
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        return oracleDataSurce.getParentLogger();
     }
 
     //---------------------------------------------------------------------

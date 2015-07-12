@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.retry.ExhaustedRetryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.test.annotation.ExpectedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -29,8 +28,7 @@ public class RetryTests {
 		assertEquals("database call didn't succeed", "SPRING", username);
 	}
 	
-	@Test
-	@ExpectedException(DataAccessException.class)
+	@Test(expected=DataAccessException.class)
 	public void testFailedRetry() {
 		try {
 			testDao.getUserNameFailAlways(1);
@@ -44,8 +42,7 @@ public class RetryTests {
 		fail("database call shouldn't succeed");
 	}
 
-	@Test
-	@ExpectedException(DataAccessException.class)
+	@Test(expected=DataAccessException.class)
 	public void testFailedCallWithoutRetry() {
 		try {
 			testDao.getUserNameFailAlways(0);
