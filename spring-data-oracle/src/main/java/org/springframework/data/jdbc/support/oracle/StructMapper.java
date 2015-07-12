@@ -16,10 +16,9 @@
 
 package org.springframework.data.jdbc.support.oracle;
 
-import oracle.sql.STRUCT;
-
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Struct;
 
 /**
  * Interface defining signatures needed for pluggable implementations of STRUCT mappers.
@@ -38,7 +37,7 @@ public interface StructMapper<T> {
      * @return the new STRUCT
      * @throws SQLException
      */
-    STRUCT toStruct(T source, Connection conn, String typeName) throws SQLException;
+    Struct toStruct(T source, Connection conn, String typeName) throws SQLException;
 
     /**
      * Map attributes from the passed in STRUCT to the desired object type.
@@ -46,5 +45,5 @@ public interface StructMapper<T> {
      * @return new instance of the target class populated with attribute values
      * @throws SQLException
      */
-    T fromStruct(STRUCT struct) throws SQLException;
+    T fromStruct(Struct struct) throws SQLException;
 }

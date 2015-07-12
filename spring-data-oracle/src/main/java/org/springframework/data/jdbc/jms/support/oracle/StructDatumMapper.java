@@ -69,11 +69,12 @@ public class StructDatumMapper<T> implements DatumMapper<T> {
     public StructDatumMapper(String typeName, Class<T> targetClass) {
         this.typeName = typeName;
         this.mapper = new BeanPropertyStructMapper<T>(targetClass);
+
     }
 
 
     public Datum toDatum(T source, Connection conn) throws SQLException {
-        STRUCT struct = mapper.toStruct(source, conn, typeName);
+        STRUCT struct = (STRUCT) mapper.toStruct(source, conn, typeName);
         return struct;
     }
 
