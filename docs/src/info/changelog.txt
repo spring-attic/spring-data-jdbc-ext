@@ -1,6 +1,18 @@
 Spring Data JDBC Extensions Support Changelog
 =============================================
 
+Changes in version 2.0.0.M1 ()
+-----------------------------------------------
+
+Core
+* DATAJDBC-79 Update to use Querydsl 4.0 -- Not implemented, Querydsl support is removed
+  NOTE: Due to the package and API changes, this new Querydsl 4.0.x release isn't compatible with the
+  QueryDslJdbcTemplate and other features provided. We are removing the Querydsl support and recommend that anyone
+  interested in this switch to use the Querydsl APIs directly. For integration with Spring resource management you can
+  utilize the `com.querydsl.sql.spring.SpringConnectionProvider` and `com.querydsl.sql.spring.SpringExceptionTranslator`
+  classes.
+
+
 Changes in version 1.1.0.RC1 (October 22, 2014)
 -----------------------------------------------
 
