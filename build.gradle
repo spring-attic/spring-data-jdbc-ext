@@ -11,7 +11,7 @@ ext {
     slf4jVersion = '1.7.5'
     junitVersion = '4.11'
     springRetryVersion = '1.0.3.RELEASE'
-    querydslVersion = '3.5.0'
+    querydslVersion = '3.6.9'
     aspectjVersion = '1.7.4.RELEASE'
     springVersion = '3.0.7.RELEASE'
     log4jVersion = '1.2.17'
