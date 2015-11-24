@@ -2,7 +2,17 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="core.querydsl">
-  <title>Querydsl Support</title>
+  <title>Querydsl Support (Deprecated)</title>
+
+  <note>
+    <para>Due to changes in Querydsl, the Spring JDBC Extensions support for 
+        Querydsl is no longer compatible with more recent versions. 
+        We are deprecating this support and recommend that users switch to use the 
+        Querydsl project's Spring support and use the Querydsl APIs directly. See 
+        <ulink
+  url="https://github.com/querydsl/querydsl/tree/master/querydsl-sql-spring">https://github.com/querydsl/querydsl/tree/master/querydsl-sql-spring</ulink>
+    </para>
+  </note>
 
   <para>The Querydsl project provides a framework that let's you write
   type-safe queries in Java rather than constructing them using strings. This

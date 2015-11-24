@@ -30,7 +30,10 @@ import java.sql.SQLException;
  * @since 1.0
  * @see QueryDslJdbcTemplate
  * @see SQLInsertClause
+ * @deprecated as of Spring JDBC Extensions 1.2.0 in favor of directly 
+ * using the Querydsl <a href="https://github.com/querydsl/querydsl/tree/master/querydsl-sql-spring">Spring support</a> 
  */
+@Deprecated
 public interface SqlInsertWithKeyCallback<K> {
 	
 	K doInSqlInsertWithKeyClause(SQLInsertClause insert) throws SQLException;

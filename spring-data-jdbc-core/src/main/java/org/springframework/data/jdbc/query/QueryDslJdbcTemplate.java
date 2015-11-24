@@ -70,7 +70,10 @@ import com.mysema.query.types.Expression;
  * @author Dzmitry Zhemchuhou
  * @since 1.0
  * @see org.springframework.jdbc.core.JdbcTemplate
+ * @deprecated as of Spring JDBC Extensions 1.2.0 in favor of directly 
+ * using the Querydsl <a href="https://github.com/querydsl/querydsl/tree/master/querydsl-sql-spring">Spring support</a> 
  */
+@Deprecated
 public class QueryDslJdbcTemplate implements QueryDslJdbcOperations {
 
 	private JdbcTemplate jdbcTemplate;
