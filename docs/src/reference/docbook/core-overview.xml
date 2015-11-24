@@ -35,6 +35,8 @@
         with SQL databases. We provide the "glue" that let's you easily work
         with Querydsl in a Spring based project.</remark>
 
+        <remark>(As of Spring Data JDBC Extensions version 1.2.0 the Querydsl SQL support is deprecated)</remark>
+
          
       </listitem>
     </itemizedlist>
