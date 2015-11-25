@@ -69,6 +69,7 @@ import com.mysema.query.types.Expression;
  *
  * @author Thomas Risberg
  * @author Dzmitry Zhemchuhou
+ * @author Ivan Fedorenkov
  * @since 1.0
  * @see org.springframework.jdbc.core.JdbcTemplate
  * @deprecated as of Spring JDBC Extensions 1.2.0 in favor of directly 
