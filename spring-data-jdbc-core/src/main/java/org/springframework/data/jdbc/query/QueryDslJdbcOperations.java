@@ -18,6 +18,7 @@ package org.springframework.data.jdbc.query;
 
 import java.util.List;
 
+import com.mysema.query.SearchResults;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -123,7 +124,7 @@ public interface QueryDslJdbcOperations {
 	 * @param sqlQuery the SQLQuery to use
 	 * @param resultSetExtractor the ResultSetExtractor to extract the results
 	 * @param projection the column projection to be used for the mapping
-	 * @return the mapped object
+	 * @return list of the mapped objects
 	 */
 	<T> List<T> query(final SQLQuery sqlQuery, final ResultSetExtractor<List<T>> resultSetExtractor,
 			final Expression<?>... projection);
@@ -134,7 +135,7 @@ public interface QueryDslJdbcOperations {
 	 * @param sqlQuery the SQLQuery to use
 	 * @param rowMapper the RowMapper to map the results
 	 * @param projection the column projection to be used for the mapping
-	 * @return the mapped object
+	 * @return list of the mapped objects
 	 */
 	<T> List<T> query(final SQLQuery sqlQuery, final RowMapper<T> rowMapper,
 			final Expression<?>... projection);
@@ -144,9 +145,18 @@ public interface QueryDslJdbcOperations {
 	 * {@link Expression} which could be a QBean or a MappingProjection.
 	 * @param sqlQuery the SQLQuery to use
 	 * @param expression the implementation to be used for the projection/mapping
-	 * @return the mapped object
+	 * @return list of the mapped objects
 	 */
 	<T> List<T> query(final SQLQuery sqlQuery, final Expression<T> expression);
+
+	/**
+	 * Query for {@link SearchResults} using the {@link SQLQuery}. The results are mapped using the
+	 * {@link Expression} which could be a QBean or a MappingProjection.
+	 * @param sqlQuery the SQLQuery to use
+	 * @param expression the implementation to be used for the projection/mapping
+	 * @return the SearchResults
+	 */
+	public <T> SearchResults<T> queryResults(final SQLQuery sqlQuery, final Expression<T> expression);
 
 	/**
 	 * Execute a database insert using the provided {@link SqlInsertCallback}. 
