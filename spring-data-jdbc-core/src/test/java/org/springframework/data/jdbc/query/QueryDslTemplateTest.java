@@ -1,5 +1,6 @@
 package org.springframework.data.jdbc.query;
 
+import com.mysema.query.SearchResults;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
@@ -206,5 +207,15 @@ public class QueryDslTemplateTest {
 						return delete.execute();
 					}
 				});
+	}
+
+	@Test
+	public void testQueryWithSearchResults() {
+		SQLQuery sqlQuery = template.newSqlQuery()
+				.from(qCustomer)
+				.where(qCustomer.firstName.isNotNull());
+		SearchResults<Customer> results =
+				template.queryResults(sqlQuery, new QBean<Customer>(Customer.class, qCustomer.all()));
+		Assert.assertEquals(2, results.getResults().size());
 	}
 }
