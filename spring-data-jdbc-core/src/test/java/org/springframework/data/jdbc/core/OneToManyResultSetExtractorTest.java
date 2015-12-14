@@ -94,12 +94,7 @@ public class OneToManyResultSetExtractorTest {
 
 		@Override
 		protected Integer mapForeignKey(ResultSet rs) throws SQLException {
-			if (rs.getObject("address.customer_id") == null) {
-				return null;
-			}
-			else {
-				return rs.getInt("address.customer_id");
-			}
+			return rs.getInt("address.customer_id");
 		}
 
 		@Override
