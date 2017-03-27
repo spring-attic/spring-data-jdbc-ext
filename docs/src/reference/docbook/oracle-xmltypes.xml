@@ -3,7 +3,7 @@
   <title>XML Types</title>
 
   <para>Oracle has some advanced XML Type support built into the database. XML
-  data stored in the database is accessible wia JDBC using some Oracle
+  data stored in the database is accessible via JDBC using some Oracle
   specific classes.</para>
 
   <para>The JDBC framework provided with the Spring Framework supports most of
