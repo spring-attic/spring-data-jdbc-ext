@@ -1,10 +1,11 @@
-Spring Data JDBC Extensions
-===========================
+Spring Data JDBC Extensions for the Oracle database
+===================================================
 
-The primary goal of the [Spring Data](http://projects.spring.io/spring-data/) project is to make it easier to build Spring-powered applications that
-use new data access technologies such as non-relational databases, map-reduce frameworks, and cloud based data services.
+The primary goal of the [Spring Data](http://projects.spring.io/spring-data/) project is to make it easier to build Spring-powered
+applications that use new data access technologies such as non-relational databases, map-reduce frameworks, and cloud based data
+services.
 
-There are still many good uses for a relational database and this modules provides support for working with Querydsl for JDBC as well as an improved
+There are still many good uses for a relational database and this modules provides an improved
 programming model for working with legacy and advanced features of the Oracle database.
 
 # Docs
@@ -44,7 +45,7 @@ depending on your editor.
 Here are some ways for you to get involved in the community:
 
 * Get involved with the Spring community on the Spring Community Forums.  Please help out on the [forum](http://forum.spring.io/forum/spring-projects/data/jdbc) by responding to questions and joining the debate.
-* Create [JIRA](https://jira.springframework.org/browse/DATAJDBC) tickets for bugs and new features and comment and vote on the ones that you are interested in.  
+* Create [GitHub issues](https://github.com/spring-projects/spring-data-jdbc-ext/issues) for bugs and new features and comment and vote on the ones that you are interested in.  
 * Github is for social coding: if you want to write code, we encourage contributions through pull requests from [forks of this repository](http://help.github.com/forking/). If you want to contribute code this way, please reference a JIRA ticket as well covering the specific issue you are addressing.
 * Watch for upcoming articles on Spring by [subscribing](https://spring.io/blog.atom) to spring.io
 
