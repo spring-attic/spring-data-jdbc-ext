@@ -30,7 +30,6 @@ import org.springframework.data.jdbc.support.ConnectionPreparer;
 import org.springframework.data.jdbc.support.ConnectionUsernamePasswordProvider;
 import org.springframework.data.jdbc.support.ConnectionUsernameProvider;
 import org.springframework.util.Assert;
-import org.springframework.jdbc.support.nativejdbc.NativeJdbcExtractor;
 import org.springframework.jdbc.datasource.ConnectionProxy;
 import oracle.jdbc.OracleConnection;
 
@@ -45,15 +44,8 @@ public class ProxyConnectionPreparer implements ConnectionPreparer {
 
     private ConnectionContextProvider contextProvider;
 
-    NativeJdbcExtractor jdbcExtractor;
-
-
     public void setContextProvider(ConnectionContextProvider contextProvider) {
         this.contextProvider = contextProvider;
-    }
-
-    public void setJdbcExtractor(NativeJdbcExtractor jdbcExtractor) {
-        this.jdbcExtractor = jdbcExtractor;
     }
 
     public Connection prepare(Connection connection) {
@@ -66,21 +58,13 @@ public class ProxyConnectionPreparer implements ConnectionPreparer {
                 oraCon = (OracleConnection) connection;
             }
             else {
-                if (jdbcExtractor != null) {
-                    try {
-                        Connection nativeCon = jdbcExtractor.getNativeConnection(connection);
-                        if (nativeCon instanceof OracleConnection) {
-                            oraCon = (OracleConnection) connection;
-                        }
-                        else {
-                            throw new NonTransientDataAccessResourceException("Native connection is not of type OracleConnection");
-                        }
-                    } catch (SQLException e) {
-                        throw new NonTransientDataAccessResourceException("Unable to access native connection: " + e.getMessage(), e);
+                try {
+                    oraCon = connection.unwrap(OracleConnection.class);
+                    if (oraCon == null) {
+                        throw new NonTransientDataAccessResourceException("Native connection is not of type OracleConnection");
                     }
-                }
-                else {
-                    throw new NonTransientDataAccessResourceException("Provided connection is not of type OracleConnection and no NativeJdbcExtractor provided");
+                } catch (SQLException e) {
+                    throw new NonTransientDataAccessResourceException("Unable to access native connection: " + e.getMessage(), e);
                 }
             }
         }

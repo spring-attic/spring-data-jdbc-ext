@@ -18,9 +18,9 @@ public class ActorMapper implements StructMapper<Actor> {
 	public Actor fromStruct(Struct struct) throws SQLException {
 		Actor a = new Actor();
 		Object[] attributes = struct.getAttributes();
-		a.setId(Long.valueOf(((Number) attributes[0]).longValue()));
+		a.setId(((Number) attributes[0]).longValue());
 		a.setName(String.valueOf(attributes[1]));
-		a.setAge(Integer.valueOf(((Number) attributes[2]).intValue()));
+		a.setAge(((Number) attributes[2]).intValue());
 		return a;
 	}
 }

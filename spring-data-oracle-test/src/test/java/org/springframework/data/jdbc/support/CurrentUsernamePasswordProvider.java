@@ -1,7 +1,5 @@
 package org.springframework.data.jdbc.support;
 
-import org.springframework.data.jdbc.support.ConnectionUsernamePasswordProvider;
-
 /**
  * @author Thomas Risberg
  */

@@ -18,9 +18,9 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.jdbc.support.oracle.SqlReturnStructArray;
 import org.springframework.data.jdbc.support.oracle.SqlStructArrayValue;
 import org.springframework.data.jdbc.support.oracle.StructMapper;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.stereotype.Repository;
 
@@ -239,7 +239,7 @@ public class ClassicAdvancedDataTypesDao implements AdvancedDataTypesDao {
             super(dataSource, "read_actors");
             declareParameter(
                 new SqlOutParameter("out_actors_cur", OracleTypes.CURSOR,
-                        ParameterizedBeanPropertyRowMapper.newInstance(Actor.class))
+                        BeanPropertyRowMapper.newInstance(Actor.class))
             );
 
         }

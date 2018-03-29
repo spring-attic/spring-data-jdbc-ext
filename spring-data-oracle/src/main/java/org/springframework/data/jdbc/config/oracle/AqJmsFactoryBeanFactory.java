@@ -19,8 +19,6 @@ package org.springframework.data.jdbc.config.oracle;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
-import org.springframework.jdbc.support.nativejdbc.SimpleNativeJdbcExtractor;
-import org.springframework.jdbc.support.nativejdbc.NativeJdbcExtractor;
 import org.springframework.dao.NonTransientDataAccessResourceException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.apache.commons.logging.Log;
@@ -62,8 +60,6 @@ public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
     
     private ConnectionFactoryType connectionFactoryType = ConnectionFactoryType.CONNECTION;
 
-    private NativeJdbcExtractor nativeJdbcExtractor = new SimpleNativeJdbcExtractor();
-    
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -74,10 +70,6 @@ public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
 
 	public void setCoordinateWithDataSourceTransactions(boolean coordinateWithDataSourceTransactions) {
         this.coordinateWithDataSourceTransactions = coordinateWithDataSourceTransactions;
-    }
-
-    public void setNativeJdbcExtractor(NativeJdbcExtractor nativeJdbcExtractor) {
-        this.nativeJdbcExtractor = nativeJdbcExtractor;
     }
 
     public synchronized ConnectionFactory getObject() throws Exception {
@@ -123,7 +115,7 @@ public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
         }
 
         @Override
-        public java.sql.Connection getConnection() throws SQLException {
+        public java.sql.Connection getConnection() throws NonTransientDataAccessResourceException {
             java.sql.Connection con = DataSourceUtils.getConnection(getTargetDataSource());
             java.sql.Connection conToUse = con;
             if (!(con instanceof OracleConnection)) {
@@ -131,7 +123,7 @@ public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
                     logger.debug("Unwrapping JDBC Connection of type:" + con.getClass().getName());
                 }
                 try {
-                    conToUse = nativeJdbcExtractor.getNativeConnection(con);
+                    conToUse = con.unwrap(OracleConnection.class);
                 } catch (SQLException e) {
                     throw new NonTransientDataAccessResourceException(
                             "Error unwrapping the Oracle Connection: " + e.getMessage(), e);
@@ -194,7 +186,7 @@ public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
             }
             else if (method.getName().equals("hashCode")) {
                 // Use hashCode of Connection proxy.
-                return new Integer(System.identityHashCode(proxy));
+                return System.identityHashCode(proxy);
             }
             else if (method.getName().equals("close")) {
                 // Handle close method: don't pass the call on
@@ -254,7 +246,7 @@ public class AqJmsFactoryBeanFactory implements FactoryBean<ConnectionFactory> {
             }
             else if (method.getName().equals("hashCode")) {
                 // Use hashCode of Connection proxy.
-                return new Integer(System.identityHashCode(proxy));
+                return System.identityHashCode(proxy);
             }
             else if (method.getName().equals("close")) {
                 // Handle close method: don't pass the call on

@@ -286,41 +286,6 @@
     have this cached JMS session participite in the local data source
     transaction.</para>
 
-    <para>In many application server environments the JDBC connection is
-    wrapped in an implementation specific class that delegates to the
-    underlying native JDBC connection. Oracle's AQ connection factory needs
-    the native Oracle connection and will throw an "oracle.jms.AQjmsException:
-    JMS-112: Connection is invalid" exception if the connection is wrapped by
-    a foreign class. To solve this problem you can specify a
-    <classname>NativeJdbcExtractor</classname> that can be used to unwrap the
-    connection. Spring provides a number of implementations to match the
-    application server environment. Here is an example for specifying a
-    <classname>NativeJdbcExtractor</classname>.</para>
-
-      <programlisting language="xml"><![CDATA[    <orcl:aq-jms-connection-factory id="connectionFactory"
-        use-local-data-source-transaction="true"
-        native-jdbc-extractor="dbcpNativeJdbcExtractor" ]]><co id="streamsaq.config.nativejdbc" /><![CDATA[
-        data-source="dataSource" />
-
-    <bean id="dbcpNativeJdbcExtractor" 
-        class="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor"/>
-
-    <bean id="dbcpDataSource" class="org.apache.commons.dbcp.BasicDataSource" 
-            destroy-method="close">
-        <property name="driverClassName" value="${jdbc.driverClassName}" />
-        <property name="url" value="${jdbc.url}" />
-        <property name="username" value="${jdbc.username}" />
-        <property name="password" value="${jdbc.password}" />
-    </bean>
-]]></programlisting>
-
-      <calloutlist>
-        <callout arearefs="streamsaq.config.nativejdbc">
-          <para>Here we specify the reference to the native JDBC
-          extractor.</para>
-        </callout>
-      </calloutlist>
-
     <para>For some use cases the default plain ConnectionFactory does not work and
 	you need to explicitly use a QueueConnectionFactory or a TopicConnectionFactory.
 	To support this requirement it is possible to specify this using the

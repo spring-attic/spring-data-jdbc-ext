@@ -6,14 +6,14 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class UnstableDao implements TestDao {
 
-	private SimpleJdbcTemplate simpleJdbcTemplate;
+	private JdbcTemplate simpleJdbcTemplate;
 	
 	private int count1 = 0;
 	private int count2 = 0;
@@ -21,7 +21,7 @@ public class UnstableDao implements TestDao {
 	
 	@Autowired
 	public void init(final DataSource dataSource) {
-		this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+		this.simpleJdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
 	@Transactional

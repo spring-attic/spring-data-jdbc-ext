@@ -1,38 +1,31 @@
 package org.springframework.data.jdbc;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.jdbc.test.adt.SimpleAdvancedDataTypesDao;
-import org.springframework.jdbc.core.ConnectionCallback;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.data.jdbc.test.adt.Actor;
 import org.springframework.data.jdbc.test.adt.AdvancedDataTypesDao;
 import org.springframework.data.jdbc.test.adt.SqlActor;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-@TransactionConfiguration
 public class SimpleAdtTests {
 
-	private SimpleJdbcTemplate simpleJdbcTemplate;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	@Autowired
 	@Qualifier("simpleAdvancedDataTypesDao")
@@ -40,7 +33,7 @@ public class SimpleAdtTests {
 
 	@Autowired
     public void init(DataSource dataSource) {
-        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Transactional @Test
@@ -50,18 +43,17 @@ public class SimpleAdtTests {
         a1.setName("Adrian");
         a1.setAge(44);
         dao.addSqlActor(a1);
-        int count = simpleJdbcTemplate.queryForInt("select count(*) from actor where id = 4");
+        Map<String, Integer> namedParameters = new HashMap<>(1);
+        namedParameters.put("id", 4);
+        int count = namedParameterJdbcTemplate.queryForObject("select count(*) from actor where id = :id", namedParameters, Integer.class);
         assertEquals("actor not added", 1, count);
         SqlActor a2 = dao.getSqlActor(4L);
         assertEquals("", "Adrian", a2.getName());
-        simpleJdbcTemplate.getJdbcOperations().execute(
-        		new ConnectionCallback<Object>() {
-					public Object doInConnection(Connection conn)
-							throws SQLException, DataAccessException {
-						conn.getTypeMap().clear();
-						return null;
-					}        			
-        		});
+        namedParameterJdbcTemplate.getJdbcOperations().execute(
+                (ConnectionCallback<Object>) conn -> {
+                    conn.getTypeMap().clear();
+                    return null;
+                });
     }
 
     @Transactional @Test
@@ -71,7 +63,9 @@ public class SimpleAdtTests {
         a1.setName("Adrian");
         a1.setAge(44);
         dao.addActor(a1);
-        int count = simpleJdbcTemplate.queryForInt("select count(*) from actor where id = 4");
+        Map<String, Integer> namedParameters = new HashMap<>(1);
+        namedParameters.put("id", 4);
+        int count = namedParameterJdbcTemplate.queryForObject("select count(*) from actor where id = :id", namedParameters, Integer.class);
         assertEquals("actor not added", 1, count);
         Actor a2 = dao.getActor(4L);
         assertEquals("", "Adrian", a2.getName());

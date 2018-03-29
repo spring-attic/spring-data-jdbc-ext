@@ -8,6 +8,7 @@ public class MessageDelegate {
 	
 	private int count = 0;
 
+	@SuppressWarnings("unchecked")
     public void handleMessage(byte[] payload) throws MessageConversionException, JMSException {
     	count++;
     	System.out.println("---> " + new String(payload));

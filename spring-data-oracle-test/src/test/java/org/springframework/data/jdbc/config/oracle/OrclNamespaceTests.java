@@ -1,19 +1,19 @@
 package org.springframework.data.jdbc.config.oracle;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import javax.sql.DataSource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import javax.sql.DataSource;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Thomas Risberg
@@ -90,7 +90,7 @@ public class OrclNamespaceTests implements BeanFactoryAware {
         Object bean = this.beanFactory.getBean("proxyDataSource");
         assertEquals("not the correct class", "org.springframework.data.jdbc.support.oracle.ProxyDataSource", bean.getClass().getName());
         DataSource ds = (DataSource)bean;
-        SimpleJdbcTemplate jt = new SimpleJdbcTemplate(ds);
+        JdbcTemplate jt = new JdbcTemplate(ds);
         String currentUser = jt.queryForObject("select {fn user()} from dual", String.class);
         assertEquals("not connecting via proxy", "SCOTT", currentUser);
     }
@@ -103,7 +103,7 @@ public class OrclNamespaceTests implements BeanFactoryAware {
         Object bean = this.beanFactory.getBean("proxyDataSource2");
         assertEquals("not the correct class", "org.springframework.data.jdbc.support.oracle.ProxyDataSource", bean.getClass().getName());
         DataSource ds = (DataSource)bean;
-        SimpleJdbcTemplate jt = new SimpleJdbcTemplate(ds);
+        JdbcTemplate jt = new JdbcTemplate(ds);
         String currentUser = jt.queryForObject("select {fn user()} from dual", String.class);
         assertEquals("not connecting via proxy", "SCOTT2", currentUser);
     }

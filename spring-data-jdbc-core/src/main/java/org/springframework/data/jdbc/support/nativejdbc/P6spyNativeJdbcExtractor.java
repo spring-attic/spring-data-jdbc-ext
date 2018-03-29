@@ -16,20 +16,16 @@
 
 package org.springframework.data.jdbc.support.nativejdbc;
 
-import org.springframework.jdbc.support.nativejdbc.NativeJdbcExtractorAdapter;
-import org.springframework.jdbc.support.nativejdbc.NativeJdbcExtractor;
 import org.springframework.util.ReflectionUtils;
 
 import java.sql.*;
 import java.lang.reflect.Method;
 
 /**
- * Implementation of the {@link org.springframework.jdbc.support.nativejdbc.NativeJdbcExtractor} interface.
- * 
  * @author Thomas Risberg
  * @since 1.0
  */
-public class P6spyNativeJdbcExtractor extends NativeJdbcExtractorAdapter {
+public class P6spyNativeJdbcExtractor {
 
     private static final String JDBC_WRAPPER_NAME = "com.p6spy.engine.spy.P6Connection";
 
@@ -37,8 +33,6 @@ public class P6spyNativeJdbcExtractor extends NativeJdbcExtractorAdapter {
     private final Class<?> jdbcWrapperClass;
 
     private final Method getVendorConnectionMethod;
-
-    private NativeJdbcExtractor nextNativeJdbcExtractor = null;
 
     /**
      * This constructor retrieves the P6Spy JDBC wrapper class,
@@ -55,10 +49,6 @@ public class P6spyNativeJdbcExtractor extends NativeJdbcExtractorAdapter {
         }
     }
 
-
-    public void setNextNativeJdbcExtractor(NativeJdbcExtractor nextNativeJdbcExtractor) {
-        this.nextNativeJdbcExtractor = nextNativeJdbcExtractor;
-    }
 
     /**
      * Return <code>true</code>, as P6Spy returns wrapped Statements.
@@ -83,15 +73,14 @@ public class P6spyNativeJdbcExtractor extends NativeJdbcExtractorAdapter {
 
     /**
      * Retrieve the Connection via P6Spy's <code>getVendorConnection</code> method.
+     * @throws SQLException
+     * @return native connection
      */
     protected Connection doGetNativeConnection(Connection con) throws SQLException {
         if (this.jdbcWrapperClass.isAssignableFrom(con.getClass())) {
             Connection unwrappedCon =
                     (Connection) ReflectionUtils.invokeJdbcMethod(this.getVendorConnectionMethod, con);
-            if (nextNativeJdbcExtractor != null) {
-                return nextNativeJdbcExtractor.getNativeConnection(unwrappedCon);
-            }
-            return unwrappedCon;
+            return unwrappedCon.unwrap(Connection.class);
         }
         return con;
     }

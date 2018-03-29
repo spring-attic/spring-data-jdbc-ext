@@ -11,10 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.jdbc.test.xml.Item;
@@ -22,10 +21,9 @@ import org.springframework.data.jdbc.test.xml.XmlTypeDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-@TransactionConfiguration
 public class SimpleXmlTests {
 
-	private SimpleJdbcTemplate simpleJdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
 	@Qualifier("simpleXmlTypeDao")
@@ -33,7 +31,7 @@ public class SimpleXmlTests {
 
     @Autowired
     public void init(DataSource dataSource) {
-        this.simpleJdbcTemplate = new SimpleJdbcTemplate(dataSource);
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Transactional @Test
@@ -43,7 +41,7 @@ public class SimpleXmlTests {
                 "  <price>311</price>\n" +
                 "</item>";
         xmlDao.addXmlItem(11L, s);
-        int count = simpleJdbcTemplate.queryForInt("select count(*) from xml_table where id = 11");
+        int count = jdbcTemplate.queryForObject("select count(*) from xml_table where id = 11", Integer.class);
         assertEquals("actor not added", 1, count);
         String result = xmlDao.getXmlItem(11L);
         assertTrue("xml text not found", result.contains("<itemName>Bar</itemName>"));
@@ -56,7 +54,7 @@ public class SimpleXmlTests {
         i.setName("Bar");
         i.setPrice(new BigDecimal("123.45"));
         xmlDao.addItem(i);
-        int count = simpleJdbcTemplate.queryForInt("select count(*) from xml_table where id = 2");
+        int count = jdbcTemplate.queryForObject("select count(*) from xml_table where id = 2", Integer.class);
         assertEquals("item not added", 1, count);
         Item i2 = xmlDao.getItem(2L);
         assertEquals("item not read", "Bar", i2.getName());

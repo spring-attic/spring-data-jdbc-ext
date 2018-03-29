@@ -10,7 +10,7 @@ import java.sql.SQLOutput;
  */
 public class SqlActor extends Actor implements SQLData {
 
-    public String getSQLTypeName() throws SQLException {
+    public String getSQLTypeName() {
         return "ACTOR_TYPE";
     }
 

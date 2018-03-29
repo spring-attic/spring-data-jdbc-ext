@@ -3,21 +3,22 @@ buildscript {
         maven { url 'http://repo.spring.io/plugins-release' }
     }
     dependencies {
-        classpath 'org.springframework.build.gradle:docbook-reference-plugin:0.2.8'
+        classpath 'io.spring.gradle:docbook-reference-plugin:0.3.1'
     }
 }
 
 ext {
-    slf4jVersion = '1.7.13'
+    slf4jVersion = '1.7.25'
     junitVersion = '4.12'
-    springRetryVersion = '1.1.2.RELEASE'
-    aspectjVersion = '1.8.7'
-    springVersion = '4.2.3.RELEASE'
+    springRetryVersion = '1.2.2.RELEASE'
+    aspectjVersion = '1.8.13'
+    springVersion = '5.0.3.RELEASE'
     log4jVersion = '1.2.17'
-    mockitoVersion = '1.10.19'
+    mockitoVersion = '2.16.0'
 }
 
 allprojects {
+  apply plugin: "java"
   apply plugin: "idea"
   apply plugin: "eclipse"
 
@@ -47,8 +48,8 @@ configure(subprojects) { subproject ->
   [compileJava, compileTestJava]*.options*.debugOptions*.debugLevel = "source,lines,vars"
   [compileJava, compileTestJava]*.options*.compilerArgs = ["-Xlint:-serial", "-Xlint:-unchecked"]
 
-  project.sourceCompatibility = 1.7
-  project.targetCompatibility = 1.7
+  project.sourceCompatibility = 1.8
+  project.targetCompatibility = 1.8
 
   task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"
@@ -56,8 +57,8 @@ configure(subprojects) { subproject ->
   }
 
   javadoc.options.links =
-    ["http://static.springframework.org/spring/docs/3.0.x/javadoc-api",
-     "http://download.oracle.com/javase/6/docs/api"]
+    ["http://static.springframework.org/spring/docs/5.0.x/javadoc-api",
+     "http://download.oracle.com/javase/8/docs/api"]
 
   task javadocJar(type: Jar) {
     classifier = "javadoc"
@@ -73,6 +74,7 @@ configure(subprojects) { subproject ->
 
     // Logging
     compile "org.slf4j:slf4j-api:$slf4jVersion", provided
+    compile "org.slf4j:slf4j-simple:$slf4jVersion", provided
     compile "org.slf4j:jcl-over-slf4j:$slf4jVersion", provided
 
     // Spring
@@ -85,15 +87,15 @@ configure(subprojects) { subproject ->
 
     // Testing
     testCompile "junit:junit:$junitVersion"
-    testCompile "org.mockito:mockito-all:$mockitoVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
     testCompile "org.springframework:spring-test:$springVersion"
     testRuntime "log4j:log4j:$log4jVersion"
     testRuntime "org.slf4j:slf4j-log4j12:$slf4jVersion"
     testRuntime "org.springframework:spring-context-support:$springVersion"
-    testRuntime "cglib:cglib-nodep:3.1"
-    testRuntime "commons-dbcp:commons-dbcp:1.4"
-    testRuntime "commons-pool:commons-pool:1.6"
-    testRuntime "org.hsqldb:hsqldb:2.3.1"
+    testRuntime "cglib:cglib-nodep:3.2.6"
+    testRuntime "org.apache.commons:commons-dbcp2:2.2.0"
+    testRuntime "org.apache.commons:commons-pool2:2.5.0"
+    testRuntime "org.hsqldb:hsqldb:2.4.0"
 
   }
 
@@ -121,8 +123,8 @@ configure(rootProject) {
         options.overview = 'docs/src/api/overview.html'
         options.splitIndex = true
         options.links =
-          ["http://static.springframework.org/spring/docs/3.0.x/javadoc-api",
-           "http://download.oracle.com/javase/6/docs/api"]
+          ["http://static.springframework.org/spring/docs/5.0.x/javadoc-api",
+           "http://download.oracle.com/javase/8/docs/api"]
         source subprojects.collect { project ->
             project.sourceSets.main.allJava
         }
@@ -225,4 +227,4 @@ configure(rootProject) {
 }
 
 
-task wrapper(type: Wrapper) { gradleVersion = "1.10" }
+task wrapper(type: Wrapper) { gradleVersion = "4.6" }

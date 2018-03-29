@@ -9,7 +9,7 @@ Download from Oracle Technology Network (registration is required) and then inst
 
 1) Oracle JDBC driver version 12.1.0.2 -- com.oracle.jdbc:oracle.jdbc:jar:12.1.0.2
 
-  Download from: http://download.oracle.com/otn/utilities_drivers/jdbc/121020/ojdbc7.jar
+  Download from: http://www.oracle.com/technetwork/database/features/jdbc/default-2280470.html
 
   Then, install it using the command: 
       mvn install:install-file -DgroupId=com.oracle.jdbc -DartifactId=oracle.jdbc -Dversion=12.1.0.2 -Dpackaging=jar -Dfile=/path/to/ojdbc7.jar
