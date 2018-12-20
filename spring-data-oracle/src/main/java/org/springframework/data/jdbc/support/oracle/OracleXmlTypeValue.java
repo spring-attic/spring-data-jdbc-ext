@@ -16,6 +16,7 @@
 
 package org.springframework.data.jdbc.support.oracle;
 
+import oracle.jdbc.OracleConnection;
 import oracle.jdbc.OracleTypes;
 import oracle.xdb.XMLType;
 
@@ -73,7 +74,7 @@ public class OracleXmlTypeValue implements SqlXmlValue {
         this.value = value;
         inputType = STRING;
     }
-    
+
     /**
      * Constructor that takes one parameter with the XML InputStream passed in to be used.
      * @param stream the <code>InputStream</code> containing the XML to use.
@@ -101,6 +102,13 @@ public class OracleXmlTypeValue implements SqlXmlValue {
      */
     public void setValue(PreparedStatement ps, int paramIndex) throws SQLException {
         Connection conn = ps.getConnection();
+
+        if (!(conn instanceof OracleConnection)) {
+            if (conn.isWrapperFor(OracleConnection.class)) {
+                conn = conn.unwrap(OracleConnection.class);
+            }
+        }
+
         switch (inputType) {
             case STRING:
                 xmlValue = XMLType.createXML(conn, value);
