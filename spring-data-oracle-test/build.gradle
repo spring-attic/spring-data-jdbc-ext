@@ -14,9 +14,9 @@ test {
 repositories {
   mavenLocal()
   mavenCentral()
-  maven { url "http://repo.spring.io/milestone" }
-  maven { url "http://repo.spring.io/release" }
-  maven { url "http://repo.spring.io/ext-private-local" }
+  maven { url "https://repo.spring.io/milestone" }
+  maven { url "https://repo.spring.io/release" }
+  maven { url "https://repo.spring.io/ext-private-local" }
 }
 
 dependencies {
