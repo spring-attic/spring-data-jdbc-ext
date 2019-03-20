@@ -9,7 +9,7 @@ Download from Oracle Technology Network (registration is required) and then inst
 
 1) Oracle JDBC driver version 12.1.0.2 -- com.oracle.jdbc:oracle.jdbc:jar:12.1.0.2
 
-  Download from: http://download.oracle.com/otn/utilities_drivers/jdbc/121020/ojdbc7.jar
+  Download from: https://download.oracle.com/otn/utilities_drivers/jdbc/121020/ojdbc7.jar
 
   Then, install it using the command: 
       mvn install:install-file -DgroupId=com.oracle.jdbc -DartifactId=oracle.jdbc -Dversion=12.1.0.2 -Dpackaging=jar -Dfile=/path/to/ojdbc7.jar
@@ -20,7 +20,7 @@ Download from Oracle Technology Network (registration is required) and then inst
   Part of Oracle Containers for J2EE 10g (OC4J) version 10.1.3.5.0 
   (No known direct download link for standalone package.)
 
-  Download OC4J from: http://download.oracle.com/otn/java/oc4j/101350/oc4j_extended_101350.zip
+  Download OC4J from: https://download.oracle.com/otn/java/oc4j/101350/oc4j_extended_101350.zip
 
   Extract the archive - we need:
     rdbms/jlib/aqapi.jar
@@ -31,7 +31,7 @@ Download from Oracle Technology Network (registration is required) and then inst
 
 3) Oracle XDB (JDBC4.0 java.sql.SQLXML support) version 12.1.0.2 -- com.oracle.xdb:oracle.xdb:jar:12.1.0.2
 
-  Download from: http://download.oracle.com/otn/utilities_drivers/jdbc/121020/xdb6.jar
+  Download from: https://download.oracle.com/otn/utilities_drivers/jdbc/121020/xdb6.jar
 
   Then, install using the command: 
       mvn install:install-file -DgroupId=com.oracle.xdb -DartifactId=oracle.xdb -Dversion=12.1.0.2 -Dpackaging=jar -Dfile=/path/to/xdb6.jar
@@ -42,7 +42,7 @@ Download from Oracle Technology Network (registration is required) and then inst
   Part of Oracle JDeveloper or SQLDeveloper downloads from Oracle 
   (No known direct download link for standalone package.)
   
-  We did find it in a recent SQLDeveloper download - http://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html
+  We did find it in a recent SQLDeveloper download - https://www.oracle.com/technetwork/developer-tools/sql-developer/downloads/index.html
   
   Extract the archive - we need:
     SQLDeveloper.app/Contents/Resources/sqldeveloper/modules/oracle.xdk/xmlparserv2.jar
@@ -52,7 +52,7 @@ Download from Oracle Technology Network (registration is required) and then inst
 
 5) Oracle ONS 12.1.0.2 (only needed when using RAC) -- com.oracle.ons:oracle.ons:jar:12.1.0.2
 
-  Download from: http://download.oracle.com/otn/utilities_drivers/jdbc/121020/ons.jar
+  Download from: https://download.oracle.com/otn/utilities_drivers/jdbc/121020/ons.jar
 
   Then, install it using the command: 
       mvn install:install-file -DgroupId=com.oracle.ons -DartifactId=oracle.ons -Dversion=12.2.0.1 -Dpackaging=jar -Dfile=/path/to/ons.jar
