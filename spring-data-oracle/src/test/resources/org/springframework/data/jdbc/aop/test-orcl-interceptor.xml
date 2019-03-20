@@ -5,13 +5,13 @@
 	   xmlns:context="http://www.springframework.org/schema/context"
        xmlns:data-sql="http://www.springframnework.org/schema/data-sql"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
-	      http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	      https://www.springframework.org/schema/beans/spring-beans-3.0.xsd
           http://www.springframework.org/schema/aop
-          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+          https://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 	      http://www.springframework.org/schema/context
-	      http://www.springframework.org/schema/context/spring-context-3.0.xsd
-	      http://www.springframework/schema/data-sql
-	      http://www.springframewok/schema/data-sql/spring-data-sql-1.0.xsd">
+	      https://www.springframework.org/schema/context/spring-context-3.0.xsd
+	      https://www.springframework/schema/data-sql
+	      https://www.springframewok/schema/data-sql/spring-data-sql-1.0.xsd">
 
     <bean id="simpleDataSource" class="org.springframework.data.jdbc.test.OracleDataSourceFactoryBean"/>
 
