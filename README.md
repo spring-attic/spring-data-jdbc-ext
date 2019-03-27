@@ -1,4 +1,4 @@
-> **NOTICE: NOTICE: This project has been archived as of March 27th, 2019. There will be no maintenance or new development going forward.**
+> **NOTICE: This project has been archived as of March 27th, 2019. There will be no maintenance or new development going forward.**
 
 Spring Data JDBC Extensions for the Oracle database
 ===================================================
